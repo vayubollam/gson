@@ -27,12 +27,12 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.Objects;
 
 import javax.inject.Inject;
 
 import suncor.com.android.R;
-import suncor.com.android.analytics.AnalyticsConstants;
 import suncor.com.android.analytics.giftcard.GiftCardValueConfirmationAnalytics;
 import suncor.com.android.databinding.FragmentGiftCardValueConfirmationBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
@@ -103,7 +103,7 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
                     assert orderResponseResource.message != null;
                     assert orderResponseResource.data != null;
                     GiftCardValueConfirmationAnalytics.logFormErrorEvent(
-                            requireActivity(),
+                            requireContext(),
                             orderResponseResource.data.getErrorDescription(),
                             REDEEM_FOR +  viewModel.getGiftCardItem().getShortName() + E_GIFT_CARD
 
@@ -133,7 +133,7 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
                                 .show();
                     } else {
 
-                        GiftCardValueConfirmationAnalytics.logErrorEvent(requireActivity(), getString(R.string.msg_e001_title), viewModel.getGiftCardItem().getShortName(), "");
+                        GiftCardValueConfirmationAnalytics.logErrorEvent(requireActivity(), getString(R.string.msg_e001_title), viewModel.getGiftCardItem().getShortName(),"");
 
                         prepareErrorDialog(getActivity(),  viewModel.getGiftCardItem().getShortName() ).show();
                     }

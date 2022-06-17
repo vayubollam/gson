@@ -3,7 +3,6 @@ package suncor.com.android.ui.enrollment;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,11 +22,7 @@ import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
-
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 import javax.inject.Inject;
 
@@ -35,7 +30,6 @@ import suncor.com.android.R;
 import suncor.com.android.analytics.enrollment.CardQuestionsAnalytics;
 import suncor.com.android.databinding.FragmentCardQuestionBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
-import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.BaseFragment;
 import suncor.com.android.ui.enrollment.form.SecurityQuestionViewModel;
@@ -128,13 +122,10 @@ public class CardQuestionFragment extends BaseFragment {
                         break;
                     case ERROR:
                         isLoading.set(false);
-                        CardQuestionsAnalytics.logSomethingWentFormError(requireContext());
-
                         Dialog dialog = Alerts.prepareGeneralErrorDialog(getContext(), "Petro Points Sign Up Activate");
                         dialog.setCanceledOnTouchOutside(false);
                         dialog.setOnDismissListener((listener) -> requireActivity().finish());
                         dialog.show();
-
                 }
             });
         }
