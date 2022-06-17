@@ -16,6 +16,7 @@ import suncor.com.android.analytics.BaseParams.SCROLL_DEPTH_THRESHOLD
 import suncor.com.android.analytics.BaseParams.STEP_NAME
 import suncor.com.android.analytics.pap.FuelUpAnalytics
 import suncor.com.android.analytics.pap.ReceiptAnalytics
+import suncor.com.android.utilities.AnalyticsUtils.logEvent
 
 abstract class BaseAnalytics {
 
@@ -110,7 +111,7 @@ abstract class BaseAnalytics {
             bundle.putString(FORM_SELECTION, selection)
             bundle.putString(FORM_NAME, formName)
             bundle.putString(STEP_NAME, stepName)
-            FuelUpAnalytics.logEvent(context, FORM_STEP, bundle)
+            FirebaseAnalytics.getInstance(context).logEvent(FORM_STEP, bundle)
         }
 
         /*
