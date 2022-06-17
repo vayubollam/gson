@@ -17,6 +17,7 @@ public class SettingsResponse {
         return buildInfo;
     }
 
+
     public static class Settings {
         private String dt;
         private String currentAndroidVersion;
@@ -31,6 +32,7 @@ public class SettingsResponse {
         private String maintenanceMsgFR;
         private String maintenanceMsgEN;
         private GooglePassConfig googlePass;
+        public ToggleFeature toggleFeature;
 
         public String getDescriptionEN() {
             return descriptionEN;
@@ -159,6 +161,19 @@ public class SettingsResponse {
             return googlePassesAccountEmailAddress;
         }
 
+    }
+
+    public static class ToggleFeature {
+        @SerializedName("VACUUM_SCAN_BARCODE")
+        private boolean vacuumScanBarcode;
+
+        public boolean isVacuumScanBarcode() {
+            return vacuumScanBarcode;
+        }
+
+        public void setVacuumScanBarcode(boolean vacuumScanBarcode) {
+            this.vacuumScanBarcode = vacuumScanBarcode;
+        }
     }
 }
 

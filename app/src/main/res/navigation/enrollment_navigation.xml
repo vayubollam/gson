@@ -10,6 +10,11 @@
         android:name="suncor.com.android.ui.enrollment.CardQuestionFragment"
         android:label="fragment_card_question"
         tools:layout="@layout/fragment_card_question">
+        <argument
+            android:name="argName"
+            android:defaultValue="false"
+            app:argType="boolean"
+            />
         <action
             android:id="@+id/action_cardQuestion_to_enrollmentFormFragment"
             app:destination="@id/enrollment_form_fragment"

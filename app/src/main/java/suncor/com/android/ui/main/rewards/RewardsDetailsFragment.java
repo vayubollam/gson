@@ -22,11 +22,11 @@ public class RewardsDetailsFragment extends MainActivityFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentRewardsDetailsBinding.inflate(inflater, container, false);
         GenericEGiftCard genericGiftCard = RewardsDetailsFragmentArgs.fromBundle(getArguments()).getGenericGiftCard();
-        int imageId = getContext().getResources().getIdentifier(genericGiftCard.getSmallImage(), "drawable", getContext().getPackageName());
-        binding.setImage(getContext().getDrawable(imageId));
+        int imageId = requireContext().getResources().getIdentifier(genericGiftCard.getSmallImage(), "drawable", requireContext().getPackageName());
+        binding.setImage(requireContext().getDrawable(imageId));
         binding.setGenericEGiftCard(genericGiftCard);
 
-        binding.closeButton.setOnClickListener(v -> Navigation.findNavController(getView()).popBackStack());
+        binding.closeButton.setOnClickListener(v -> Navigation.findNavController(requireView()).popBackStack());
 
         return binding.getRoot();
     }

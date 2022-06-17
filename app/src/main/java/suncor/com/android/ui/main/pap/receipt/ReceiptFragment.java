@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +38,11 @@ import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.main.common.MainActivityFragment;
+import suncor.com.android.utilities.AnalyticsUtils;
+import suncor.com.android.utilities.Constants;
 import suncor.com.android.utilities.PdfUtil;
+
+import static com.google.android.play.core.review.model.ReviewErrorCode.PLAY_STORE_NOT_FOUND;
 
 public class ReceiptFragment extends MainActivityFragment {
 
@@ -184,6 +189,7 @@ public class ReceiptFragment extends MainActivityFragment {
                 // We can get the ReviewInfo object
                 ReviewInfo reviewInfo = task.getResult();
                 Task<Void> flow = manager.launchReviewFlow(requireActivity(), reviewInfo);
+                AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.APPRATINGPROMPT.toString());
 
                 flow.addOnCompleteListener(reviewed -> {
                     // The flow has finished. The API does not indicate whether the user
@@ -197,7 +203,7 @@ public class ReceiptFragment extends MainActivityFragment {
                 @ReviewErrorCode int reviewErrorCode = ((RuntimeExecutionException) task.getException()).getErrorCode();
 
                 if (reviewErrorCode == PLAY_STORE_NOT_FOUND) { }
-                
+
                 goBack();
             }
         });

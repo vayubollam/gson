@@ -14,6 +14,24 @@ public class OrderResponse implements Parcelable {
     private String orderId;
     private boolean linkProductsToAccount;
     private String[] productsDelivered;
+    private String errorID;
+    private String errorDescription;
+
+    public void setErrorID(String errorID) {
+        this.errorID = errorID;
+    }
+
+    public void setErrorDescription(String errorDescription) {
+        this.errorDescription = errorDescription;
+    }
+
+    public String getErrorID() {
+        return errorID;
+    }
+
+    public String getErrorDescription() {
+        return errorDescription;
+    }
 
     protected OrderResponse(Parcel in) {
         shipping = in.readParcelable(Shipping.class.getClassLoader());

@@ -1,10 +1,18 @@
 package suncor.com.android.ui.enrollment.form;
 
+
 import static suncor.com.android.analytics.BaseAnalytics.BUTTON_TEXT_CANCEL;
 import static suncor.com.android.analytics.BaseAnalytics.BUTTON_TEXT_OK;
 import static suncor.com.android.analytics.Errors.PLEASE_ENTER_DIFFERENT_EMAIL;
 import static suncor.com.android.analytics.enrollment.EnrollmentAnalytics.METHOD_ACTIVATION;
 import static suncor.com.android.analytics.enrollment.EnrollmentAnalytics.METHOD_SIGN_UP;
+
+import static suncor.com.android.analytics.AnalyticsConstants.SCROLL_DEPTH_25;
+import static suncor.com.android.analytics.AnalyticsConstants.SCROLL_DEPTH_5;
+import static suncor.com.android.analytics.AnalyticsConstants.SCROLL_DEPTH_50;
+import static suncor.com.android.analytics.AnalyticsConstants.SCROLL_DEPTH_75;
+import static suncor.com.android.analytics.AnalyticsConstants.SCROLL_DEPTH_95;
+
 import static suncor.com.android.analytics.enrollment.EnrollmentAnalytics.SCREEN_NAME_ACTIVATE_I_DO_NOT_HAVE_CARD;
 import static suncor.com.android.analytics.enrollment.EnrollmentAnalytics.SCREEN_NAME_ACTIVATE_I_HAVE_CARD;
 import static suncor.com.android.analytics.enrollment.EnrollmentAnalytics.SCREEN_NAME_ACTIVATE_SUCCESS;
@@ -14,6 +22,7 @@ import static suncor.com.android.analytics.enrollment.EnrollmentAnalytics.STEP_N
 import static suncor.com.android.analytics.enrollment.EnrollmentAnalytics.STEP_NAME_PERSONAL_INFORMATION;
 import static suncor.com.android.analytics.enrollment.EnrollmentAnalyticsKt.FORM_NAME_ACTIVATE_PETRO_POINTS_CARD;
 import static suncor.com.android.analytics.enrollment.EnrollmentAnalyticsKt.FORM_NAME_JOIN_PETRO_POINTS;
+
 import static suncor.com.android.analytics.enrollment.EnrollmentAnalyticsKt.SCROLL_DEPTH_100;
 import static suncor.com.android.analytics.enrollment.EnrollmentAnalyticsKt.SCROLL_DEPTH_20;
 import static suncor.com.android.analytics.enrollment.EnrollmentAnalyticsKt.SCROLL_DEPTH_40;
@@ -85,7 +94,11 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
     private String formName;
     private String screenName;
     private boolean isLoadedFirstTime = false;
+
     private boolean scroll20 = false, scroll40 = false, scroll60 = false, scroll80 = false, scroll100 = false;
+
+    private boolean scroll5 = false, scroll25 = false, scroll50 = false, scroll75 = false, scroll95 = false;
+
 
     // By Default it remain JOIN_NO_CARD will check if the card is provided i.e JOIN_YES_CARD.
     private String sign_up_method = METHOD_SIGN_UP;
@@ -99,8 +112,8 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(EnrollmentFormViewModel.class);
-        viewModel.setProvincesList(((EnrollmentActivity) getActivity()).getProvinces());
+        viewModel = ViewModelProviders.of(requireActivity(), viewModelFactory).get(EnrollmentFormViewModel.class);
+        viewModel.setProvincesList(((EnrollmentActivity) requireActivity()).getProvinces());
 
         addressAutocompleteAdapter = new AddressAutocompleteAdapter(viewModel::addressSuggestionClicked);
 
@@ -144,6 +157,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                 } else {
                     screenName = SCREEN_NAME_SIGNUP_SUCCESS;
                 }
+
                 EnrollmentAnalytics.logScreenNameClass(requireActivity(), screenName, this.getClass().getSimpleName());
 
                 String optionsChecked = "";
@@ -157,6 +171,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                 binding.emailAddress.setText(viewModel.getEmailInputField().getText());
 
                 EnrollmentAnalytics.logFormStep(requireContext(), formName, optionsChecked, STEP_NAME_COMPLETE_SIGNUP);
+
                 // Log method of signup to Analytics
                 EnrollmentAnalytics.logSignupEvent(requireContext(), sign_up_method);
 
@@ -173,7 +188,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                             formName
                     );
 
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(requireActivity());
                     dialog.setTitle(R.string.enrollment_email_restricted_alert_title);
                     dialog.setPositiveButton(R.string.ok, (d, w) -> {
                         EnrollmentAnalytics.logAlertDialogInteraction(requireContext(),
@@ -185,7 +200,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
 
                     dialog.show();
                 } else if (ErrorCodes.ERR_CARD_PENDING_EMAIL_VALIDATION.equals(r.message)) {
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(requireActivity());
                     dialog.setTitle(R.string.verify_your_email_address_title);
                     dialog.setMessage(R.string.verify_your_email_address_description);
                     dialog.setPositiveButton(R.string.verify_your_email_address_call_us, (d, w) -> {
@@ -222,6 +237,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                 if (isLoadedFirstTime) {
                     EnrollmentAnalytics.logScreenNameClass(requireContext()
                             , EnrollmentAnalytics.SCREEN_NAME_CANADA_POST_SEARCH_DESCRIPTIVE_SCREEN_NAME, this.getClass().getSimpleName());
+
                     isLoadedFirstTime = false;
                 }
                 binding.appBar.setBackgroundColor(getResources().getColor(R.color.black_40));
@@ -230,7 +246,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                 binding.streetAutocompleteOverlay.setIsVisible(true);
                 ViewCompat.setElevation(binding.appBar, 0);
                 binding.scrollView.setScrollEnabled(false);
-                getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.black_40_transparent));
+                requireActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.black_40_transparent));
             } else {
                 binding.appBar.setOnClickListener(null);
                 binding.appBar.setBackgroundColor(getResources().getColor(R.color.white));
@@ -238,7 +254,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                 binding.streetAutocompleteOverlay.setIsVisible(false);
                 ViewCompat.setElevation(binding.appBar, 8);
                 binding.scrollView.setScrollEnabled(true);
-                getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.white));
+                requireActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.white));
             }
         });
 
@@ -263,7 +279,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                 intent.putExtra(LoginActivity.LOGIN_FROM_ENROLLMENT_EXTRA, true);
                 startActivity(intent);
-                getActivity().finish();
+                requireActivity().finish();
             }
         });
         viewModel.showBiometricAlert.observe(this, booleanEvent -> {
@@ -274,7 +290,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
             );
 
 
-            new AlertDialog.Builder(getContext())
+            new AlertDialog.Builder(requireContext())
                     .setTitle(R.string.sign_enable_fp_title)
                     .setMessage(R.string.sign_enable_fb_message)
                     .setPositiveButton(R.string.sign_enable_fb_possitive_button, (dialog, which) -> {
@@ -320,7 +336,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
 
                     Intent intent = new Intent(getContext(), LoginActivity.class);
                     startActivity(intent);
-                    getActivity().finish();
+                    requireActivity().finish();
                 })
                 .setCenterButton(getString(R.string.enrollment_invalid_email_dialog_diff_email), (v) -> {
 
@@ -385,7 +401,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
 
         binding.streetAutocompleteOverlay.autocompleteList.setAdapter(addressAutocompleteAdapter);
         binding.streetAutocompleteOverlay.autocompleteList.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
-        DividerItemDecoration dividerDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
+        DividerItemDecoration dividerDecoration = new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL);
         dividerDecoration.setDrawable(getResources().getDrawable(R.drawable.horizontal_divider));
         binding.streetAutocompleteOverlay.autocompleteList.addItemDecoration(dividerDecoration);
         return binding.getRoot();
@@ -406,7 +422,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         ExtendedNestedScrollView scroller = binding.scrollView;
 
         if (scroller != null) {
@@ -420,21 +436,21 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                         double getScrollY = v.getScrollY();
                         double scrollPosition = (getScrollY / scrollViewHeight) * 100d;
                         int percentage = (int) scrollPosition;
-                        if (percentage > 20 && !scroll20) {
-                            scroll20 = true;
-                            EnrollmentAnalytics.logScrollDepth(requireContext(), SCROLL_DEPTH_20);
-                        } else if (percentage > 40 && !scroll40) {
-                            scroll40 = true;
-                            EnrollmentAnalytics.logScrollDepth(requireContext(), SCROLL_DEPTH_40);
-                        } else if (percentage > 60 && !scroll60) {
-                            scroll60 = true;
-                            EnrollmentAnalytics.logScrollDepth(requireContext(), SCROLL_DEPTH_60);
-                        } else if (percentage > 80 && !scroll80) {
-                            scroll80 = true;
-                            EnrollmentAnalytics.logScrollDepth(requireContext(), SCROLL_DEPTH_80);
-                        } else if (percentage > 100 && !scroll100) {
-                            scroll100 = true;
-                            EnrollmentAnalytics.logScrollDepth(requireContext(), SCROLL_DEPTH_100);
+                        if (percentage > 5 && !scroll5) {
+                            scroll5 = true;
+                            EnrollmentAnalytics.logScrollDepth(requireContext(), SCROLL_DEPTH_5);
+                        } else if (percentage > 25 && !scroll25) {
+                            scroll25 = true;
+                            EnrollmentAnalytics.logScrollDepth(requireContext(), SCROLL_DEPTH_25);
+                        } else if (percentage > 50 && !scroll50) {
+                            scroll50 = true;
+                            EnrollmentAnalytics.logScrollDepth(requireContext(), SCROLL_DEPTH_50);
+                        } else if (percentage > 75 && !scroll75) {
+                            scroll75 = true;
+                            EnrollmentAnalytics.logScrollDepth(requireContext(), SCROLL_DEPTH_75);
+                        } else if (percentage > 95 && !scroll95) {
+                            scroll95 = true;
+                            EnrollmentAnalytics.logScrollDepth(requireContext(), SCROLL_DEPTH_95);
                         }
                     }
 
@@ -449,7 +465,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
     public void onBackPressed() {
         hideKeyBoard();
         if (viewModel.isUserCameToValidationScreen()) {
-            getActivity().finish();
+            requireActivity().finish();
 
             Intent intent = new Intent(requireActivity(), MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -474,7 +490,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                         BUTTON_TEXT_OK,
                         formName
                 );
-                getActivity().finish();
+                requireActivity().finish();
             });
             alertDialog.setNegativeButton(R.string.cancel, (d, w) -> {
 
@@ -487,13 +503,13 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
             });
             alertDialog.show();
         } else {
-            Navigation.findNavController(getView()).navigateUp();
+            Navigation.findNavController(requireView()).navigateUp();
         }
     }
 
     private void hideKeyBoard() {
-        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+        InputMethodManager imm = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(requireView().getWindowToken(), 0);
     }
 
     public void joinButtonClicked() {
@@ -546,9 +562,9 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
         //log form steps
         if (hasFocus) {
             if (view == binding.firstNameInput) {
-                EnrollmentAnalytics.logFormStep(requireContext(), formName, "", STEP_NAME_PERSONAL_INFORMATION);
+                EnrollmentAnalytics.logFormStep(requireContext(), formName,  STEP_NAME_PERSONAL_INFORMATION);
             } else if (view == binding.streetAddressInput) {
-                EnrollmentAnalytics.logFormStep(requireContext(), formName, "", STEP_NAME_ADDRESS);
+                EnrollmentAnalytics.logFormStep(requireContext(), formName,  STEP_NAME_ADDRESS);
             }
         }
     }
@@ -575,7 +591,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
             input.getEditText().requestFocus();
         }
         if (!(input instanceof SuncorSelectInputLayout)) {
-            InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.showSoftInput(input.getEditText(), InputMethodManager.SHOW_IMPLICIT);
         }
     }

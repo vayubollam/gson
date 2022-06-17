@@ -115,8 +115,10 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
                     }
                     break;
                 case ERROR:
+                    AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
+                            new Pair<>(AnalyticsUtils.Param.errorMessage, orderResponseResource.message));
                     if (ErrorCodes.ERR_CARD_LOCK.equals(orderResponseResource.message) || ErrorCodes.ERR_SECONDARY_CARD_HOLDER_REDEMPTIONS_DISABLED.equals(orderResponseResource.message)) {
-                        String analyticName = getString(R.string.msg_e030_title)+"("+getString(R.string.msg_e030_message)+")";
+                        String analyticName = getString(R.string.msg_e030_title) + "(" + getString(R.string.msg_e030_message) + ")";
                         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event._ALERT,
                                 new Pair<>(AnalyticsUtils.Param.alertTitle, analyticName),
                                         new Pair<>(AnalyticsUtils.Param.FORMNAME, CARWASH_TICKET)

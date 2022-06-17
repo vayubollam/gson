@@ -1,7 +1,6 @@
 package suncor.com.android.ui.main.actionmenu;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.util.Pair;
@@ -9,22 +8,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
-
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-
-import java.util.Objects;
-
 import javax.inject.Inject;
-
 import suncor.com.android.HomeNavigationDirections;
 import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
@@ -34,14 +27,11 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.main.home.HomeViewModel;
 import suncor.com.android.ui.main.pap.fuelup.FuelUpFragmentDirections;
-import suncor.com.android.ui.main.pap.selectpump.SelectPumpFragmentDirections;
 import suncor.com.android.ui.main.stationlocator.StationItem;
 import suncor.com.android.ui.main.wallet.cards.CardsLoadType;
-import suncor.com.android.ui.main.wallet.payments.add.AddPaymentViewModel;
 import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.LocationUtils;
 import suncor.com.android.utilities.PermissionManager;
-
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static suncor.com.android.utilities.Constants.ACTIVE_SESSION;
 import static suncor.com.android.utilities.Constants.AUTHORIZED;
