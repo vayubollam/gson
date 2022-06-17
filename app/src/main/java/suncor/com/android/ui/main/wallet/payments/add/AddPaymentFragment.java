@@ -49,6 +49,7 @@ import suncor.com.android.ui.main.home.HomeViewModel;
 import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.LocationUtils;
 import suncor.com.android.utilities.PermissionManager;
+import suncor.com.android.utilities.Timber;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
@@ -185,6 +186,7 @@ public class AddPaymentFragment extends MainActivityFragment implements OnBackPr
                 isWebViewLoading.set(false);
 
                 if (url.toLowerCase().contains(viewModel.redirectUrl.toLowerCase())) {
+                    try {
                     isAdding.set(true);
                     Uri uri = Uri.parse(url);
 
@@ -210,9 +212,9 @@ public class AddPaymentFragment extends MainActivityFragment implements OnBackPr
                             e.printStackTrace();
                         }
 
-                        Navigation.findNavController(getView()).getPreviousBackStackEntry().getSavedStateHandle().set("tempPayment", paymentDetail);
+                        Navigation.findNavController(requireView()).getPreviousBackStackEntry().getSavedStateHandle().set("tempPayment", paymentDetail);
                     } else {
-                        Navigation.findNavController(getView()).getPreviousBackStackEntry().getSavedStateHandle().set("selectedPayment", userPaymentSourceId);
+                        Navigation.findNavController(requireView()).getPreviousBackStackEntry().getSavedStateHandle().set("selectedPayment", userPaymentSourceId);
                     }
                     AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.FORMCOMPLETE,
                             new Pair<>(AnalyticsUtils.Param.FORMSELECTION, "Credit Card"),
@@ -222,14 +224,23 @@ public class AddPaymentFragment extends MainActivityFragment implements OnBackPr
                     new Handler().postDelayed(() -> {
                         goBack();
                     }, 50);
+                    }catch (Exception e){
+                        Timber.d(e.toString());
+                    }
                 }
+
             }
         });
     }
 
     private void goBack() {
-        Objects.requireNonNull(Navigation.findNavController(requireView()).getPreviousBackStackEntry()).getSavedStateHandle().set("fromPayment", true);
-        Navigation.findNavController(requireView()).popBackStack();
+        try {
+            Navigation.findNavController(requireView()).getPreviousBackStackEntry().getSavedStateHandle().set("fromPayment", true);
+            Navigation.findNavController(requireView()).popBackStack();
+        }catch (Exception e){
+            Timber.d(e.toString());
+        }
+
     }
 
     @Override
