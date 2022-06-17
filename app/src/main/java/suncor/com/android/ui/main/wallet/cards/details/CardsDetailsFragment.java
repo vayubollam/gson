@@ -243,8 +243,12 @@ public class CardsDetailsFragment extends MainActivityFragment {
 
         viewModel.cardDetail.observeForever(result -> {
            if (result != null && cardsDetailsAdapter != null) {
-                ExpandedCardItem updatedItem = new ExpandedCardItem(getContext(), result);
-                cardsDetailsAdapter.updateCardItems(updatedItem, clickedCardIndex);
+               try {
+                   ExpandedCardItem updatedItem = new ExpandedCardItem(getContext(), result);
+                   cardsDetailsAdapter.updateCardItems(updatedItem, clickedCardIndex);
+               }catch (Exception e){
+
+               }
             }
         });
 

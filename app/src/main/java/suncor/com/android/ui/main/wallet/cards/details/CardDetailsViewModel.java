@@ -215,15 +215,16 @@ public class CardDetailsViewModel extends ViewModel {
         runnableCode = new Runnable() {
             @Override
             public void run() {
+                String cardString = cardNumber.replaceAll("\\s", "");
                 Timber.d("UPDATE-CARD-CALLED-Timer-Method");
                 if (cardType == CardType.SP) {
-                    _cardsDetails.addSource(cardsRepository.getSPCardDetails(cardNumber), result -> {
+                    _cardsDetails.addSource(cardsRepository.getSPCardDetails(cardString), result -> {
                         if (result.status == Resource.Status.SUCCESS) {
                             _cardsDetails.setValue(result.data);
                         }
                     });
                 } else if (cardType == CardType.WAG) {
-                    _cardsDetails.addSource(cardsRepository.getWAGCardDetails(cardNumber), result -> {
+                    _cardsDetails.addSource(cardsRepository.getWAGCardDetails(cardString), result -> {
                         if (result.status == Resource.Status.SUCCESS) {
                             _cardsDetails.setValue(result.data);
                         }
