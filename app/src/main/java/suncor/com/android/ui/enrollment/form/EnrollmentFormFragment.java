@@ -23,11 +23,6 @@ import static suncor.com.android.analytics.enrollment.EnrollmentAnalytics.STEP_N
 import static suncor.com.android.analytics.enrollment.EnrollmentAnalyticsKt.FORM_NAME_ACTIVATE_PETRO_POINTS_CARD;
 import static suncor.com.android.analytics.enrollment.EnrollmentAnalyticsKt.FORM_NAME_JOIN_PETRO_POINTS;
 
-import static suncor.com.android.analytics.enrollment.EnrollmentAnalyticsKt.SCROLL_DEPTH_100;
-import static suncor.com.android.analytics.enrollment.EnrollmentAnalyticsKt.SCROLL_DEPTH_20;
-import static suncor.com.android.analytics.enrollment.EnrollmentAnalyticsKt.SCROLL_DEPTH_40;
-import static suncor.com.android.analytics.enrollment.EnrollmentAnalyticsKt.SCROLL_DEPTH_60;
-import static suncor.com.android.analytics.enrollment.EnrollmentAnalyticsKt.SCROLL_DEPTH_80;
 import static suncor.com.android.mfp.ErrorCodes.ERR_RESTRICTED_DOMAIN;
 
 import android.content.Context;
@@ -143,7 +138,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
         if (viewModel.getCardStatus() == null) {
             EnrollmentAnalytics.logFormStart(requireContext(), formName);
         } else {
-            EnrollmentAnalytics.logFormStep(requireContext(), formName, "", STEP_NAME_PERSONAL_INFORMATION);
+            EnrollmentAnalytics.logFormStep(requireContext(), formName, STEP_NAME_PERSONAL_INFORMATION);
         }
 
         //enrollments api call result
@@ -170,7 +165,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
 
                 binding.emailAddress.setText(viewModel.getEmailInputField().getText());
 
-                EnrollmentAnalytics.logFormStep(requireContext(), formName, optionsChecked, STEP_NAME_COMPLETE_SIGNUP);
+                EnrollmentAnalytics.logFormStep(requireContext(), formName, STEP_NAME_COMPLETE_SIGNUP);
 
                 // Log method of signup to Analytics
                 EnrollmentAnalytics.logSignupEvent(requireContext(), sign_up_method);
@@ -181,7 +176,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                     showDuplicateEmailAlert();
                 } else if (ERR_RESTRICTED_DOMAIN.equals(r.message)) {
 
-                    EnrollmentAnalytics.logFormErrorEvent(requireContext(), PLEASE_ENTER_DIFFERENT_EMAIL, formName, "");
+                    EnrollmentAnalytics.logFormErrorEvent(requireContext(), PLEASE_ENTER_DIFFERENT_EMAIL, formName);
 
                     EnrollmentAnalytics.logAlertDialogShown(requireContext(),
                             Errors.PLEASE_ENTER_DIFFERENT_EMAIL,
@@ -321,7 +316,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
         ModalDialog dialog = new ModalDialog();
         dialog.setFormName(formName);
         dialog.setCancelable(false);
-        EnrollmentAnalytics.logFormErrorEvent(requireContext(), Errors.THE_EMAIL_HAS_ACCOUNT, formName, "");
+        EnrollmentAnalytics.logFormErrorEvent(requireContext(), Errors.THE_EMAIL_HAS_ACCOUNT, formName);
         EnrollmentAnalytics.logAlertDialogShown(requireContext(), getString(R.string.enrollment_email_already_exists_title)
                         + "(" + getString(R.string.enrollment_email_already_exists_description) + ")"
                 , formName);

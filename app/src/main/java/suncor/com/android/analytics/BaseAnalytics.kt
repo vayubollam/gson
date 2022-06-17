@@ -1,6 +1,5 @@
 package suncor.com.android.analytics
 
-import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -14,8 +13,6 @@ import suncor.com.android.analytics.BaseParams.FORM_SELECTION
 import suncor.com.android.analytics.BaseParams.PHONE_NUMBER_TAPPED
 import suncor.com.android.analytics.BaseParams.SCROLL_DEPTH_THRESHOLD
 import suncor.com.android.analytics.BaseParams.STEP_NAME
-import suncor.com.android.analytics.pap.FuelUpAnalytics
-import suncor.com.android.analytics.pap.ReceiptAnalytics
 
 abstract class BaseAnalytics {
 
@@ -104,11 +101,9 @@ abstract class BaseAnalytics {
         fun logFormStep(
             context: Context,
             formName: String,
-            selection: String = "",
             stepName: String = ""
         ) {
             val bundle = Bundle()
-            bundle.putString(FORM_SELECTION, selection)
             bundle.putString(FORM_NAME, formName)
             bundle.putString(STEP_NAME, stepName)
             logEvent(context, FORM_STEP, bundle)
@@ -199,12 +194,10 @@ abstract class BaseAnalytics {
             context: Context,
             errorMessage: String,
             formName: String,
-            detailErrorMessage: String = ""
         ) {
             val bundle = Bundle()
             bundle.putString(ERROR_MESSAGE, errorMessage)
             bundle.putString(FORM_NAME, formName)
-            bundle.putString(ERROR_MESSAGE_DETAIL, detailErrorMessage)
             logEvent(context, BaseEvents.FORM_ERROR, bundle)
         }
 
