@@ -183,7 +183,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
                     clickedCardIndex = linearLayoutManager.findFirstVisibleItemPosition();
                     Timber.d("VISIBLECARD-: " + viewModel.cards.getValue().get(clickedCardIndex).getCardNumber());
                     CardDetail cardDetail = cardsDetailsAdapter.getCardItems().get(clickedCardIndex).getCardDetail();
-                    if (cardDetail.getCardType() == CardType.SP && cardDetail.getCardType() == CardType.WAG) {
+                    if (cardDetail.getCardType() == CardType.SP || cardDetail.getCardType() == CardType.WAG) {
                         if (cardDetail.isVacuumInProgress() || cardDetail.isWashInProgress() || !cardDetail.isCanVacuum() || !cardDetail.isCanWash()) {
                             viewModel.getProgressDetails(cardsDetailsAdapter.getCardItems().get(clickedCardIndex).getCardDetail().getCardNumber(), cardsDetailsAdapter.getCardItems().get(clickedCardIndex).getCardDetail().getCardType()).observe(getViewLifecycleOwner(), result -> {
                                 Timber.d("UPDATE-CARD-CALLED-Scroll-State");
@@ -240,6 +240,14 @@ public class CardsDetailsFragment extends MainActivityFragment {
                 clickedCardIndex = linearLayoutManager.findFirstVisibleItemPosition();
             }
         });
+
+        viewModel.cardDetail.observeForever(result -> {
+           if (result != null && cardsDetailsAdapter != null) {
+                ExpandedCardItem updatedItem = new ExpandedCardItem(getContext(), result);
+                cardsDetailsAdapter.updateCardItems(updatedItem, clickedCardIndex);
+            }
+        });
+
         binding.pageIndicator.attachToRecyclerView(binding.cardDetailRecycler, pagerSnapHelper);
         cardsDetailsAdapter.registerAdapterDataObserver(binding.pageIndicator.getAdapterDataObserver());
         binding.buttonClose.setOnClickListener(v -> {

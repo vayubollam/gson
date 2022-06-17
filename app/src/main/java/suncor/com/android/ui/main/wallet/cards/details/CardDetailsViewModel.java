@@ -36,6 +36,8 @@ public class CardDetailsViewModel extends ViewModel {
     private final CardsRepository cardsRepository;
     private MediatorLiveData<List<CardDetail>> _cards = new MediatorLiveData<>();
     LiveData<List<CardDetail>> cards = _cards;
+    private MediatorLiveData<CardDetail> _cardsDetails = new MediatorLiveData<>();
+    LiveData<CardDetail> cardDetail = _cardsDetails;
     private CardsLoadType loadType;
     private Set<String> redeemedTicketNumbers;
     private MutableLiveData<Boolean> isCarWashBalanceZero = new MutableLiveData<>();
@@ -214,7 +216,19 @@ public class CardDetailsViewModel extends ViewModel {
             @Override
             public void run() {
                 Timber.d("UPDATE-CARD-CALLED-Timer-Method");
-                getProgressDetails(cardNumber, cardType);
+                if (cardType == CardType.SP) {
+                    _cardsDetails.addSource(cardsRepository.getSPCardDetails(cardNumber), result -> {
+                        if (result.status == Resource.Status.SUCCESS) {
+                            _cardsDetails.setValue(result.data);
+                        }
+                    });
+                } else if (cardType == CardType.WAG) {
+                    _cardsDetails.addSource(cardsRepository.getWAGCardDetails(cardNumber), result -> {
+                        if (result.status == Resource.Status.SUCCESS) {
+                            _cardsDetails.setValue(result.data);
+                        }
+                    });
+                }
                 Timber.d("--SERVICE STARTED--");
                 handler.postDelayed(this, interval);
             }
@@ -222,7 +236,7 @@ public class CardDetailsViewModel extends ViewModel {
         handler.post(runnableCode);
 
     }
-  
+
     protected void stopRecurringService() {
         if (handler != null) {
             handler.removeCallbacks(runnableCode);
