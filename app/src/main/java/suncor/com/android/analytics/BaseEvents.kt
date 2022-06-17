@@ -1,6 +1,7 @@
 package suncor.com.android.analytics
 
 object BaseEvents {
+    const val TIMER_30 = "timer30"
     const val BUTTON_TAP = "button_tap"
     const val INFO_TAP = "info_tap"
     const val INTER_SITE = "intersite"

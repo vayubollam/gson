@@ -46,6 +46,7 @@ import static com.google.android.play.core.review.model.ReviewErrorCode.PLAY_STO
 
 public class ReceiptFragment extends MainActivityFragment {
 
+    private static final String SCREEN_CLASS_NAME = "ReceiptFragment";
     private ReceiptViewModel viewModel;
     private FragmentReceiptBinding binding;
     private String transactionId;
@@ -107,14 +108,14 @@ public class ReceiptFragment extends MainActivityFragment {
     @Override
     public void onResume() {
         super.onResume();
-        ReceiptAnalytics.logScreenName(requireActivity());
+        ReceiptAnalytics.logScreenNameClass(requireContext(),ReceiptAnalytics.SCREEN_NAME,this.getClass().getSimpleName());
     }
 
     private void observeTransactionData(String transactionId){
         viewModel.getTransactionDetails(transactionId, false).observe(getViewLifecycleOwner(), result->{
             if (result.status == Resource.Status.LOADING) {
                 isLoading.set(true);
-                ReceiptAnalytics.logLoadingScreenName(requireActivity());
+                ReceiptAnalytics.logScreenNameClass(requireContext(),ReceiptAnalytics.SCREEN_NAME_LOADING,SCREEN_CLASS_NAME);
             } else if (result.status == Resource.Status.ERROR) {
                 isLoading.set(false);
                 if (sessionManager.getProfile() != null && sessionManager.getProfile().getFirstName() != null) {
@@ -124,7 +125,8 @@ public class ReceiptFragment extends MainActivityFragment {
                 binding.transactionLayout.setVisibility(View.GONE);
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 isLoading.set(false);
-                ReceiptAnalytics.logScreenName(requireActivity());
+                ReceiptAnalytics.logScreenNameClass(requireContext(),ReceiptAnalytics.SCREEN_NAME,this.getClass().getSimpleName());
+
                 ReceiptAnalytics.logPaymentComplete(requireContext(),isGooglePay ? "Google Pay" : "Credit Card");
 
                 binding.paymentType.setText(result.data.getPaymentType(requireContext(), isGooglePay));

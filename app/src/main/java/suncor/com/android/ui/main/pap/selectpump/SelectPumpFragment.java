@@ -37,6 +37,7 @@ public class SelectPumpFragment extends MainActivityFragment implements SelectPu
     private ObservableBoolean isLoading = new ObservableBoolean(true);
     private String storeId;
     private HomeViewModel homeViewModel;
+    private final String SCREEN_NAME_CLASS = "SelectPumpFragment";
 
     @Inject
     ViewModelFactory viewModelFactory;
@@ -74,7 +75,9 @@ public class SelectPumpFragment extends MainActivityFragment implements SelectPu
         super.onViewCreated(view, savedInstanceState);
 
         isLoading.set(true);
-        SelectPumpAnalytics.logLoadingScreenName(requireActivity());
+
+        SelectPumpAnalytics.logScreenNameClass(requireContext(),SelectPumpAnalytics.SCREEN_NAME_LOADING,SCREEN_NAME_CLASS);
+
         storeId = SelectPumpFragmentArgs.fromBundle(getArguments()).getStoreId();
         String location = SelectPumpFragmentArgs.fromBundle(getArguments()).getLocation();
         if(Objects.nonNull(location)) {
@@ -160,6 +163,6 @@ public class SelectPumpFragment extends MainActivityFragment implements SelectPu
     @Override
     public void onResume() {
         super.onResume();
-        SelectPumpAnalytics.logScreenName(requireActivity());
+        SelectPumpAnalytics.logScreenNameClass(requireContext(),SelectPumpAnalytics.SCREEN_NAME,SCREEN_NAME_CLASS);
     }
 }

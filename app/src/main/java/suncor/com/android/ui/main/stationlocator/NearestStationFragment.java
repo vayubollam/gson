@@ -49,6 +49,7 @@ public class NearestStationFragment extends MainActivityFragment implements OnBa
 
     private static final int REQUEST_CHECK_SETTINGS = 100;
     private static final int PERMISSION_REQUEST_CODE = 1;
+    private static final String SCREEN_CLASS_NAME = "NearestStationFragment";
     private FragmentNearestStationBinding binding;
     private ObservableBoolean isLoading = new ObservableBoolean(true);
 
@@ -109,7 +110,7 @@ public class NearestStationFragment extends MainActivityFragment implements OnBa
 
         isLoading.set(true);
         binding.setIsLoading(isLoading);
-        NearestStationAnalytics.logLoadingScreenName(requireActivity());
+        NearestStationAnalytics.logScreenNameClass(requireContext(),NearestStationAnalytics.SCREEN_NAME_NEAREST_STATION_LOADING,SCREEN_CLASS_NAME);
 
         //Setup nearest card click listeners
         nearestCard.getRoot().setOnClickListener(showCardDetail);
@@ -329,7 +330,7 @@ public class NearestStationFragment extends MainActivityFragment implements OnBa
     @Override
     public void onResume() {
         super.onResume();
-        NearestStationAnalytics.logNearestStationScreenName(requireActivity());
+        NearestStationAnalytics.logScreenNameClass(requireContext(),NearestStationAnalytics.SCREEN_NAME_NEAREST_STATION,SCREEN_CLASS_NAME);
     }
 
     @Override

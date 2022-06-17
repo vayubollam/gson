@@ -1,6 +1,5 @@
 package suncor.com.android.analytics.pap
 
-import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import suncor.com.android.analytics.BaseAnalytics
@@ -11,8 +10,8 @@ import suncor.com.android.analytics.Errors
 private const val FORM_NAME_PAP = "Pay at Pump"
 
 object ReceiptAnalytics : BaseAnalytics() {
-    private const val SCREEN_NAME = "pay-at-pump-receipt"
-    private const val SCREEN_NAME_LOADING = "pay-at-pump-receipt-loading"
+    const val SCREEN_NAME = "pay-at-pump-receipt"
+    const val SCREEN_NAME_LOADING = "pay-at-pump-receipt-loading"
     private const val BUTTON_TEXT_SHARE_RECEIPT = "Share receipt"
     private const val BUTTON_TEXT_VIEW_RECEIPT =  "View Receipt"
 
@@ -24,15 +23,6 @@ object ReceiptAnalytics : BaseAnalytics() {
         const val PAYMENT_METHOD = "paymentMethod"
     }
 
-    @JvmStatic
-    fun logScreenName(activity: Activity) {
-        logScreenNameClass(activity, screenName = SCREEN_NAME)
-    }
-
-    @JvmStatic
-    fun logLoadingScreenName(activity: Activity) {
-        logScreenNameClass(activity, screenName = SCREEN_NAME_LOADING)
-    }
 
     @JvmStatic
     fun logPaymentComplete(context: Context, paymentMethod: String) {
@@ -58,24 +48,15 @@ object ReceiptAnalytics : BaseAnalytics() {
 }
 
 object SelectPumpAnalytics : BaseAnalytics(){
-    private const val SCREEN_NAME = "pay-at-pump-select-pump"
-    private const val SCREEN_NAME_LOADING = "pay-at-pump-select-pump-loading"
-    private const val SCREEN_NAME_SELECT_PUMP_HELP = "pay-at-pump-select-pump-help"
+    const val SCREEN_NAME = "pay-at-pump-select-pump"
+    const val SCREEN_NAME_LOADING = "pay-at-pump-select-pump-loading"
+    const val SCREEN_NAME_SELECT_PUMP_HELP = "pay-at-pump-select-pump-help"
     private const val FORM_NAME_PAP = "Pay at Pump"
     private const val INFO_TEXT_SELECT_PUMP = "select pump number info"
     private const val ALERT_TITLE_APP_PAY_NOT_AVAILABLE = "In-app payment unavailable(You can\\’t use your app to pay at this station.)"
     private const val ALERT_SELECTION_CANCEL = "Cancel"
 
 
-    @JvmStatic
-    fun logScreenName(activity: Activity) {
-        logScreenNameClass(activity, screenName = SCREEN_NAME)
-    }
-
-    @JvmStatic
-    fun logLoadingScreenName(activity: Activity) {
-        logScreenNameClass(activity, screenName = SCREEN_NAME_LOADING)
-    }
 
     @JvmStatic
     fun logFormStart(context: Context) {
@@ -101,16 +82,13 @@ object SelectPumpAnalytics : BaseAnalytics(){
         )
     }
 
-    @JvmStatic
-    fun logSelectPumpHelpScreenName(activity: Activity) {
-        logScreenNameClass(activity, screenName = SCREEN_NAME_SELECT_PUMP_HELP)
-    }
+
 }
 
 object FuelUpAnalytics: BaseAnalytics(){
     private const val INFO_TEXT_SELECT_PUMP = "select pump number info"
-    private const val SCREEN_NAME_PAP_PRE_AUTH_LOADING = "pay-at-pump-preauthorize-loading"
-   private const val SCREEN_NAME_PAP_PRE_AUTH = "pay-at-pump-preauthorize"
+    const val SCREEN_NAME_PAP_PRE_AUTH_LOADING = "pay-at-pump-preauthorize-loading"
+    const val SCREEN_NAME_PAP_PRE_AUTH = "pay-at-pump-preauthorize"
 
 
     @JvmStatic
@@ -120,20 +98,6 @@ object FuelUpAnalytics: BaseAnalytics(){
         logEvent(context,BaseEvents.INFO_TAP,bundle)
     }
 
-    @JvmStatic
-    fun logPAPreAuthScreenName(activity: Activity) {
-        logScreenNameClass(activity, screenName = SCREEN_NAME_PAP_PRE_AUTH)
-    }
-
-    @JvmStatic
-    fun logPAPreAuthLoadingScreenName(activity: Activity) {
-        logScreenNameClass(activity, screenName = SCREEN_NAME_PAP_PRE_AUTH_LOADING)
-    }
-
-    @JvmStatic
-    fun logPapPreAuthLoadingScreenName(activity: Activity) {
-        logScreenNameClass(activity, screenName = SCREEN_NAME_PAP_PRE_AUTH_LOADING)
-    }
 
     @JvmStatic
     fun logPumpSelectionFormStep(context: Context, pumpNumber: String) {
@@ -222,45 +186,15 @@ object FuelUpAnalytics: BaseAnalytics(){
 
 object FuellingAnalytics : BaseAnalytics(){
     private const val BUTTON_TEXT_CANCEL = "Cancel"
-    private const val SCREEN_NAME_PAP_AUTH_LOADING = "pay-at-pump-fuelling-authorizing-loading"
-    private const val SCREEN_NAME_PAP_AUTHORIZING =  "pay-at-pump-fuelling-authorizing"
-    private const val SCREEN_NAME_PAP_FUELING_WILL_BEGIN = "pay-at-pump-fuelling-will-begin"
-    private const val SCREEN_NAME_PAP_FUELING_HAS_BEGUN =  "pay-at-pump-fuelling-has-begun"
-    private const val SCREEN_NAME_PAP_FUELING_CANCELLED = "pay-at-pump-fuelling-transaction-cancelled"
-    private const val SCREEN_NAME_PAP_FUELING_ALMOST_COMPLETE = "pay-at-pump-fuelling-almost-complete"
+    const val SCREEN_NAME_PAP_AUTH_LOADING = "pay-at-pump-fuelling-authorizing-loading"
+    const val SCREEN_NAME_PAP_AUTHORIZING =  "pay-at-pump-fuelling-authorizing"
+    const val SCREEN_NAME_PAP_FUELING_WILL_BEGIN = "pay-at-pump-fuelling-will-begin"
+    const val SCREEN_NAME_PAP_FUELING_HAS_BEGUN =  "pay-at-pump-fuelling-has-begun"
+    const val SCREEN_NAME_PAP_FUELING_CANCELLED = "pay-at-pump-fuelling-transaction-cancelled"
+    const val SCREEN_NAME_PAP_FUELING_ALMOST_COMPLETE = "pay-at-pump-fuelling-almost-complete"
     private const val PAP_FUELING_COMPLETE = "Fuelling Complete"
 
 
-
-    @JvmStatic
-    fun logPapAuthLoadingScreenName(activity: Activity) {
-        logScreenNameClass(activity, screenName = SCREEN_NAME_PAP_AUTH_LOADING)
-    }
-
-    @JvmStatic
-    fun logPapAuthScreenName(activity: Activity) {
-        logScreenNameClass(activity, screenName = SCREEN_NAME_PAP_AUTHORIZING)
-    }
-
-    @JvmStatic
-    fun logPapWillBeginScreenName(activity: Activity) {
-        logScreenNameClass(activity, screenName = SCREEN_NAME_PAP_FUELING_WILL_BEGIN)
-    }
-
-    @JvmStatic
-    fun logPapHasBegunScreenName(activity: Activity) {
-        logScreenNameClass(activity, screenName = SCREEN_NAME_PAP_FUELING_HAS_BEGUN)
-    }
-
-    @JvmStatic
-    fun logPapTransactionCancelScreenName(activity: Activity) {
-        logScreenNameClass(activity, screenName = SCREEN_NAME_PAP_FUELING_CANCELLED)
-    }
-
-    @JvmStatic
-    fun logPapAlmostComplete(activity: Activity) {
-        logScreenNameClass(activity, screenName = SCREEN_NAME_PAP_FUELING_ALMOST_COMPLETE)
-    }
 
     @JvmStatic
     fun logCancelButtonTap(context: Context) {

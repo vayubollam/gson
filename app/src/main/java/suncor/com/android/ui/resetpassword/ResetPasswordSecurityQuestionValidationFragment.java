@@ -77,6 +77,7 @@ public class ResetPasswordSecurityQuestionValidationFragment extends BaseFragmen
                         }), "Reset Password Security Question Validation").show();
                     } else {
                         Alerts.prepareGeneralErrorDialogWithTryAgain(getContext(), (dialog, which) -> {
+                            // TODO: 2022-05-04 log alert_interaction
                             viewModel.validateAndContinue();
                             dialog.dismiss();
                         }, "Reset Password Security Question Validation").show();

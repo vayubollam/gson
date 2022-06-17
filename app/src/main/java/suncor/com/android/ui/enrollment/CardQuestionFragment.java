@@ -35,6 +35,7 @@ import suncor.com.android.R;
 import suncor.com.android.analytics.enrollment.CardQuestionsAnalytics;
 import suncor.com.android.databinding.FragmentCardQuestionBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
+import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.BaseFragment;
 import suncor.com.android.ui.enrollment.form.SecurityQuestionViewModel;
@@ -44,6 +45,7 @@ import suncor.com.android.utilities.Constants;
 
 public class CardQuestionFragment extends BaseFragment {
 
+    private static final String SCREE_CLASS_NAME = "CardQuestionFragment";
     private AppCompatImageView cardImg, cardShadow;
     private SecurityQuestionViewModel securityQuestionViewModel;
     private FragmentCardQuestionBinding binding;
@@ -141,7 +143,7 @@ public class CardQuestionFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        CardQuestionsAnalytics.logScreenName(requireActivity());
+        CardQuestionsAnalytics.logScreenNameClass(requireActivity(), CardQuestionsAnalytics.SCREEN_NAME_SIGNUP_ACTIVATE, SCREE_CLASS_NAME);
     }
 
     private void animateCard() {

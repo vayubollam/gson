@@ -3,6 +3,9 @@ package suncor.com.android.ui.main.stationlocator;
 import static android.Manifest.permission;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
+import static suncor.com.android.analytics.stationlocator.StationLocatorAnalyticsKt.FORM_NAME_GAS_STATION_LOCATIONS;
+import static suncor.com.android.analytics.stationlocator.StationsAnalytics.SCREEN_NAME_LOCATION_FILTER;
+
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
@@ -81,6 +84,8 @@ public class StationsFragment extends BottomNavigationFragment implements Google
 
     private static final int PERMISSION_REQUEST_CODE = 124;
     private static final int REQUEST_CHECK_SETTINGS = 125;
+    private static final String SCREEN_CLASS_NAME = "StationsFragment";
+
     static String filtersListString = "";
     @Inject
     PermissionManager permissionManager;
@@ -376,7 +381,8 @@ public class StationsFragment extends BottomNavigationFragment implements Google
             binding.addressSearchText.setText(text);
 
             if(!analyticsIsClearingText) {
-                StationsAnalytics.logFilterLocationScreenName(requireActivity());
+                StationsAnalytics.logScreenNameClass(requireActivity(),SCREEN_NAME_LOCATION_FILTER
+                        ,this.getClass().getSimpleName());
                 StationsAnalytics.logFiltersApplied(requireContext(), text, filtersListString);
             }
             analyticsIsClearingText = false;
@@ -473,7 +479,7 @@ public class StationsFragment extends BottomNavigationFragment implements Google
         binding.bottomSheet.requestLayout();
         if (result.status == Resource.Status.LOADING) {
             isLoading.set(true);
-            StationsAnalytics.logLoadingGasStationScreenName(requireActivity());
+            StationsAnalytics.logScreenNameClass(requireContext(),StationsAnalytics.SCREEN_NAME_LOCATION_LOADING,SCREEN_CLASS_NAME);
             isErrorCardVisible.set(false);
         } else {
             isLoading.set(false);
@@ -691,6 +697,7 @@ public class StationsFragment extends BottomNavigationFragment implements Google
             ModalDialog dialog = new ModalDialog();
             dialog.setTitle(getString(R.string.login_prompt_title))
                     .setMessage(getString(R.string.login_prompt_message))
+                    .setFormName(FORM_NAME_GAS_STATION_LOCATIONS)
                     .setRightButton(getString(R.string.sign_in), (v) -> {
                         startActivity(new Intent(requireContext(), LoginActivity.class));
                         dialog.dismiss();

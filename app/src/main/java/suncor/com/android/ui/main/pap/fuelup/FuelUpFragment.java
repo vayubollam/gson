@@ -85,6 +85,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
 
     // Arbitrarily-picked constant integer you define to track a request for payment data activity.
     private static final int LOAD_PAYMENT_DATA_REQUEST_CODE = 991;
+    private static final String SCREEN_CLASS_NAME = "FuelUpFragment";
     private final NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.getDefault());
 
     private FragmentFuelUpBinding binding;
@@ -202,7 +203,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
 
         viewModel.getActiveSession().observe(getViewLifecycleOwner(), result->{
             if (result.status == Resource.Status.LOADING) {
-                FuelUpAnalytics.logPAPreAuthLoadingScreenName(requireActivity());
+                FuelUpAnalytics.logScreenNameClass(requireContext(), FuelUpAnalytics.SCREEN_NAME_PAP_PRE_AUTH_LOADING,SCREEN_CLASS_NAME);
             } else if (result.status == Resource.Status.ERROR) {
                 Alerts.prepareGeneralErrorDialog(getContext(), PAY_AT_PUMP).show();
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
@@ -379,7 +380,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                 viewModel.payByWalletRequest(storeId, Integer.parseInt(pumpNumber), preAuthPrices, Integer.parseInt(userPaymentId), kountSessionId).observe(getViewLifecycleOwner(), result -> {
                     if (result.status == Resource.Status.LOADING) {
                         isLoading.set(true);
-                        FuelUpAnalytics.logPapPreAuthLoadingScreenName(requireActivity());
+                        FuelUpAnalytics.logScreenNameClass(requireContext(), FuelUpAnalytics.SCREEN_NAME_PAP_PRE_AUTH_LOADING,SCREEN_CLASS_NAME);
                     } else if (result.status == Resource.Status.ERROR) {
                         isLoading.set(false);
                         handleAuthorizationFail(result.message);
@@ -488,7 +489,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
     @Override
     public void onResume() {
         super.onResume();
-        FuelUpAnalytics.logPAPreAuthScreenName(requireActivity());
+        FuelUpAnalytics.logScreenNameClass(requireContext(),FuelUpAnalytics.SCREEN_NAME_PAP_PRE_AUTH,this.getClass().getSimpleName());
     }
 
     private void requestPayByGooglePay(String paymentToken) throws ParseException {
@@ -497,7 +498,8 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         viewModel.payByGooglePayRequest(storeId, Integer.parseInt(pumpNumber), preAuthPrices, paymentToken, kountSessionId).observe(getViewLifecycleOwner(), result -> {
             if (result.status == Resource.Status.LOADING) {
                 isLoading.set(true);
-                FuelUpAnalytics.logPAPreAuthLoadingScreenName(requireActivity());
+                FuelUpAnalytics.logScreenNameClass(requireContext(), FuelUpAnalytics.SCREEN_NAME_PAP_PRE_AUTH_LOADING,SCREEN_CLASS_NAME);
+
             } else if (result.status == Resource.Status.ERROR) {
                 isLoading.set(false);
                 handleAuthorizationFail(result.message);

@@ -6,11 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+
 import suncor.com.android.R;
+import suncor.com.android.analytics.BaseAnalytics;
 import suncor.com.android.databinding.ModalDialogBinding;
 
 public class ModalDialog extends BottomSheetDialogFragment {
@@ -18,6 +20,8 @@ public class ModalDialog extends BottomSheetDialogFragment {
     private ModalDialogBinding binding;
     private CharSequence title;
     private CharSequence message;
+    private String formName;
+    private String analyticsTitle;
     private CharSequence rightButtonText;
     private View.OnClickListener rightButtonListener;
     private CharSequence centerButtonText;
@@ -41,12 +45,19 @@ public class ModalDialog extends BottomSheetDialogFragment {
         binding.rightButton.setOnClickListener(rightButtonListener);
         binding.centerButton.setText(centerButtonText);
         binding.centerButton.setOnClickListener(centerButtonListener);
+        analyticsTitle = title+"("+message+")";
         if (!TextUtils.isEmpty(leftButtonText)) {
             binding.leftButton.setVisibility(View.VISIBLE);
             binding.leftButton.setText(leftButtonText);
             binding.leftButton.setOnClickListener(leftButtonListener);
         }
         return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        if(formName!=null) BaseAnalytics.logAlertDialogShown(requireContext(), analyticsTitle,formName);
     }
 
     public ModalDialog setTitle(CharSequence title) {
@@ -57,6 +68,15 @@ public class ModalDialog extends BottomSheetDialogFragment {
     public ModalDialog setMessage(CharSequence message) {
         this.message = message;
         return this;
+    }
+
+    public ModalDialog setFormName(String formName) {
+        this.formName = formName;
+        return this;
+    }
+
+    public String getAnalyticsTitle() {
+        return analyticsTitle;
     }
 
     public ModalDialog setRightButton(CharSequence buttonText, View.OnClickListener clickListener) {
