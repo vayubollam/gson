@@ -22,7 +22,6 @@ import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentTutorialBinding;
 import suncor.com.android.databinding.TutorialScreenListitemBinding;
 import suncor.com.android.ui.SplashActivity;
-import suncor.com.android.ui.common.BaseFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
 
 public class TutorialFragment extends Fragment {
@@ -61,7 +60,7 @@ public class TutorialFragment extends Fragment {
 
     private List<TutorialContent> setUpTutorialSlides(String uriPrefix) {
         List<TutorialContent> tutorialContents = new ArrayList<>();
-        tutorialContents.add(new TutorialContent(getString(R.string.tutorial_silde_page4_header), uriPrefix + R.raw.tutorial_4));
+        tutorialContents.add(new TutorialContent(getString(R.string.tutorial_silde_page4_header), uriPrefix + R.raw.dollar_off_tutorial));
       //  tutorialContents.add(new TutorialContent(getString(R.string.tutorial_silde_page1_header), uriPrefix + R.raw.tutorial_1));
       //  tutorialContents.add(new TutorialContent(getString(R.string.tutorial_silde_page2_header), uriPrefix + R.raw.tutorial_2));
        // tutorialContents.add(new TutorialContent(getString(R.string.tutorial_silde_page3_header), uriPrefix + R.raw.tutorial_3));
