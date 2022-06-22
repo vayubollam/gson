@@ -17,12 +17,12 @@ public class CardDetail {
     private int unitsRemaining = INVALID_BALANCE;
     private int daysRemaining = INVALID_BALANCE;
     private int vacuumRemaining = INVALID_BALANCE;
-    private boolean canWash;
-    private boolean canVacuum;
+    private Boolean canWash=true;
+    private Boolean canVacuum=true;
     private String lastWashStoreId;
     private String lastVacuumSiteId;
-    private boolean washInProgress;
-    private boolean vacuumInProgress;
+    private Boolean washInProgress=false;
+    private Boolean vacuumInProgress=false;
     private String  lastWashDt;
     private String  lastVacuumDt;
     private boolean timerInProgress=false;
@@ -190,35 +190,35 @@ public class CardDetail {
         this.vacuumRemaining = vacuumRemaining;
     }
 
-    public boolean isCanWash() {
+    public Boolean getCanWash() {
         return canWash;
     }
 
-    public void setCanWash(boolean canWash) {
+    public void setCanWash(Boolean canWash) {
         this.canWash = canWash;
     }
 
-    public boolean isCanVacuum() {
+    public Boolean getCanVacuum() {
         return canVacuum;
     }
 
-    public void setCanVacuum(boolean canVacuum) {
+    public void setCanVacuum(Boolean canVacuum) {
         this.canVacuum = canVacuum;
     }
 
-    public boolean isWashInProgress() {
+    public Boolean getWashInProgress() {
         return washInProgress;
     }
 
-    public void setWashInProgress(boolean washInProgress) {
+    public void setWashInProgress(Boolean washInProgress) {
         this.washInProgress = washInProgress;
     }
 
-    public boolean isVacuumInProgress() {
+    public Boolean getVacuumInProgress() {
         return vacuumInProgress;
     }
 
-    public void setVacuumInProgress(boolean vacuumInProgress) {
+    public void setVacuumInProgress(Boolean vacuumInProgress) {
         this.vacuumInProgress = vacuumInProgress;
     }
 

@@ -36,11 +36,13 @@ public class CardDetailsViewModel extends ViewModel {
     private final CardsRepository cardsRepository;
     private MediatorLiveData<List<CardDetail>> _cards = new MediatorLiveData<>();
     LiveData<List<CardDetail>> cards = _cards;
-    private MediatorLiveData<CardDetail> _cardsDetails = new MediatorLiveData<>();
-    LiveData<CardDetail> cardDetail = _cardsDetails;
+    private MediatorLiveData<Resource<CardDetail>> _cardsDetails = new MediatorLiveData<>();
+    LiveData<Resource<CardDetail>> cardDetail = _cardsDetails;
     private CardsLoadType loadType;
     private Set<String> redeemedTicketNumbers;
     private MutableLiveData<Boolean> isCarWashBalanceZero = new MutableLiveData<>();
+    private MutableLiveData<Boolean> isInitialCall = new MutableLiveData<>();
+    private MutableLiveData<Integer> clickedCardIndex = new MutableLiveData<>();
     private String newlyAddedCardNumber;
     private final SettingsApi settingsApi;
     final int interval = 360000;
@@ -106,6 +108,13 @@ public class CardDetailsViewModel extends ViewModel {
         return loadType;
     }
 
+    public void setClickedCardIndex(int clickedCardIndex) {
+        this.clickedCardIndex.setValue(clickedCardIndex);
+    }
+
+    public int getClickedCardIndex() {
+       return clickedCardIndex.getValue();
+    }
     public void setRedeemedTicketNumbers(Set<String> redeemedTicketNumbers) {
         this.redeemedTicketNumbers = redeemedTicketNumbers;
     }
@@ -202,34 +211,20 @@ public class CardDetailsViewModel extends ViewModel {
         return settingsApi.retrieveSettings();
     }
 
-    public void refreshCards() {
-        _cards.addSource(cardsRepository.getCards(true), result -> {
-            if (result.status == Resource.Status.SUCCESS) {
-                _cards.setValue(result.data);
-                updateCarWashBalance(_cards.getValue());
-            }
-        });
-    }
-
-    protected void setRecurringService(String cardNumber, CardType cardType) {
+    protected void setRecurringService(String cardNumber, CardType cardType,boolean initCall) {
+        isInitialCall.postValue(initCall);
         runnableCode = new Runnable() {
             @Override
             public void run() {
-                String cardString = cardNumber.replaceAll("\\s", "");
                 Timber.d("UPDATE-CARD-CALLED-Timer-Method");
-                if (cardType == CardType.SP) {
-                    _cardsDetails.addSource(cardsRepository.getSPCardDetails(cardString), result -> {
-                        if (result.status == Resource.Status.SUCCESS) {
-                            _cardsDetails.setValue(result.data);
-                        }
-                    });
-                } else if (cardType == CardType.WAG) {
-                    _cardsDetails.addSource(cardsRepository.getWAGCardDetails(cardString), result -> {
-                        if (result.status == Resource.Status.SUCCESS) {
-                            _cardsDetails.setValue(result.data);
-                        }
-                    });
+                if (isInitialCall.getValue()){
+                    isInitialCall.postValue(false);
+                } else
+                {
+                    getRecurringServiceData(cardNumber,cardType);
                 }
+
+
                 Timber.d("--SERVICE STARTED--");
                 handler.postDelayed(this, interval);
             }
@@ -244,4 +239,35 @@ public class CardDetailsViewModel extends ViewModel {
             Timber.d("--SERVICE STOPPED--");
         }
     }
+
+    public LiveData<Resource<CardDetail>> getRecurringServiceData(String cardNumber, CardType cardType) {
+        String cardString = cardNumber.replaceAll("\\s", "");
+        if (cardType == CardType.SP) {
+            _cardsDetails.addSource(cardsRepository.getSPCardDetails(cardString), result -> {
+                if (result.status==Resource.Status.LOADING){
+                    _cardsDetails.setValue(result);
+                }
+                else if (result.status==Resource.Status.ERROR){
+                    _cardsDetails.setValue(result);
+                }
+                else if (result.status == Resource.Status.SUCCESS) {
+                    _cardsDetails.setValue(result);
+                }
+            });
+        } else if (cardType == CardType.WAG) {
+            _cardsDetails.addSource(cardsRepository.getWAGCardDetails(cardString), result -> {
+                if (result.status==Resource.Status.LOADING){
+                    _cardsDetails.setValue(result);
+                }
+                else if (result.status==Resource.Status.ERROR){
+                    _cardsDetails.setValue(result);
+                }
+                else if (result.status == Resource.Status.SUCCESS) {
+                    _cardsDetails.setValue(result);
+                }
+            });
+        }
+        return _cardsDetails;
+    }
+
 }
