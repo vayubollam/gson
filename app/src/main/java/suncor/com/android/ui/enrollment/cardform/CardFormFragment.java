@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -125,7 +126,35 @@ public class CardFormFragment extends BaseFragment {
                                 dialog.dismiss();
                             })
                             .show(getFragmentManager(), ModalDialog.TAG);
-                }else {
+                } else if (cardStatusResource.message.equalsIgnoreCase(ErrorCodes.ERR_MAX_ATTEMPT_BLOCK_CARD_ERROR_CODE)) {
+
+                    ModalDialog dialog = new ModalDialog();
+                    dialog.setCancelable(false);
+                    // dialog.setTitle(getString(R.string.cards_add_fragment_invalid_card_title))
+                    dialog.setMessage(getString(R.string.enrollment_cardform_max_attempts_block_card_dialog_message))
+                            .setRightButton(getString(R.string.verify_your_email_address_call_us), (v) -> {
+                                callCostumerSupport(getString(R.string.customer_support_number));
+                                dialog.dismiss();
+                            })
+                            .setCenterButton(getString(R.string.sign_enable_fb_negative_button), (v) -> {
+                                dialog.dismiss();
+                            })
+                            .show(getFragmentManager(), ModalDialog.TAG);
+                } else if (cardStatusResource.message.equalsIgnoreCase(ErrorCodes.ERR_MAX_REGISTER_BLOCK_CARD_ERROR_CODE)) {
+
+                    ModalDialog dialog = new ModalDialog();
+                    dialog.setCancelable(false);
+                    // dialog.setTitle(getString(R.string.cards_add_fragment_invalid_card_title))
+                    dialog.setMessage(getString(R.string.enrollment_cardform_max_register_block_card_dialog_message))
+                            .setRightButton(getString(R.string.verify_your_email_address_call_us), (v) -> {
+                                callCostumerSupport(getString(R.string.customer_support_number));
+                                dialog.dismiss();
+                            })
+                            .setCenterButton(getString(R.string.sign_enable_fb_negative_button), (v) -> {
+                                dialog.dismiss();
+                            })
+                            .show(getFragmentManager(), ModalDialog.TAG);
+                } else {
                     Dialog dialog = Alerts.prepareGeneralErrorDialog(getContext(), ACTIVATE_PETRO_POINTS_SIGN_UP);
 
                     dialog.show();

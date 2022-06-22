@@ -155,6 +155,8 @@
     <string name="msg_sl005_button">VEUILLEZ ESSAYER DE NOUVEAU</string>
     <string name="msg_sl003">Les suggestions d\'adresse ne sont pas disponibles a ce moment.</string>
     <string name="enrollment_cardform_invalid_card_dialog_title">Carte invalide</string>
+    <string name="enrollment_cardform_max_register_block_card_dialog_message">Vous avez atteint le nombre maximum de cartes Petro-Canada enregistrées</string>
+    <string name="enrollment_cardform_max_attempts_block_card_dialog_message">Vous avez atteint le nombre maximum d\'essais.Réessayez dans 12 heures</string>
     <string name="enrollment_cardform_invalid_card_dialog_message">Le numéro de la carte Petro-Points, le code postal ou le nom sont incorrects.</string>
     <string name="enrollment_cardform_invalid_card_dialog_try_again">Essayez de nouveau</string>
     <string name="enrollment_cardform_invalid_card_dialog_callus">Nous joindre</string>

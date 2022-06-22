@@ -25,6 +25,8 @@ public class ErrorCodes {
     public static final String ERR_PUBWEB_SERVICE_ERROR_CODE = "SUNCOR014";
     public static final String ERR_PASSWORD_DUPLICATED = "SUNCOR015";
     public static final String ERR_INVALID_CARD_ERROR_CODE = "SUNCOR016";
+    public static final String ERR_MAX_ATTEMPT_BLOCK_CARD_ERROR_CODE = "SUNCOR203";
+    public static final String ERR_MAX_REGISTER_BLOCK_CARD_ERROR_CODE = "SUNCOR202";
     public static final String ERR_ACCOUNT_ALREDY_REGISTERED_ERROR_CODE = "SUNCOR017";
     public static final String ERR_USER_INFO_NOT_MATCHED = "SUNCOR018";
 
