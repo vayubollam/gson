@@ -112,6 +112,7 @@ public class SessionManager implements SessionChangeListener {
         if (challengeHandler == null) {
             throw new IllegalStateException("Security Challenge Handler not initialized, did you forget to call setChallengeHandler()");
         }
+        name = name.replaceAll("\\s", "");
         loginObservable = new MutableLiveData<>();
         loginOngoing = true;
         JSONObject credentials = new JSONObject();
