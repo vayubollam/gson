@@ -81,10 +81,10 @@ public class CardsDetailsAdapter extends RecyclerView.Adapter<CardsDetailsAdapte
     public void updateVacuumToggle(boolean vacuumToggle){
       isVacuumEnabled.set(vacuumToggle);
     }
-    public void replaceItem(ExpandedCardItem card, final int pos) {
-        cardItems.remove(pos);
-        cardItems.add(pos,card);
 
+    public void updateCardItems(ExpandedCardItem card, final int pos) {
+        cardItems.remove(pos);
+        cardItems.add(pos, card);
         notifyItemChanged(pos);
         notifyDataSetChanged();
     }

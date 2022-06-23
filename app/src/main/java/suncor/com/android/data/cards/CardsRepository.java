@@ -130,6 +130,15 @@ public class CardsRepository {
             return result;
         });
     }
+
+    public LiveData<Resource<CardDetail>> getWAGCardDetails(String cardNumber){
+        return Transformations.map(cardsApi.retrieveWAGCardDetail(cardNumber), result -> {
+            if (result.status == Resource.Status.SUCCESS) {
+                Timber.d("WAG CARD DETAILS:"+result.data);
+            }
+            return result;
+        });
+    }
     public LiveData<Resource<Station>> getStoreDetails(String storeId){
         return Transformations.map(cardsApi.retrieveStoreDetails(storeId), result -> {
             if (result.status == Resource.Status.SUCCESS) {

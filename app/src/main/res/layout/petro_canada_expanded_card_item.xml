@@ -13,9 +13,6 @@
         <variable
             name="isVacuumEnable"
             type="androidx.databinding.ObservableBoolean" />
-        <variable
-            name="cardDetailViewModel"
-            type="suncor.com.android.ui.main.wallet.cards.details.CardDetailsViewModel" />
     </data>
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
@@ -401,7 +398,7 @@
                     android:alpha="@{card.washBalanceZero?0.5f:1.0f}"
                     android:background="@drawable/round_icon_grey"
                     android:padding="10dp"
-                    android:src="@{((card.cardType == CardType.SP)&amp;&amp;(card.isWashInProgress()||!card.isCanWash()))?@drawable/ic_local_car_wash_black:@drawable/ic_wash_car}" />
+                    android:src="@{(card.isWashInProgress()||!card.isCanWash())?@drawable/ic_local_car_wash_black:@drawable/ic_wash_car}" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -436,7 +433,7 @@
                     android:alpha="@{card.vacuumZero?0.5f:1.0f}"
                     android:background="@drawable/round_icon_grey"
                     android:padding="10dp"
-                    android:src="@{((card.cardType == CardType.SP)&amp;&amp;(card.isVacuumInProgress()||!card.isCanVacuum()))?@drawable/ic_local_vacuum_black:@drawable/ic_vacuum}"
+                    android:src="@{(card.isVacuumInProgress()||!card.isCanVacuum())?@drawable/ic_local_vacuum_black:@drawable/ic_vacuum}"
                     />
 
                 <TextView

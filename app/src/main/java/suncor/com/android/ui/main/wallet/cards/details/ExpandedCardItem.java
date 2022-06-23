@@ -43,16 +43,18 @@ public class ExpandedCardItem {
     private boolean vacuumInProgress;
     private String  lastWashDt;
     private String  lastVacuumDt;
+    private boolean timer;
 
     public ExpandedCardItem(Context context, CardDetail cardDetail) {
         this.cardDetail = cardDetail;
         this.cardType = cardDetail.getCardType();
         this.cardCategory = cardDetail.getCardCategory();
         this.vacuumRemaining = cardDetail.getVacuumRemaining();
-        this.vacuumInProgress=cardDetail.isVacuumInProgress();
-        this.washInProgress= cardDetail.isWashInProgress();
-        this.canVacuum=cardDetail.isCanVacuum();
-        this.canWash=cardDetail.isCanWash();
+        this.vacuumInProgress = cardDetail.getVacuumInProgress();
+        this.washInProgress = cardDetail.getWashInProgress();
+        this.canVacuum = cardDetail.getCanVacuum();
+        this.canWash = cardDetail.getCanWash();
+        this.timer = cardDetail.isTimerInProgress();
         if (cardDetail.getCardCategory() == CardDetail.CardCategory.PARTNER) {
             balance = context.getString(R.string.cards_partners_balance_template, context.getString(R.string.cards_partners_balance_value));
             isBalanceDetailsVisible = false;
@@ -327,5 +329,13 @@ public class ExpandedCardItem {
 
     public void setLastVacuumDt(String lastVacuumDt) {
         this.lastVacuumDt = lastVacuumDt;
+    }
+
+    public boolean isTimer() {
+        return timer;
+    }
+
+    public void setTimer(boolean timer) {
+        this.timer = timer;
     }
 }

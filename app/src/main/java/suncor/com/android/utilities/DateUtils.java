@@ -139,7 +139,7 @@ public class DateUtils {
         Date date;
         String newString = null;
         try {
-            date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(inputDate);
+            date = new SimpleDateFormat("yyy-MM-dd'T'HH:mm:ss").parse(inputDate);
             newString = new SimpleDateFormat("hh:mm aa").format(date); // eg 12:00 pm
         } catch (ParseException e) {
             e.printStackTrace();
