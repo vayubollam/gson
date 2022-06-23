@@ -79,7 +79,7 @@ public class MerchantsApiImpl implements MerchantsApi {
         MutableLiveData<Resource<MemberEligibilityResponse>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
-            URI adapterPath = new URI("/adapters/suncor/v1/rfmp-secure/get-member-eligibility");
+            URI adapterPath = new URI("/adapters/suncor/v1/rfmp-secure/membereligible");
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.PROTECTED_SCOPE);
 
             request.send( new WLResponseListener() {
