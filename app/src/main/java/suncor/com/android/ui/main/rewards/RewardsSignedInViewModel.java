@@ -15,11 +15,13 @@ import suncor.com.android.data.redeem.MerchantsRepository;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.merchants.Merchant;
+import suncor.com.android.model.redeem.response.MemberEligibilityResponse;
 import suncor.com.android.ui.common.Event;
 import suncor.com.android.ui.common.cards.CardFormatUtils;
 
 public class RewardsSignedInViewModel extends ViewModel {
 
+    private final MerchantsRepository repository;
     public LiveData<Resource<ArrayList<Merchant>>> merchantsMutableLiveData;
     private MutableLiveData<Event> _navigateToDiscovery = new MutableLiveData<>();
     public LiveData<Event> navigateToDiscovery = _navigateToDiscovery;
@@ -34,6 +36,7 @@ public class RewardsSignedInViewModel extends ViewModel {
     public RewardsSignedInViewModel(SessionManager sessionManager, RewardsReader rewardsReader, MerchantsRepository merchantsRepository) {
         rewards = rewardsReader.getRewards();
         this.sessionManager = sessionManager;
+        this.repository  = merchantsRepository;
         merchantsMutableLiveData = merchantsRepository.getMerchants();
         merchantsMutableLiveData.observeForever(merchantsResource -> {
             if (merchantsResource.status == Resource.Status.SUCCESS) {
@@ -91,5 +94,9 @@ public class RewardsSignedInViewModel extends ViewModel {
 
     public void navigateToDiscoveryScreen() {
         _navigateToDiscovery.postValue(Event.newEvent(true));
+    }
+
+    public LiveData<Resource<MemberEligibilityResponse>> getMemberEligibility() {
+       return repository.getMemberEligibility();
     }
 }
