@@ -71,6 +71,38 @@ public class MerchantsApiImpl implements MerchantsApi {
 
         return result;
     }
+
+    @Override
+    public LiveData<Resource<MemberEligibilityResponse>> getMemberEligibility() {
+        Timber.d("request to get member eligibility made");
+        MutableLiveData<Resource<MemberEligibilityResponse>> result = new MutableLiveData<>();
+        result.postValue(Resource.loading());
+        try {
+            URI adapterPath = new URI("/adapters/suncor/v1/rfmp-secure/membereligible");
+            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.PROTECTED_SCOPE);
+
+            request.send( new WLResponseListener() {
+                @Override
+                public void onSuccess(WLResponse wlResponse) {
+                    String jsonText = wlResponse.getResponseText();
+                    Timber.d("Member Eligibility api call success, response:\n" + jsonText);
+                    MemberEligibilityResponse response = gson.fromJson(jsonText, MemberEligibilityResponse.class);
+                    result.postValue(Resource.success(response));
+                }
+
+                @Override
+                public void onFailure(WLFailResponse wlFailResponse) {
+                    Timber.d("Member Eligibility api call failed, " + wlFailResponse.toString());
+                    Timber.e(wlFailResponse.toString());
+                    result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
+                }
+            });
+        } catch (URISyntaxException e) {
+            Timber.e(e.toString());
+            result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
+        }
+        return result;
+    }
 }
 
 
