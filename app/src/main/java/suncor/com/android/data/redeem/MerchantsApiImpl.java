@@ -19,6 +19,7 @@ import suncor.com.android.SuncorApplication;
 import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.merchants.Merchant;
+import suncor.com.android.model.redeem.response.MemberEligibilityResponse;
 import suncor.com.android.utilities.Timber;
 
 public class MerchantsApiImpl implements MerchantsApi {
@@ -78,7 +79,7 @@ public class MerchantsApiImpl implements MerchantsApi {
         MutableLiveData<Resource<MemberEligibilityResponse>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
-            URI adapterPath = new URI("/adapters/suncor/v1/rfmp-secure/membereligible");
+            URI adapterPath = new URI("/adapters/suncor/v1/rfmp-secure/get-member-eligibility");
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.PROTECTED_SCOPE);
 
             request.send( new WLResponseListener() {
@@ -101,6 +102,7 @@ public class MerchantsApiImpl implements MerchantsApi {
             Timber.e(e.toString());
             result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
         }
+
         return result;
     }
 }
