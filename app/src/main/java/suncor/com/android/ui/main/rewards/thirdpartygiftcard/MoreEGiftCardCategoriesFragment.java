@@ -97,8 +97,6 @@ public class MoreEGiftCardCategoriesFragment extends MainActivityFragment implem
                 Navigation.findNavController(requireView()).navigate(action);
             }
         }
-
-
     }
 
     @Override

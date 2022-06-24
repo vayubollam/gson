@@ -92,4 +92,5 @@ public class RewardsSignedInViewModel extends ViewModel {
     public void navigateToDiscoveryScreen() {
         _navigateToDiscovery.postValue(Event.newEvent(true));
     }
+
 }

@@ -498,7 +498,9 @@
     <string name="password_change_re_login_alert_title">Signed out</string>
     <string name="pawword_change_re_login_alert_body">You may have changed your sign in details recently. Please sign in again to continue.</string>
     <string name="rewards_e_gift_card_starting_points">From 10,000 points</string>
+    <string name="donate_petro_points_starting_points">From 1,000 points</string>
     <string name="rewards_egift_card_subtitle">eGift card</string>
+    <string name="donate_petro_points_subtitle">Our Petro‑Points members have donated over 220 million Petro‑Points!</string>
     <string name="merchant_winners">WINNERS, Marshalls and HomeSense</string>
     <string name="merchant_dining_card">The Ultimate Dining</string>
     <string name="merchant_petrocanada_card">Petro-Canada</string>
@@ -509,6 +511,7 @@
     <string name="merchant_cineplex">Cineplex</string>
     <string name="merchant_Hudson_bay">Hudson\'s Bay</string>
     <string name="merchant_more_egift_card">More eGift cards</string>
+    <string name="donate_petro_points_card">Donate Petro-Points</string>
 
     <string name="rewards_signedin_how_to_redeem_merchants_title">How to redeem</string>
     <string name="rewards_signedin_how_to_redeem_merchants_description">Choose a value, confirm redemption and get the eGift card in your email.</string>

@@ -27,9 +27,7 @@ public class MainViewModel extends ViewModel {
         sessionManager.getLoginState().observeForever((loginState -> {
             if (loginState == SessionManager.LoginState.LOGGED_IN) {
                 Timber.d("start retrieving merchants");
-                merchantsRepository.getMerchants().observeForever(arrayListResource -> {
 
-                });
             } else if (loginState == SessionManager.LoginState.LOGGED_OUT) {
                 userLoggedOut.postValue(Event.newEvent(true));
             }
