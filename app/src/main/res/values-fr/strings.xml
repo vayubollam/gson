@@ -858,4 +858,8 @@
     <string name="account_deletion_submitted">Soumettre</string>
     <string name="different_reason">Une autre raison : </string>
 
+    <!--- Start PubWeb or OPE Down Error -->
+    <string name="suncor039_error_title">Ce n’est pas vous, c’est nous.</string>
+    <string name="suncor039_error_message">Quelque chose a mal tourné, mais nous travaillons à trouver une solution. Veuillez réessayer plus tard.</string>
+    <!--- End PubWeb or OPE Down Error -->
 </resources>

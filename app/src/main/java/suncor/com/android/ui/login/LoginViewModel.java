@@ -113,6 +113,14 @@ public class LoginViewModel extends ViewModel {
                     case PASSWORD_RESET:
                         createPasswordEvent.postValue(Event.newEvent(response.getAdditionalData()));
                         break;
+                    case SERVER_FAILURE:
+                        LoginFailResponse serverResponse = new LoginFailResponse(
+                                R.string.suncor039_error_title,
+                                new ErrorMessage(R.string.suncor039_error_message),
+                                R.string.ok
+                        );
+                        loginFailedEvent.postValue(Event.newEvent(serverResponse));
+                        break;
                 }
 
             } else if (result.status == Resource.Status.ERROR) {
