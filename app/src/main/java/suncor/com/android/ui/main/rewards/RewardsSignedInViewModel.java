@@ -99,4 +99,5 @@ public class RewardsSignedInViewModel extends ViewModel {
     public LiveData<Resource<MemberEligibilityResponse>> getMemberEligibility() {
        return repository.getMemberEligibility();
     }
+
 }
