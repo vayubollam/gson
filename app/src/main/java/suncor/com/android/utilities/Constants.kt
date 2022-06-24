@@ -149,4 +149,21 @@ object Constants {
     const val MY_PETRO_POINTS_ACCOUNT_NAVIGATION_LIST = "My petro points Account Navigation List"
     const val ANSWER_SECURITY_QUESTION= "Answer security question"
     const val GPAY_ANALYTICS = "GPay"
+
+    //static data of gift cards
+    const val DONATE_IMAGE_SMALL = "donate_petro_points_small"
+    const val DONATE_IMAGE_LARGE = "donate_petro_points_large"
+    const val DONATE_SCREEN_NAME = "donate_petro_points"
+    const val DONATE_SHORT_NAME = "DPC"
+    const val MORE_GIFT_CARD_IMAGE_SMALL = "more_e_gift_card_small"
+    const val MORE_GIFT_CARD_IMAGE_LARGE = "more_e_gift_card_large"
+    const val MORE_GIFT_CARD_SCREEN_NAME = "more_e_gift_card"
+    const val MORE_GIFT_CARD_SHORT_NAME = "MGC"
+
+    const val E_GIFT_CARD= "egift-cards"
+
+    const val GROUP_MERCHANTS = "Merchants"
+    const val GROUP_REWARDS = "Rewards"
+    const val GROUP_MORE = "More"
+    const val GROUP_DONATE = "Donate"
 }
