@@ -423,7 +423,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
                     } else if (cardDetail.getBalance() <= 0) {
                         CardsUtil.showOtherCardAvailableAlert(getContext());
                     } else if (cardDetail.isSuspendedCard()) {
-                        CardsUtil.ShowSuspendedCardAlertForActivateWash(getContext());
+                        CardsUtil.ShowSuspendedCardAlertForActivateWash(getContext(),Constants.TYPE_WASH);
                     } else if (cardDetail.getWashInProgress()) {
                         CardsUtil.showWashInprogressAlert(getContext());
                     } else if (!cardDetail.getCanWash() && cardDetail.getCardType() == CardType.SP) {
@@ -472,13 +472,15 @@ public class CardsDetailsFragment extends MainActivityFragment {
         } else {
             CardDetail cardDetail = cardsDetailsAdapter.getCardItems().get(clickedCardIndex.getValue()).getCardDetail();
             ExpandedCardItem cardItem = new ExpandedCardItem(getContext(), cardDetail);
-            if (!cardDetail.getCanVacuum() && cardDetail.getCardType() == CardType.SP) {
+            if (cardDetail.isSuspendedCard()) {
+                CardsUtil.ShowSuspendedCardAlertForActivateWash(getContext(),Constants.TYPE_VACUUM);
+            }
+           else if (!cardDetail.getCanVacuum() && cardDetail.getCardType() == CardType.SP) {
                 if (cardDetail.getLastVacuumSiteId() != null) {
                     showStoreAddressAlert(cardDetail.getLastVacuumSiteId(), Constants.TYPE_VACUUM, cardDetail.getLastVacuumDt());
                 }
-            } else if (!cardDetail.getCanVacuum() && cardDetail.getCardType() == CardType.WAG) {
-                // Do nothing for WAG
-            } else if (cardDetail.getVacuumInProgress()) {
+            }
+            else if (cardDetail.getVacuumInProgress()) {
                 CardsUtil.showVacuumInprogressAlert(getContext());
             } else {
                 CardsDetailsFragmentDirections.ActionCardsDetailsFragmentToVacuumBarcodeFragment

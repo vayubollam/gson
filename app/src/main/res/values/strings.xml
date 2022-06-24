@@ -787,7 +787,7 @@
     <string name="carwash_error_alert_copy">Suds! Something went wrong. Try again or contact the in-store attendant.</string>
     <string name="carwash_error_message">Suds! Something went wrong.</string>
     <string name="carwash_zero_error_alert_title">Can\’t activate wash</string>
-    <string name="carwash_zero_error_alert_message">This card is no longer valid. New cards can be purchased on our website or in-store.</string>
+    <string name="carwash_zero_error_alert_message">This card is no longer valid. Please go in-store or visit the website to purchase a new car wash card. </string>
     <string name="carwash_zero_error_alert_error_message">This card is no longer valid.</string>
     <string name="carwash_zero_alert_close">Cancel</string>
     <string name="carwash_zero_alert_buy">Visit web</string>
@@ -796,6 +796,8 @@
     <string name="carwash_security_code">car-wash-security-code</string>
     <string name="carwash_cards">Carwash Cards</string>
     <string name="car_wash_card_list">car-wash-card-list</string>
+    <string name="carwash_zero_vacuum_error_alert_title">Can\’t activate vacuum</string>
+    <string name="carwash_zero_vacuum_error_alert_message">This card is no longer valid. Please go in-store or visit the website to purchase a new car wash card.</string>
 
     <string name="carwash_daily_vacuum_used_alert">Daily vacuum used</string>
     <string name="carwash_daily_vacuum_used_message">Your vacuum for the day was used at %s at %s.</string>
