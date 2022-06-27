@@ -758,6 +758,10 @@
     <string name="reload_card_alert_visit_web">visiter le web</string>
     <string name="petro_canada_reload_url">https://www.petro-canada.ca/fr/personnel/mes-petro-points?modalUrl=%2Ffr%2Fpersonnel%2Fmes-petro-points%2Frecharger%2Frecharger-carte</string>
 
+    <!--vacuum reload -->
+    <string name="petro_vacuum_canada_reload_url">https://www.petro-canada.ca/fr/personnel/mes-petro-points?returnUrl=/fr/personnel/lave-auto</string>
+    https://www.petro-canada.ca/en/personal/car-wash
+
     <string name="select_value">Valeur</string>
     <string name="authorization_petropoints_balance">Vous commencez à %s points</string>
 

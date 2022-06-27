@@ -472,12 +472,12 @@ public class CardsDetailsFragment extends MainActivityFragment {
         } else {
             CardDetail cardDetail = cardsDetailsAdapter.getCardItems().get(clickedCardIndex.getValue()).getCardDetail();
             ExpandedCardItem cardItem = new ExpandedCardItem(getContext(), cardDetail);
-            if (!cardDetail.getCanVacuum() && cardDetail.getCardType() == CardType.SP) {
+            if (cardDetail.getVacuumRemaining() <= 0) {
+                CardsUtil.showZeroVacuumAlert(getContext());
+            } else if (!cardDetail.getCanVacuum() && cardDetail.getCardType() == CardType.SP) {
                 if (cardDetail.getLastVacuumSiteId() != null) {
                     showStoreAddressAlert(cardDetail.getLastVacuumSiteId(), Constants.TYPE_VACUUM, cardDetail.getLastVacuumDt());
                 }
-            } else if (!cardDetail.getCanVacuum() && cardDetail.getCardType() == CardType.WAG) {
-                // Do nothing for WAG
             } else if (cardDetail.getVacuumInProgress()) {
                 CardsUtil.showVacuumInprogressAlert(getContext());
             } else {

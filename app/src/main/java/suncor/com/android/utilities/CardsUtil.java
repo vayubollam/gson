@@ -92,6 +92,27 @@ public class CardsUtil {
         dialog.show();
     }
 
+    public static void showZeroVacuumAlert(Context context) {
+        Dialog dialog;
+        String analyticName = context.getString(R.string.zero_balance_alert_title)+"("+context.getString(R.string.zero_balance_alert_message)+")";
+        AnalyticsUtils.logEvent(context, AnalyticsUtils.Event._ALERT,
+                new Pair<>(AnalyticsUtils.Param.alertTitle, analyticName)
+        );
+        dialog = new AlertDialog.Builder(context)
+                .setTitle(R.string.zero_balance_vacuum_alert_title)
+                .setMessage(R.string.zero_balance_vacuum_alert_message)
+                .setPositiveButton(context.getResources().getString(R.string.reload_card_alert_visit_web), (dial, which) -> {
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.petro_vacuum_canada_reload_url)));
+                    context.startActivity(browserIntent);
+                }).setNegativeButton(context.getResources().getString(R.string.reload_card_alert_cancel), (dial, which) -> {
+                })
+                .setCancelable(false)
+                .create();
+
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+    }
+
     public static void showSuspendedCardAlert(Context context) {
         AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.error,
                 new Pair<>(AnalyticsUtils.Param.errorMessage,context.getString(R.string.carwash_zero_error_alert_error_message))
