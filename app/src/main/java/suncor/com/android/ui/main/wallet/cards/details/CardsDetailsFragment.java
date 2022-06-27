@@ -208,9 +208,10 @@ public class CardsDetailsFragment extends MainActivityFragment {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    clickedCardIndex.setValue(linearLayoutManager.findFirstCompletelyVisibleItemPosition());
-                    viewModel.setClickedCardIndex(clickedCardIndex.getValue());
+                try {
+                    if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                        clickedCardIndex.setValue(linearLayoutManager.findFirstCompletelyVisibleItemPosition());
+                        viewModel.setClickedCardIndex(clickedCardIndex.getValue());
 
                     if (viewModel.cardDetail.hasActiveObservers()) {
                         viewModel.cardDetail.removeObservers(getViewLifecycleOwner());
@@ -270,17 +271,20 @@ public class CardsDetailsFragment extends MainActivityFragment {
                         }
                     }
 
-                } else if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
-                    try {
-                        Timber.d("Drag-State");
-                        cardsDetailsAdapter.getCardItems().get(clickedCardIndex.getValue()).setTimer(false);
-                        viewModel.stopRecurringService();
-                        if (viewModel.cardDetail.hasActiveObservers()) {
-                            viewModel.cardDetail.removeObservers(getViewLifecycleOwner());
+                    } else if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+                        try {
+                            Timber.d("Drag-State");
+                            cardsDetailsAdapter.getCardItems().get(clickedCardIndex.getValue()).setTimer(false);
+                            viewModel.stopRecurringService();
+                            if (viewModel.cardDetail.hasActiveObservers()) {
+                                viewModel.cardDetail.removeObservers(getViewLifecycleOwner());
+                            }
+                        } catch (Exception e) {
+                            Timber.d("Drag-State-Exception");
                         }
-                    } catch (Exception e) {
-                        Timber.d("Drag-State-Exception");
                     }
+                } catch (Exception e) {
+                     Timber.d("Scroll State Exception");
                 }
             }
 
