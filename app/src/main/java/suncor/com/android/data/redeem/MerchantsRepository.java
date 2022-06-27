@@ -16,6 +16,7 @@ import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.merchants.EGift;
 import suncor.com.android.model.merchants.Merchant;
+import suncor.com.android.model.redeem.response.MemberEligibilityResponse;
 import suncor.com.android.utilities.Timber;
 
 @Singleton
@@ -27,7 +28,6 @@ public class MerchantsRepository {
     @Inject
     public MerchantsRepository(MerchantsApi merchantsApi, SessionManager sessionManager) {
         this.merchantsApi = merchantsApi;
-
     }
 
     public LiveData<Resource<ArrayList<Merchant>>> getMerchants() {
@@ -58,7 +58,7 @@ public class MerchantsRepository {
         });
     }
 
-    public LiveData<Resource<ArrayList<Merchant>>> getMerchantLiveData(){
+    public LiveData<Resource<ArrayList<Merchant>>> getMerchantLiveData() {
         return Transformations.map(merchantsApi.retrieveMerchants(), resource -> {
             if (resource.status == Resource.Status.SUCCESS) {
                 cachedMerchants = null;
@@ -70,7 +70,11 @@ public class MerchantsRepository {
 
             }
             return resource;
-    });
+        });
+    }
+
+    public LiveData<Resource<MemberEligibilityResponse>> getMemberEligibility(){
+        return merchantsApi.getMemberEligibility();
     }
 
 

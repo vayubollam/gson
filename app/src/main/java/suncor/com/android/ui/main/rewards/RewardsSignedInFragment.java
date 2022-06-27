@@ -49,6 +49,8 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
     private boolean scroll20 = false, scroll40 = false, scroll60 = false, scroll80 = false, scroll100 = false;
     private final ArrayList<GenericEGiftCard> eGiftCardsList = new ArrayList<>();
     private boolean systemMarginsAlreadyApplied;
+    private boolean isRedeemable;
+    private String petroPoints;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,9 +67,8 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        binding.loadingProgressLayout.setVisibility(View.VISIBLE);
         eGiftCardsList.add(0, getGIftCardAt( 0));
-
         viewModel.merchantsLiveData.observe(getViewLifecycleOwner(), merchants -> {
             if (merchants != null) {
                 for (Merchant m : merchants) {
@@ -96,6 +97,23 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
 
                 binding.rewardsList.setAdapter(new GenericGiftCardsAdapter(eGiftCardsList, this::eCardClicked));
 
+            }
+        });
+
+        viewModel.getMemberEligibility().observe(getViewLifecycleOwner(),response->{
+            switch (response.status){
+                case LOADING:
+                    break;
+                case SUCCESS:
+                    if(response.data != null){
+                        isRedeemable = response.data.getEligible();
+                        petroPoints = String.valueOf(response.data.getPointsBalance());
+                        binding.loadingProgressLayout.setVisibility(View.GONE);
+                    }
+                    break;
+                case ERROR:
+                    binding.loadingProgressLayout.setVisibility(View.GONE);
+                    break;
             }
         });
     }
