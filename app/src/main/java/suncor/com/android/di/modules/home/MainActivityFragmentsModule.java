@@ -13,6 +13,7 @@ import suncor.com.android.ui.main.profile.account.AccountDeleteNotesFragment;
 import suncor.com.android.ui.main.profile.account.AccountDeleteSubmitFragment;
 import suncor.com.android.ui.main.profile.account.AccountDetailsFragment;
 import suncor.com.android.ui.main.profile.account.AccountDeleteFragment;
+import suncor.com.android.ui.main.rewards.donate.DonatePetroPointsFragment;
 import suncor.com.android.ui.main.rewards.thirdpartygiftcard.MoreEGiftCardCategoriesFragment;
 import suncor.com.android.ui.main.stationlocator.NearestStationFragment;
 import suncor.com.android.ui.main.vacuum.VacuumBarcodeFragment;
@@ -200,5 +201,8 @@ abstract class MainActivityFragmentsModule {
 
     @ContributesAndroidInjector
     abstract AccountDeleteNotesFragment contributeAccountDeleteNotesFragment();
+
+    @ContributesAndroidInjector
+    abstract DonatePetroPointsFragment contributeDonatePetroPointsFragment();
 
 }
