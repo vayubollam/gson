@@ -94,10 +94,6 @@ public class CardsUtil {
 
     public static void showZeroVacuumAlert(Context context) {
         Dialog dialog;
-        String analyticName = context.getString(R.string.zero_balance_alert_title)+"("+context.getString(R.string.zero_balance_alert_message)+")";
-        AnalyticsUtils.logEvent(context, AnalyticsUtils.Event._ALERT,
-                new Pair<>(AnalyticsUtils.Param.alertTitle, analyticName)
-        );
         dialog = new AlertDialog.Builder(context)
                 .setTitle(R.string.zero_balance_vacuum_alert_title)
                 .setMessage(R.string.zero_balance_vacuum_alert_message)
