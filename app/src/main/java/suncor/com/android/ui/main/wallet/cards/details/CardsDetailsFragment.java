@@ -147,43 +147,44 @@ public class CardsDetailsFragment extends MainActivityFragment {
                 }
                 AnalyticsUtils.setCurrentScreenName(getActivity(), screenName);
             }
-        });
-        if (cardsDetailsAdapter != null) {
-            viewModel.getProgressDetails(cardsDetailsAdapter.getCardItems().get(viewModel.getClickedCardIndex()).getCardNumber(), cardsDetailsAdapter.getCardItems().get(viewModel.getClickedCardIndex()).getCardDetail().getCardType()).observe(getViewLifecycleOwner(), result -> {
-                Timber.d("UPDATE-CARD-CALLED-OnCreateView---INDEX" + clickedCardIndex.getValue() + "---" + cardsDetailsAdapter.getCardItems().get(clickedCardIndex.getValue()).getCardNumber());
-                if (result.status == Resource.Status.LOADING) {
-                    showAddCardProgress();
-                } else if (result.status == Resource.Status.ERROR) {
-                    hideAddCardProgress();
-                    Alerts.prepareGeneralErrorDialog(getContext(), AnalyticsUtils.getCardFormName()).show();
-                } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
-                    hideAddCardProgress();
-                    if ((result.data.getCanVacuum() != null) || (result.data.getCanWash() != null) || (result.data.getVacuumInProgress() != null) && (result.data.getWashInProgress() != null)) {
-                        if (result.data.getWashInProgress() || result.data.getVacuumInProgress() || !result.data.getCanWash() || !result.data.getCanVacuum()) {
-                            ExpandedCardItem updatedItem = new ExpandedCardItem(getContext(), result.data);
-                            CardDetail currentDetail = cardsDetailsAdapter.getCardItems().get(clickedCardIndex.getValue()).getCardDetail();
-                            CardDetail newCardDetail = result.data;
-                            Timber.d("current card :" + cardsDetailsAdapter.getCardItems().get(clickedCardIndex.getValue()).getCardNumber().replaceAll("\\s", "") + "index:" + clickedCardIndex.getValue() + "OnCreateViewProgress Call" + "New card :" + newCardDetail.getCardNumber());
-                            if ((currentDetail.getCanVacuum() != null && newCardDetail.getCanVacuum() != null) || (currentDetail.getCanWash() != null && newCardDetail.getCanWash() != null) || (currentDetail.getVacuumInProgress() != null && newCardDetail.getVacuumInProgress() != null) || (currentDetail.getWashInProgress() != null && newCardDetail.getWashInProgress() != null)) {
-                                if ((currentDetail.getCanVacuum() != newCardDetail.getCanVacuum()) || (currentDetail.getCanWash() != newCardDetail.getCanWash()) || (currentDetail.getVacuumInProgress() != newCardDetail.getVacuumInProgress()) || (currentDetail.getWashInProgress() != newCardDetail.getWashInProgress())) {
-                                    if (cardsDetailsAdapter.getCardItems().get(clickedCardIndex.getValue()).getCardNumber().replaceAll("\\s", "").equals(newCardDetail.getCardNumber().replaceAll("\\s", ""))) {
-                                        cardsDetailsAdapter.updateCardItems(updatedItem, clickedCardIndex.getValue());
-                                    }
-                                    if (cardsDetailsAdapter.getCardItems().get(clickedCardIndex.getValue()).getCardDetail().getVacuumInProgress() || cardsDetailsAdapter.getCardItems().get(clickedCardIndex.getValue()).isWashInProgress() || !cardsDetailsAdapter.getCardItems().get(clickedCardIndex.getValue()).isCanVacuum() || !cardsDetailsAdapter.getCardItems().get(clickedCardIndex.getValue()).isCanWash()) {
-                                        viewModel.setRecurringService(cardsDetailsAdapter.getCardItems().get(clickedCardIndex.getValue()).getCardNumber(), cardsDetailsAdapter.getCardItems().get(clickedCardIndex.getValue()).getCardType(), true);
-                                        cardsDetailsAdapter.getCardItems().get(clickedCardIndex.getValue()).setTimer(true);
-                                    } else {
-                                        cardsDetailsAdapter.getCardItems().get(clickedCardIndex.getValue()).setTimer(false);
-                                        viewModel.stopRecurringService();
+            if (cardsDetailsAdapter != null) {
+                viewModel.getProgressDetails(cardsDetailsAdapter.getCardItems().get(viewModel.getClickedCardIndex()).getCardNumber(), cardsDetailsAdapter.getCardItems().get(viewModel.getClickedCardIndex()).getCardDetail().getCardType()).observe(getViewLifecycleOwner(), result -> {
+                    Timber.d("UPDATE-CARD-CALLED-OnCreateView---INDEX" + clickedCardIndex.getValue() + "---" + cardsDetailsAdapter.getCardItems().get(clickedCardIndex.getValue()).getCardNumber());
+                    if (result.status == Resource.Status.LOADING) {
+                        showAddCardProgress();
+                    } else if (result.status == Resource.Status.ERROR) {
+                        hideAddCardProgress();
+                        Alerts.prepareGeneralErrorDialog(getContext(), AnalyticsUtils.getCardFormName()).show();
+                    } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
+                        hideAddCardProgress();
+                        if ((result.data.getCanVacuum() != null) || (result.data.getCanWash() != null) || (result.data.getVacuumInProgress() != null) && (result.data.getWashInProgress() != null)) {
+                            if (result.data.getWashInProgress() || result.data.getVacuumInProgress() || !result.data.getCanWash() || !result.data.getCanVacuum()) {
+                                ExpandedCardItem updatedItem = new ExpandedCardItem(getContext(), result.data);
+                                CardDetail currentDetail = cardsDetailsAdapter.getCardItems().get(clickedCardIndex.getValue()).getCardDetail();
+                                CardDetail newCardDetail = result.data;
+                                Timber.d("current card :" + cardsDetailsAdapter.getCardItems().get(clickedCardIndex.getValue()).getCardNumber().replaceAll("\\s", "") + "index:" + clickedCardIndex.getValue() + "OnCreateViewProgress Call" + "New card :" + newCardDetail.getCardNumber());
+                                if ((currentDetail.getCanVacuum() != null && newCardDetail.getCanVacuum() != null) || (currentDetail.getCanWash() != null && newCardDetail.getCanWash() != null) || (currentDetail.getVacuumInProgress() != null && newCardDetail.getVacuumInProgress() != null) || (currentDetail.getWashInProgress() != null && newCardDetail.getWashInProgress() != null)) {
+                                    if ((currentDetail.getCanVacuum() != newCardDetail.getCanVacuum()) || (currentDetail.getCanWash() != newCardDetail.getCanWash()) || (currentDetail.getVacuumInProgress() != newCardDetail.getVacuumInProgress()) || (currentDetail.getWashInProgress() != newCardDetail.getWashInProgress())) {
+                                        if (cardsDetailsAdapter.getCardItems().get(clickedCardIndex.getValue()).getCardNumber().replaceAll("\\s", "").equals(newCardDetail.getCardNumber().replaceAll("\\s", ""))) {
+                                            cardsDetailsAdapter.updateCardItems(updatedItem, clickedCardIndex.getValue());
+                                        }
+                                        if (cardsDetailsAdapter.getCardItems().get(clickedCardIndex.getValue()).getCardDetail().getVacuumInProgress() || cardsDetailsAdapter.getCardItems().get(clickedCardIndex.getValue()).isWashInProgress() || !cardsDetailsAdapter.getCardItems().get(clickedCardIndex.getValue()).isCanVacuum() || !cardsDetailsAdapter.getCardItems().get(clickedCardIndex.getValue()).isCanWash()) {
+                                            viewModel.setRecurringService(cardsDetailsAdapter.getCardItems().get(clickedCardIndex.getValue()).getCardNumber(), cardsDetailsAdapter.getCardItems().get(clickedCardIndex.getValue()).getCardType(), true);
+                                            cardsDetailsAdapter.getCardItems().get(clickedCardIndex.getValue()).setTimer(true);
+                                        } else {
+                                            cardsDetailsAdapter.getCardItems().get(clickedCardIndex.getValue()).setTimer(false);
+                                            viewModel.stopRecurringService();
+                                        }
                                     }
                                 }
-                            }
 
+                            }
                         }
                     }
-                }
-            });
-        }
+                });
+            }
+        });
+//
         viewModel.getSettings().observe(getViewLifecycleOwner(), result -> {
             if (result.status == Resource.Status.LOADING) {
             } else if (result.status == Resource.Status.ERROR) {
@@ -472,14 +473,15 @@ public class CardsDetailsFragment extends MainActivityFragment {
         } else {
             CardDetail cardDetail = cardsDetailsAdapter.getCardItems().get(clickedCardIndex.getValue()).getCardDetail();
             ExpandedCardItem cardItem = new ExpandedCardItem(getContext(), cardDetail);
-            if (!cardDetail.getCanVacuum() && cardDetail.getCardType() == CardType.SP) {
+            if (cardDetail.getVacuumInProgress()) {
+                CardsUtil.showVacuumInprogressAlert(getContext());
+            }
+           else if (!cardDetail.getCanVacuum() && cardDetail.getCardType() == CardType.SP) {
                 if (cardDetail.getLastVacuumSiteId() != null) {
                     showStoreAddressAlert(cardDetail.getLastVacuumSiteId(), Constants.TYPE_VACUUM, cardDetail.getLastVacuumDt());
                 }
             } else if (!cardDetail.getCanVacuum() && cardDetail.getCardType() == CardType.WAG) {
                 // Do nothing for WAG
-            } else if (cardDetail.getVacuumInProgress()) {
-                CardsUtil.showVacuumInprogressAlert(getContext());
             } else {
                 CardsDetailsFragmentDirections.ActionCardsDetailsFragmentToVacuumBarcodeFragment
                         action = CardsDetailsFragmentDirections.actionCardsDetailsFragmentToVacuumBarcodeFragment();
