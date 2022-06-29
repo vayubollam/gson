@@ -229,6 +229,7 @@
     <string name="enrollment_phone_field_invalid_format">Veuillez entrer un numéro de téléphone valide (p. ex., 514-123-4567)</string>
     <string name="cards_fsr_description">Notre carte Économie sur l\'essence en prime vous permet d\'économiser %d ¢ le litre sur 200 litres d\'essence.\n\u2014\nRechargez votre carte à petro-points.com.</string>
     <string name="cards_wag_description">À utiliser aux établissements avec lave-auto GlideWash ou SuperDoux participants.</string>
+    <string name="cards_wag_description_vacuum_expire">Votre utilisation de l\'aspirateur expire 7 jours après le lavage connecté.</string>
     <string name="cards_zero_balance_description">\u2014\nRechargez-la sur le site <a href="https://www.petro-canada.ca/fr/personnel/mes-petro-points?modalUrl=%2Ffr%2Fpersonnel%2Fmes-petro-points%2Frecharger%2Frecharger-carte">petro-canada.ca</a>.</string>
     <string name="cards_sp_description">Lavez votre voiture une fois par jour pendant 90 jours. À utiliser aux établissements avec lave-auto GlideWash ou SuperDoux participants.</string>
     <string name="cards_ppc_description">Économisez chaque fois que vous utilisez votre Carte Prix Préférentiel.</string>
