@@ -64,7 +64,32 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        binding.loadingProgressLayout.setVisibility(View.VISIBLE);
+        viewModel.eligibilityLiveData.observe(getViewLifecycleOwner(),data->{
+            if(data!=null){
+                isRedeemable = data.getEligible();
+                petroPoints = String.valueOf(data.getPointsBalance());
+            }
+        });
+
+//            viewModel.getMemberEligibility().observe(getViewLifecycleOwner(), response -> {
+//                switch (response.status) {
+//                    case LOADING:
+//                        binding.loadingProgressLayout.setVisibility(View.VISIBLE);
+//                        break;
+//                    case SUCCESS:
+//                        if (response.data != null) {
+//                            isRedeemable = response.data.getEligible();
+//                            petroPoints = String.valueOf(response.data.getPointsBalance());
+//                            binding.loadingProgressLayout.setVisibility(View.GONE);
+//                            isRedeemableAvailable=true;
+//                        }
+//                        break;
+//                    case ERROR:
+//                        binding.loadingProgressLayout.setVisibility(View.GONE);
+//                        break;
+//                }
+//            });
+
         viewModel.merchantsLiveData.observe(getViewLifecycleOwner(), merchants -> {
             if (merchants != null) {
                 for (Merchant m : merchants) {
@@ -109,22 +134,7 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
             }
         });
 
-        viewModel.getMemberEligibility().observe(getViewLifecycleOwner(),response->{
-            switch (response.status){
-                case LOADING:
-                    break;
-                case SUCCESS:
-                    if(response.data != null){
-                        isRedeemable = response.data.getEligible();
-                        petroPoints = String.valueOf(response.data.getPointsBalance());
-                        binding.loadingProgressLayout.setVisibility(View.GONE);
-                    }
-                    break;
-                case ERROR:
-                    binding.loadingProgressLayout.setVisibility(View.GONE);
-                    break;
-            }
-        });
+
     }
 
     @Nullable

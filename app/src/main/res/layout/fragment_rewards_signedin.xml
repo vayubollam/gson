@@ -190,7 +190,7 @@
             android:layout_height="match_parent"
             android:background="@color/white"
             android:clickable="true"
-            android:visibility="gone"
+            app:visibleGone="@{vm.memberEligibilityResponse.status==Status.LOADING}"
             tools:visibility="gone">
 
             <TextView

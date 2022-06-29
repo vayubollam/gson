@@ -32,6 +32,10 @@ public class RewardsSignedInViewModel extends ViewModel {
     private SessionManager sessionManager;
     private boolean isFirstTym = true;
 
+    public LiveData<Resource<MemberEligibilityResponse>> memberEligibilityResponse;
+    private MutableLiveData<MemberEligibilityResponse> _eligibilityLiveData = new MutableLiveData<>();
+    public LiveData<MemberEligibilityResponse> eligibilityLiveData = _eligibilityLiveData;
+
     @Inject
     public RewardsSignedInViewModel(SessionManager sessionManager, RewardsReader rewardsReader, MerchantsRepository merchantsRepository) {
         rewards = rewardsReader.getRewards();
@@ -44,6 +48,13 @@ public class RewardsSignedInViewModel extends ViewModel {
                 assert merchantsResource.data != null;
                 ArrayList<Merchant> validMerchants = filterValidMerchants(merchantsResource.data);
                 _merchantsLiveData.postValue(validMerchants);
+            }
+        });
+
+        memberEligibilityResponse = merchantsRepository.getMemberEligibility();
+        memberEligibilityResponse.observeForever(response->{
+            if(response.status == Resource.Status.SUCCESS){
+                _eligibilityLiveData.postValue(response.data);
             }
         });
     }
@@ -96,7 +107,4 @@ public class RewardsSignedInViewModel extends ViewModel {
         _navigateToDiscovery.postValue(Event.newEvent(true));
     }
 
-    public LiveData<Resource<MemberEligibilityResponse>> getMemberEligibility() {
-       return repository.getMemberEligibility();
-    }
 }
