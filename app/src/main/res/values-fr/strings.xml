@@ -609,8 +609,8 @@
     <string name="zero_balance_alert_view">Voir les détails</string>
     <string name="zero_balance_other_available_message">Votre carte semble vide. Ne vous inquiétez pas - vous avez d\'autres options dans votre compte.</string>
 
-    <string name="zero_balance_vacuum_alert_title">Vous n\'avez plus d\'utilisation de l'aspirateur</string>
-    <string name="zero_balance_vacuum_alert_message">On dirait que vous n\'avez plus d\'utilisation de l\'aspirateur gratuite.\nPas de soucis - Vous pouvez visiter le site Web pour ajouter plus de lavages et obtenir plus d'utilisations de l'aspirateur.</string>
+    <string name="zero_balance_vacuum_alert_title">Vous n\'avez plus d\'utilisation de l\'aspirateur</string>
+    <string name="zero_balance_vacuum_alert_message">On dirait que vous n\'avez plus d\'utilisation de l\'aspirateur gratuite.\nPas de soucis - Vous pouvez visiter le site Web pour ajouter plus de lavages et obtenir plus d\'utilisations de l\'aspirateur.</string>
 
     <string name="account_page_header">Compte</string>
 
