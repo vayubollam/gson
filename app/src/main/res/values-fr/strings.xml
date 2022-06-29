@@ -605,7 +605,7 @@
     <string name="zero_balance_alert_title">Votre carte est vide</string>
     <string name="zero_balance_alert_message">Votre carte semble vide. Rechargez-la sur le site petro-canada.ca ou obtenez une carte de lavage au dépanneur.</string>
     <string name="zero_balance_alert_close">Fermer</string>
-    <string name="zero_balance_alert_buy">Ac heter un lavage</string>
+    <string name="zero_balance_alert_buy">Acheter un lavage</string>
     <string name="zero_balance_alert_view">Voir les détails</string>
     <string name="zero_balance_other_available_message">Votre carte semble vide. Ne vous inquiétez pas - vous avez d\'autres options dans votre compte.</string>
 
