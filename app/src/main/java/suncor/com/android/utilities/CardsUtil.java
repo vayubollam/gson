@@ -121,7 +121,7 @@ public class CardsUtil {
         );
         AlertDialog alertWashDialog = new AlertDialog.Builder(context)
                 .setTitle(title)
-                .setMessage(R.string.carwash_zero_error_alert_message)
+                .setMessage(R.string.carwash_zero_vacuum_error_alert_message)
                 .setNegativeButton(R.string.carwash_zero_alert_close, (dialog, which) -> {
                     dialog.dismiss();
                 })

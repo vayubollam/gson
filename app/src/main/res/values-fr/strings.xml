@@ -777,6 +777,9 @@
     <string name="carwash_zero_alert_close">Annuler</string>
     <string name="carwash_zero_alert_buy">Visiter le site Web</string>
 
+    <string name="carwash_zero_vacuum_error_alert_title">Impossible d\'activer l'aspirateur</string>
+    <string name="carwash_zero_vacuum_error_alert_message">Cette carte n\'est plus valide. Veuillez vous rendre au dépanneur ou visiter le site Web pour acheter une nouvelle carte de lave-auto.</string>
+
     <string name="carwash_daily_vacuum_used_alert">Utilisation quotidienne de l\'aspirateur effectuée</string>
     <string name="carwash_daily_vacuum_used_message">Votre utilisation de l\'aspirateur pour la journée a été faite à %s à %s.</string>
     <string name="carwash_daily_wash_used_alert">Lavage quotidien utilisé</string>
