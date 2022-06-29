@@ -894,7 +894,7 @@
     <string name="different_reason">A different reason:</string>
 
     <!--- Start PubWeb or OPE Down Error -->
-    <string name="suncor039_error_title">It\'s not you, it\'s us.</string>
+    <string name="suncor039_error_title">It\'s not you, it\'s us</string>
     <string name="suncor039_error_message">Something went wrong but we\'re working on a solution. Please try again later.</string>
     <!--- End PubWeb or OPE Down Error -->
 </resources>
