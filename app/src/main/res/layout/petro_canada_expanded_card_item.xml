@@ -391,13 +391,14 @@
                 app:visibleGone="@{card.cardType == CardType.SP || card.cardType == CardType.WAG || card.cardType == CardType.ST}">
 
                 <ImageView
+                    android:id="@+id/imvWash"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_gravity="center"
                     android:alpha="@{card.washBalanceZero?0.5f:1.0f}"
                     android:background="@drawable/round_icon_grey"
                     android:padding="10dp"
-                    android:src="@drawable/ic_wash_car" />
+                    android:src="@{(card.isWashInProgress()||!card.isCanWash())?@drawable/ic_local_car_wash_black:@drawable/ic_wash_car}" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -425,13 +426,15 @@
                 app:visibleGone="@{isVacuumEnable &amp; (card.cardType == CardType.SP || card.cardType == CardType.WAG || card.cardType == CardType.ST)}">
 
                 <ImageView
+                    android:id="@+id/imvVacuum"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_gravity="center"
                     android:alpha="@{card.vacuumZero?0.5f:1.0f}"
                     android:background="@drawable/round_icon_grey"
                     android:padding="10dp"
-                    android:src="@drawable/ic_vacuum" />
+                    android:src="@{(card.isVacuumInProgress()||!card.isCanVacuum())?@drawable/ic_local_vacuum_black:@drawable/ic_vacuum}"
+                    />
 
                 <TextView
                     android:layout_width="wrap_content"

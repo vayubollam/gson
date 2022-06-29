@@ -18,12 +18,14 @@ import suncor.com.android.R
 import suncor.com.android.databinding.FragmentVacuumBarcodeBinding
 import suncor.com.android.ui.common.OnBackPressedListener
 import suncor.com.android.ui.main.common.MainActivityFragment
+import suncor.com.android.utilities.Constants
 import suncor.com.android.utilities.Timber
 
 class VacuumBarcodeFragment : MainActivityFragment(), OnBackPressedListener {
 
     private lateinit var binding: FragmentVacuumBarcodeBinding
     private lateinit var cardNumber: String
+    private  var clickedCardIndex:Int=0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +35,8 @@ class VacuumBarcodeFragment : MainActivityFragment(), OnBackPressedListener {
         binding = FragmentVacuumBarcodeBinding.inflate(inflater, container, false)
         binding.buttonClose.setOnClickListener(closeListener)
         cardNumber = VacuumBarcodeFragmentArgs.fromBundle(requireArguments()).cardNumber
+        clickedCardIndex=VacuumBarcodeFragmentArgs.fromBundle(requireArguments()).cardIndex
+        Timber.d("vacuumindex : "+clickedCardIndex)
         return binding.root
     }
 
@@ -91,6 +95,8 @@ class VacuumBarcodeFragment : MainActivityFragment(), OnBackPressedListener {
     }
 
     private fun goBack(reEnter: Boolean) {
+        Navigation.findNavController(requireView()).previousBackStackEntry
+            ?.savedStateHandle?.set<Int>(Constants.CLICKED_CARD_INDEX, clickedCardIndex)
         Navigation.findNavController(requireView()).popBackStack()
     }
 }
