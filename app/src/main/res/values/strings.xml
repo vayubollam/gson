@@ -632,7 +632,7 @@
 
      <!-- zero vacuum balance string-->
     <string name="zero_balance_vacuum_alert_title">You’re out of vacuums</string>
-    <string name="zero_balance_vacuum_alert_message">Looks like you’ve used up all your free vacuums.\n\nNo worries - You can visit the website to add more washes and get more vacuums.</string>
+    <string name="zero_balance_vacuum_alert_message">Looks like you’ve used up all your free vacuums.\nNo worries - You can visit the website to add more washes and get more vacuums.</string>
 
     <string name="account_page_header">Account</string>
 
