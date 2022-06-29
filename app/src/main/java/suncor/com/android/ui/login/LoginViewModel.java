@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
+import java.util.Objects;
 import javax.inject.Inject;
 
 import suncor.com.android.BR;
@@ -95,10 +96,17 @@ public class LoginViewModel extends ViewModel {
                         )));
                         break;
                     case OTHER_FAILURE:
-                        loginFailedEvent.postValue(Event.newEvent(new LoginFailResponse(
-                                R.string.msg_e001_title,
-                                new ErrorMessage(R.string.msg_e001_message)
-                        )));
+                        if (Objects.equals(result.message, "SUNCOR039")) {
+                            loginFailedEvent.postValue(Event.newEvent(new LoginFailResponse(
+                                    R.string.suncor039_error_title,
+                                    new ErrorMessage(R.string.suncor039_error_message)
+                            )));
+                        } else {
+                            loginFailedEvent.postValue(Event.newEvent(new LoginFailResponse(
+                                    R.string.msg_e001_title,
+                                    new ErrorMessage(R.string.msg_e001_message)
+                            )));
+                        }
                         break;
                     case UNEXPECTED_FAILURE:
                         LoginFailResponse failResponse = new LoginFailResponse(

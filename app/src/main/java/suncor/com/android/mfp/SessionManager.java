@@ -205,6 +205,9 @@ public class SessionManager implements SessionChangeListener {
                     Timber.w("Profile cannot be retrieved");
                     Timber.w(wlFailResponse.toString());
                     onError.accept(wlFailResponse);
+                    if(wlFailResponse.getErrorMsg().equals("SUNCOR039")) {
+                        loginObservable.postValue(Resource.success(SigninResponse.serverFailure()));
+                    }
                 }
             });
         } catch (URISyntaxException e) {
