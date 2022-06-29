@@ -798,7 +798,6 @@
     <string name="car_wash_card_list">car-wash-card-list</string>
 
     <string name="carwash_zero_vacuum_error_alert_title">Can\’t activate vacuum</string>
-    <string name="carwash_zero_vacuum_error_alert_message">This card is no longer valid. Please go in-store or visit the website to purchase a new car wash card.</string>
 
     <string name="carwash_daily_vacuum_used_alert">Daily vacuum used</string>
     <string name="carwash_daily_vacuum_used_message">Your vacuum for the day was used at %s at %s.</string>
