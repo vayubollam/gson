@@ -5,6 +5,7 @@ apply from: "./versionCode.gradle"
 apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'org.sonarqube'
 apply from: "../android-sonarqube.gradle"
+apply from: "$project.rootDir/jacoco.gradle"
 
 repositories {
     jcenter()
@@ -71,11 +72,13 @@ android {
             signingConfig signingConfigs.release
             minifyEnabled true
             shrinkResources true
+            testCoverageEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
             minifyEnabled true
             shrinkResources true
+            testCoverageEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
