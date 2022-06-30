@@ -23,7 +23,7 @@ android {
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
         versionCode getDate()
-        versionName "3.6.2"
+        versionName "3.7.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField "String", "GOOGLE_API_KEY", MAP_API_KEY
         resValue "string", "MAP_API_KEY", MAP_API_KEY
