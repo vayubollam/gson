@@ -126,6 +126,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="24dp"
+                            android:layout_marginEnd="16dp"
                             android:fontFamily="@font/gibson_semibold"
                             android:gravity="center"
                             android:text="I am donating"
@@ -136,20 +137,48 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
-                        <suncor.com.android.ui.common.LinkableTextView
-                            android:id="@+id/redeem_description"
-                            android:layout_width="match_parent"
+                        <ImageButton
+                            android:id="@+id/image_button_negative"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:gravity="start"
-                            android:lineSpacingMultiplier="1.63"
-                            android:paddingStart="16dp"
-                            android:paddingEnd="16dp"
-                            android:text="@{genericGiftCard.howToRedeem}"
-                            android:textAppearance="@style/Body"
-                            android:textColor="@color/black_60"
-                            app:layout_constraintTop_toBottomOf="@id/redeem_title"
-                            tools:text="Choose a value, confirm redemption and get the eGift card in your email." />
+                            android:layout_marginStart="24dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:srcCompat="@drawable/ic_add"
+                            app:layout_constraintTop_toTopOf="@+id/input_field"
+                            app:layout_constraintBottom_toBottomOf="@+id/input_field"
+                            />
+
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/input_field"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:background="@null"
+                            android:text=""
+                            tools:text="$0"
+                            android:layout_marginTop="24dp"
+                            android:gravity="center"
+                            app:layout_constraintTop_toBottomOf="@+id/redeem_title"
+                            app:layout_constraintStart_toEndOf="@+id/image_button_negative"
+                            app:layout_constraintEnd_toStartOf="@+id/image_button_positive"
+                            android:inputType="numberDecimal"
+                            android:textColor="@color/black_80"
+                            android:textSize="35sp"
+                            app:autoSizeTextType="uniform" />
+
+                        <ImageButton
+                            android:id="@+id/image_button_positive"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="24dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:srcCompat="@drawable/ic_add"
+                            app:layout_constraintTop_toTopOf="@+id/input_field"
+                            app:layout_constraintBottom_toBottomOf="@+id/input_field"
+                            />
+
+
+
 
 
                         <View
@@ -157,8 +186,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:layout_marginTop="@dimen/expanded_card_balance_margin"
-                            android:background="@drawable/horizontal_divider"
-                            app:layout_constraintTop_toBottomOf="@+id/redeem_description" />
+                            app:layout_constraintTop_toBottomOf="@+id/input_field"
+                            android:background="@drawable/horizontal_divider" />
 
 
                         <suncor.com.android.ui.common.LinkableTextView
@@ -177,14 +206,6 @@
                             app:layout_constraintTop_toBottomOf="@+id/divider_2"
                             tools:text="Donation of Petro-Points is not eligible for tax receipts." />
 
-                        <View
-                            android:id="@+id/divider4"
-                            android:layout_width="match_parent"
-                            android:layout_height="33dp"
-                            android:layout_marginTop="@dimen/action_menu_margin_12"
-                            android:background="@drawable/merchantshadow"
-                            android:visibility="visible"
-                            app:layout_constraintTop_toBottomOf="@id/redeeming_description" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.core.widget.NestedScrollView>
