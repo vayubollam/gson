@@ -28,6 +28,7 @@ import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentRewardsSignedinBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.merchants.Merchant;
+import suncor.com.android.model.redeem.response.MemberEligibilityResponse;
 import suncor.com.android.ui.main.BottomNavigationFragment;
 import suncor.com.android.ui.main.rewards.redeem.GenericEGiftCard;
 import suncor.com.android.utilities.AnalyticsUtils;
@@ -64,31 +65,14 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        viewModel.eligibilityLiveData.observe(getViewLifecycleOwner(),data->{
+
+        viewModel.getMemberEligibility().observe(getViewLifecycleOwner(),response->{
+            MemberEligibilityResponse data = response.data;
             if(data!=null){
                 isRedeemable = data.getEligible();
                 petroPoints = String.valueOf(data.getPointsBalance());
             }
         });
-
-//            viewModel.getMemberEligibility().observe(getViewLifecycleOwner(), response -> {
-//                switch (response.status) {
-//                    case LOADING:
-//                        binding.loadingProgressLayout.setVisibility(View.VISIBLE);
-//                        break;
-//                    case SUCCESS:
-//                        if (response.data != null) {
-//                            isRedeemable = response.data.getEligible();
-//                            petroPoints = String.valueOf(response.data.getPointsBalance());
-//                            binding.loadingProgressLayout.setVisibility(View.GONE);
-//                            isRedeemableAvailable=true;
-//                        }
-//                        break;
-//                    case ERROR:
-//                        binding.loadingProgressLayout.setVisibility(View.GONE);
-//                        break;
-//                }
-//            });
 
         viewModel.merchantsLiveData.observe(getViewLifecycleOwner(), merchants -> {
             if (merchants != null) {
@@ -130,7 +114,6 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
                 eGiftCardsList.add(3, eGiftCard);
 
                 binding.rewardsList.setAdapter(new GenericGiftCardsAdapter(eGiftCardsList, this::eCardClicked));
-
             }
         });
 

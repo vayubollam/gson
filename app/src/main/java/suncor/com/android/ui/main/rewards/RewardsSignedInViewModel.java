@@ -34,7 +34,7 @@ public class RewardsSignedInViewModel extends ViewModel {
 
     public LiveData<Resource<MemberEligibilityResponse>> memberEligibilityResponse;
     private MutableLiveData<MemberEligibilityResponse> _eligibilityLiveData = new MutableLiveData<>();
-    public LiveData<MemberEligibilityResponse> eligibilityLiveData = _eligibilityLiveData;
+
 
     @Inject
     public RewardsSignedInViewModel(SessionManager sessionManager, RewardsReader rewardsReader, MerchantsRepository merchantsRepository) {
@@ -51,12 +51,6 @@ public class RewardsSignedInViewModel extends ViewModel {
             }
         });
 
-        memberEligibilityResponse = merchantsRepository.getMemberEligibility();
-        memberEligibilityResponse.observeForever(response->{
-            if(response.status == Resource.Status.SUCCESS){
-                _eligibilityLiveData.postValue(response.data);
-            }
-        });
     }
 
     private ArrayList<Merchant> filterValidMerchants(ArrayList<Merchant> merchants) {
@@ -107,4 +101,8 @@ public class RewardsSignedInViewModel extends ViewModel {
         _navigateToDiscovery.postValue(Event.newEvent(true));
     }
 
+    public LiveData<Resource<MemberEligibilityResponse>> getMemberEligibility(){
+        memberEligibilityResponse =  repository.getMemberEligibility();
+       return memberEligibilityResponse;
+    }
 }
