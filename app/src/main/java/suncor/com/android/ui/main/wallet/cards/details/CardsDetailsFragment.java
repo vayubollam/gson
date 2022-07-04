@@ -147,7 +147,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
                 }
                 AnalyticsUtils.setCurrentScreenName(getActivity(), screenName);
             }
-            if (cardsDetailsAdapter != null) {
+            if (cardsDetailsAdapter != null &&(cardsDetailsAdapter.getCardItems().get(viewModel.getClickedCardIndex()).getCardDetail().getCardType()==CardType.SP||cardsDetailsAdapter.getCardItems().get(viewModel.getClickedCardIndex()).getCardDetail().getCardType()==CardType.WAG)) {
                 viewModel.getProgressDetails(cardsDetailsAdapter.getCardItems().get(viewModel.getClickedCardIndex()).getCardNumber(), cardsDetailsAdapter.getCardItems().get(viewModel.getClickedCardIndex()).getCardDetail().getCardType()).observe(getViewLifecycleOwner(), result -> {
                     Timber.d("UPDATE-CARD-CALLED-OnCreateView---INDEX" + clickedCardIndex.getValue() + "---" + cardsDetailsAdapter.getCardItems().get(clickedCardIndex.getValue()).getCardNumber());
                     if (result.status == Resource.Status.LOADING) {
