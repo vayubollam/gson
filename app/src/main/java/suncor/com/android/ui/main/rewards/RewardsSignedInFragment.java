@@ -67,7 +67,7 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        binding.loadingProgressLayout.setVisibility(View.VISIBLE);
+
         eGiftCardsList.add(0, getGIftCardAt( 0));
         viewModel.merchantsLiveData.observe(getViewLifecycleOwner(), merchants -> {
             if (merchants != null) {
@@ -97,23 +97,6 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
 
                 binding.rewardsList.setAdapter(new GenericGiftCardsAdapter(eGiftCardsList, this::eCardClicked));
 
-            }
-        });
-
-        viewModel.getMemberEligibility().observe(getViewLifecycleOwner(),response->{
-            switch (response.status){
-                case LOADING:
-                    break;
-                case SUCCESS:
-                    if(response.data != null){
-                        isRedeemable = response.data.getEligible();
-                        petroPoints = String.valueOf(response.data.getPointsBalance());
-                        binding.loadingProgressLayout.setVisibility(View.GONE);
-                    }
-                    break;
-                case ERROR:
-                    binding.loadingProgressLayout.setVisibility(View.GONE);
-                    break;
             }
         });
     }
@@ -324,8 +307,6 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
 
                 eGiftCardsList.add(giftCard);
             }
-
         }
-
     }
 }
