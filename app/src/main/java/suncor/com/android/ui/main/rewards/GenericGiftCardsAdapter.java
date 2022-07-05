@@ -4,12 +4,9 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import java.util.ArrayList;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import suncor.com.android.databinding.EgiftCardItemBinding;
 import suncor.com.android.databinding.RewardsListItemBinding;
 import suncor.com.android.ui.main.rewards.redeem.GenericEGiftCard;
@@ -19,15 +16,21 @@ import suncor.com.android.utilities.Consumer;
 public class GenericGiftCardsAdapter extends RecyclerView.Adapter< RecyclerView.ViewHolder> {
 
     private static Consumer<GenericEGiftCard> clickListener = null;
+    private static Consumer<GenericEGiftCard> clickListenerForFurtherUse = null;
     private ArrayList<GenericEGiftCard> genericEGiftCards;
 
     public static final int REWARDS_LAYOUT = 3;
     public static final int MERCHANT_LAYOUT= 4;
 
-    public GenericGiftCardsAdapter(ArrayList<GenericEGiftCard> genericEGiftCards, Consumer<GenericEGiftCard> clickListener) {
+    public static boolean isEligible;
+
+    public GenericGiftCardsAdapter(ArrayList<GenericEGiftCard> genericEGiftCards, Consumer<GenericEGiftCard> clickListener, boolean isEligible) {
         this.genericEGiftCards = genericEGiftCards;
         this.clickListener = clickListener;
+        this.clickListenerForFurtherUse = clickListener;
+        this.isEligible = isEligible;
     }
+
 
     @NonNull
     @Override
@@ -78,8 +81,8 @@ public class GenericGiftCardsAdapter extends RecyclerView.Adapter< RecyclerView.
             binding.cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(clickListener != null){
-                        clickListener.accept(giftCard);
+                    if(clickListenerForFurtherUse != null){
+                        clickListenerForFurtherUse.accept(giftCard);
                     }
                 }
             });
@@ -101,6 +104,18 @@ public class GenericGiftCardsAdapter extends RecyclerView.Adapter< RecyclerView.
             binding.setGiftCard(giftCard);
             binding.executePendingBindings();
 
+            if(!isEligible){
+                clickListener = null;
+                binding.constraintLayout.setDisabled(true);
+                binding.constraintLayout.setAlpha(0.5f);
+                binding.title.setAlpha(0.5f);
+                binding.redemptionUnavailableText.setVisibility(View.VISIBLE);
+            }else{
+                clickListener = clickListenerForFurtherUse;
+                binding.redemptionUnavailableText.setVisibility(View.GONE);
+
+            }
+
             binding.cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -110,6 +125,5 @@ public class GenericGiftCardsAdapter extends RecyclerView.Adapter< RecyclerView.
                 }
             });
         }
-
     }
 }

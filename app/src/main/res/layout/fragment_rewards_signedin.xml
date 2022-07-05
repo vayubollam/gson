@@ -7,6 +7,12 @@
 
         <import type="suncor.com.android.model.Resource.Status" />
 
+        <import type="suncor.com.android.ui.common.cards.CardFormatUtils" />
+
+        <variable
+            name="petroPoints"
+            type="androidx.databinding.ObservableInt" />
+
         <variable
             name="vm"
             type="suncor.com.android.ui.main.rewards.RewardsSignedInViewModel" />
@@ -67,7 +73,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:fontFamily="@font/gibson_semibold"
-                android:text="@{@string/rewards_signedin_header_balance(vm.petroPoints)}"
+                android:text="@{@string/rewards_signedin_header_balance(CardFormatUtils.formatBalance(petroPoints))}"
                 android:textAppearance="@style/Caption1.Red"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -137,7 +143,7 @@
                     android:shadowDx="2"
                     android:shadowDy="1"
                     android:shadowRadius="8"
-                    android:text="@{@string/rewards_signedin_petropoints_value(vm.petroPointsValue)}"
+                    android:text="@{@string/rewards_signedin_petropoints_value(petroPoints/1000)}"
                     android:textAppearance="@style/Body"
                     android:textColor="@color/white"
                     app:layout_constraintTop_toBottomOf="@id/balance_petropoints"
@@ -155,7 +161,7 @@
                     android:shadowDx="2"
                     android:shadowDy="1"
                     android:shadowRadius="8"
-                    android:text="@{@string/rewards_signedin_petropoints_balance(vm.petroPoints)}"
+                    android:text="@{@string/rewards_signedin_petropoints_balance(CardFormatUtils.formatBalance(petroPoints))}"
                     android:textAppearance="@style/Headline2"
                     android:textColor="@color/white"
                     app:layout_constraintTop_toTopOf="parent"

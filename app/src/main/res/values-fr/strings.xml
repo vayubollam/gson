@@ -850,4 +850,7 @@
     <string name="account_deletion_submitted">Soumettre</string>
     <string name="different_reason">Une autre raison : </string>
 
+    <!-- Gift cards -->
+    <string name="redemption_unavailable_text">Les échanges ne sont pas disponibles pour le moment</string>
+
 </resources>
