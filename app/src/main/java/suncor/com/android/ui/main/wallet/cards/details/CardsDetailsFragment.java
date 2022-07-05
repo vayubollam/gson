@@ -149,7 +149,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
             }
             if (cardsDetailsAdapter != null) {
                 CardType cardAdapterCardType = cardsDetailsAdapter.getCardItems().get(viewModel.getClickedCardIndex()).getCardDetail().getCardType();
-                if (cardAdapterCardType == CardType.SP && cardAdapterCardType == CardType.WAG) {
+                if (cardAdapterCardType == CardType.SP || cardAdapterCardType == CardType.WAG) {
                     viewModel.getProgressDetails(cardsDetailsAdapter.getCardItems().get(viewModel.getClickedCardIndex()).getCardNumber(), cardsDetailsAdapter.getCardItems().get(viewModel.getClickedCardIndex()).getCardDetail().getCardType()).observe(getViewLifecycleOwner(), result -> {
                         Timber.d("UPDATE-CARD-CALLED-OnCreateView---INDEX" + clickedCardIndex.getValue() + "---" + cardsDetailsAdapter.getCardItems().get(clickedCardIndex.getValue()).getCardNumber());
                         if (result.status == Resource.Status.LOADING) {
