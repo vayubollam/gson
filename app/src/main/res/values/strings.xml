@@ -885,4 +885,7 @@
     <string name="account_deletion_phone_field_required">This field is required!</string>
     <string name="account_deletion_submitted">Submitting</string>
     <string name="different_reason">A different reason:</string>
+
+    <!-- Gift cards -->
+    <string name="redemption_unavailable_text">Redemption is unavailable at this time</string>
 </resources>

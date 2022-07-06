@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
 import androidx.core.widget.NestedScrollView;
+import androidx.databinding.ObservableInt;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
@@ -27,11 +28,14 @@ import javax.inject.Inject;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentRewardsSignedinBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
+import suncor.com.android.model.Resource;
 import suncor.com.android.model.merchants.Merchant;
 import suncor.com.android.model.redeem.response.MemberEligibilityResponse;
 import suncor.com.android.ui.main.BottomNavigationFragment;
 import suncor.com.android.ui.main.rewards.redeem.GenericEGiftCard;
 import suncor.com.android.utilities.AnalyticsUtils;
+import suncor.com.android.utilities.Constants;
+import suncor.com.android.utilities.Timber;
 
 public class RewardsSignedInFragment extends BottomNavigationFragment {
 
@@ -48,7 +52,8 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
     private final ArrayList<GenericEGiftCard> eGiftCardsList = new ArrayList<>();
     private boolean systemMarginsAlreadyApplied;
     private boolean isRedeemable;
-    private String petroPoints;
+    public ObservableInt petroPointsBalance = new ObservableInt();
+    private GenericGiftCardsAdapter adapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,15 +70,6 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        viewModel.getMemberEligibility().observe(getViewLifecycleOwner(),response->{
-            MemberEligibilityResponse data = response.data;
-            if(data!=null){
-                isRedeemable = data.getEligible();
-                petroPoints = String.valueOf(data.getPointsBalance());
-            }
-        });
-
         viewModel.merchantsLiveData.observe(getViewLifecycleOwner(), merchants -> {
             if (merchants != null) {
                 for (Merchant m : merchants) {
@@ -97,26 +93,30 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
                     }
                 }
 
-                GenericEGiftCard eGiftCard = new GenericEGiftCard();
-                eGiftCard.setSmallImage("more_e_gift_card_small");
-                eGiftCard.setLargeImage("more_e_gift_card_large");
-                eGiftCard.setMoreGIftCard(true);
-                eGiftCard.setTitle(getResources().getString(R.string.merchant_more_egift_card));
-                eGiftCard.setPoints(getResources().getString(R.string.rewards_e_gift_card_starting_points));
-                eGiftCard.setSubtitle(getResources().getString(R.string.rewards_egift_card_subtitle));
-                eGiftCard.setHowToUse(getResources().getString(R.string.rewards_signedin_redeeming_your_rewards_desc_dining_card));
-                eGiftCard.setDataDynamic(true);
-                eGiftCard.setSubtitle(getResources().getString(R.string.rewards_egift_card_subtitle));
-                eGiftCard.seteGifts(null);
-                eGiftCard.setScreenName("more_gift_card");
-                eGiftCard.setShortName("More_gift_card");
-
-                eGiftCardsList.add(3, eGiftCard);
-
-                binding.rewardsList.setAdapter(new GenericGiftCardsAdapter(eGiftCardsList, this::eCardClicked));
+                eGiftCardsList.add(3, getGIftCardAt(3));
             }
         });
 
+        adapter = new GenericGiftCardsAdapter(eGiftCardsList, this::eCardClicked, isRedeemable);
+        binding.rewardsList.setAdapter(adapter);
+
+        viewModel.getMemberEligibility().observe(getViewLifecycleOwner(), response -> {
+            switch (response.status) {
+                case SUCCESS:
+                    MemberEligibilityResponse data = response.data;
+                    if (data != null) {
+                        isRedeemable = data.getEligible();
+                        petroPointsBalance.set(data.getPointsBalance());
+                        adapter.isEligible = isRedeemable;
+                        adapter.notifyDataSetChanged();
+                    }
+                    return;
+                case ERROR:
+                    adapter.isEligible = false;
+                    petroPointsBalance.set(viewModel.getSessionManager().getProfile().getPointsBalance());
+                    adapter.notifyDataSetChanged();
+            }
+        });
 
     }
 
@@ -126,6 +126,7 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
         binding = FragmentRewardsSignedinBinding.inflate(inflater, container, false);
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
+        binding.setPetroPoints(petroPointsBalance);
         mapRewardsListIntoGeneric(new ArrayList<>(Arrays.asList(viewModel.getRewards())));
         binding.rewardsList.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
 
@@ -246,24 +247,29 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
     }
 
     private void eCardClicked(GenericEGiftCard genericEGiftCard) {
-        if (genericEGiftCard.isDataDynamic()) {
-            if (genericEGiftCard.isMoreGIftCard()) {
-                String merchantList = gson.toJson(viewModel.getMerchantList());
-                RewardsSignedInFragmentDirections.ActionRewardsSignedinTabToMoreEGiftCardCategories action = RewardsSignedInFragmentDirections.actionRewardsSignedinTabToMoreEGiftCardCategories();
-                action.setMerchantList(merchantList);
-                NavDestination navDestination = Navigation.findNavController(requireView()).getCurrentDestination();
-                if (navDestination != null && navDestination.getId() == R.id.rewards_signedin_tab) {
+        try {
+            if (genericEGiftCard.isDataDynamic()) {
+                if (genericEGiftCard.isMoreGIftCard()) {
+                    String merchantList = gson.toJson(viewModel.getMerchantList());
+                    RewardsSignedInFragmentDirections.ActionRewardsSignedinTabToMoreEGiftCardCategories action = RewardsSignedInFragmentDirections.actionRewardsSignedinTabToMoreEGiftCardCategories();
+                    action.setMerchantList(merchantList);
+                    NavDestination navDestination = Navigation.findNavController(requireView()).getCurrentDestination();
+                    if (navDestination != null && navDestination.getId() == R.id.rewards_signedin_tab) {
+                        Navigation.findNavController(requireView()).navigate(action);
+                    }
+                } else {
+                    RewardsSignedInFragmentDirections.ActionRewardsSignedinTabToMerchantDetailsFragment action = RewardsSignedInFragmentDirections.actionRewardsSignedinTabToMerchantDetailsFragment(genericEGiftCard);
                     Navigation.findNavController(requireView()).navigate(action);
                 }
             } else {
-                RewardsSignedInFragmentDirections.ActionRewardsSignedinTabToMerchantDetailsFragment action = RewardsSignedInFragmentDirections.actionRewardsSignedinTabToMerchantDetailsFragment(genericEGiftCard);
+                RewardsSignedInFragmentDirections.ActionRewardsSignedinTabToRewardsDetailsFragment action = RewardsSignedInFragmentDirections.actionRewardsSignedinTabToRewardsDetailsFragment(genericEGiftCard);
                 Navigation.findNavController(requireView()).navigate(action);
-            }
-        } else {
-            RewardsSignedInFragmentDirections.ActionRewardsSignedinTabToRewardsDetailsFragment action = RewardsSignedInFragmentDirections.actionRewardsSignedinTabToRewardsDetailsFragment(genericEGiftCard);
-            Navigation.findNavController(requireView()).navigate(action);
 
+            }
+        } catch (Exception e) {
+            Timber.d(e);
         }
+
     }
 
     private void mapRewardsListIntoGeneric(ArrayList<Reward> rewardsList) {
@@ -271,7 +277,7 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
         eGiftCardsList.clear();
 
         for (Reward reward : rewardsList) {
-            if (!reward.getName().equals("egift-cards")) {
+            if (!reward.getName().equals(Constants.E_GIFT_CARD)) {
                 GenericEGiftCard giftCard = new GenericEGiftCard();
                 giftCard.setName(reward.getName());
                 giftCard.setPoints(reward.getPoints());
@@ -288,5 +294,28 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
 
         }
 
+    }
+
+    public GenericEGiftCard getGIftCardAt(int index) {
+        GenericEGiftCard eGiftCard = new GenericEGiftCard();
+
+        switch (index) {
+
+            case 3:
+                eGiftCard.setSmallImage(Constants.MORE_GIFT_CARD_IMAGE_SMALL);
+                eGiftCard.setLargeImage(Constants.MORE_GIFT_CARD_IMAGE_LARGE);
+                eGiftCard.setMoreGIftCard(true);
+                eGiftCard.setTitle(getResources().getString(R.string.merchant_more_egift_card));
+                eGiftCard.setPoints(getResources().getString(R.string.rewards_e_gift_card_starting_points));
+                eGiftCard.setSubtitle(getResources().getString(R.string.rewards_egift_card_subtitle));
+                eGiftCard.setHowToUse(getResources().getString(R.string.rewards_signedin_redeeming_your_rewards_desc_dining_card));
+                eGiftCard.setDataDynamic(true);
+                eGiftCard.seteGifts(null);
+                eGiftCard.setScreenName(Constants.MORE_GIFT_CARD_SCREEN_NAME);
+                eGiftCard.setShortName(Constants.MORE_GIFT_CARD_SHORT_NAME);
+                break;
+        }
+
+        return eGiftCard;
     }
 }

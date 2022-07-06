@@ -24,9 +24,27 @@
         app:cardElevation="2dp"
         app:cardPreventCornerOverlap="false">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <suncor.com.android.ui.main.rewards.ConstraintLayoutWithDisableSupport
+            android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/redemption_unavailable_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:visibility="gone"
+                android:background="#000">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:textColor="@color/white"
+                    android:text="@string/redemption_unavailable_text"/>
+            </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/points_condition"
@@ -39,7 +57,7 @@
                 android:textAppearance="@style/Caption1"
                 android:textColor="@color/black_60"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/redemption_unavailable_text"
                 android:text="@{giftCard.points}"
                 tools:text="@string/rewards_e_gift_card_starting_points" />
 
@@ -83,7 +101,7 @@
                 app:layout_constraintTop_toBottomOf="@id/subtitle"
                 tools:src="@drawable/banner_1_signin" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </suncor.com.android.ui.main.rewards.ConstraintLayoutWithDisableSupport>
 
     </com.google.android.material.card.MaterialCardView>
 </layout>
