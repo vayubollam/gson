@@ -187,7 +187,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
                 }
             }
         });
-//
+
         viewModel.getSettings().observe(getViewLifecycleOwner(), result -> {
             if (result.status == Resource.Status.LOADING) {
             } else if (result.status == Resource.Status.ERROR) {
@@ -213,8 +213,9 @@ public class CardsDetailsFragment extends MainActivityFragment {
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    clickedCardIndex.setValue(linearLayoutManager.findFirstCompletelyVisibleItemPosition());
-                    viewModel.setClickedCardIndex(clickedCardIndex.getValue());
+                    try {
+                        clickedCardIndex.setValue(linearLayoutManager.findFirstCompletelyVisibleItemPosition());
+                        viewModel.setClickedCardIndex(clickedCardIndex.getValue());
 
                     if (viewModel.cardDetail.hasActiveObservers()) {
                         viewModel.cardDetail.removeObservers(getViewLifecycleOwner());
@@ -265,15 +266,17 @@ public class CardsDetailsFragment extends MainActivityFragment {
                             });
 
 
-                        } else {
-                            Timber.d("TIMER-BLOCK-else stop called");
-                            cardsDetailsAdapter.getCardItems().get(clickedCardIndex.getValue()).setTimer(false);
-                            if (viewModel.cardDetail.hasActiveObservers()) {
-                                viewModel.cardDetail.removeObservers(getViewLifecycleOwner());
+                            } else {
+                                Timber.d("TIMER-BLOCK-else stop called");
+                                cardsDetailsAdapter.getCardItems().get(clickedCardIndex.getValue()).setTimer(false);
+                                if (viewModel.cardDetail.hasActiveObservers()) {
+                                    viewModel.cardDetail.removeObservers(getViewLifecycleOwner());
+                                }
                             }
                         }
+                    } catch (Exception e) {
+                        Timber.d("Index Exception");
                     }
-
                 } else if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
                     try {
                         Timber.d("Drag-State");
@@ -478,8 +481,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
             ExpandedCardItem cardItem = new ExpandedCardItem(getContext(), cardDetail);
             if (cardDetail.getVacuumInProgress()) {
                 CardsUtil.showVacuumInprogressAlert(getContext());
-            }
-           else if (!cardDetail.getCanVacuum() && cardDetail.getCardType() == CardType.SP) {
+            } else if (!cardDetail.getCanVacuum() && cardDetail.getCardType() == CardType.SP) {
                 if (cardDetail.getLastVacuumSiteId() != null) {
                     showStoreAddressAlert(cardDetail.getLastVacuumSiteId(), Constants.TYPE_VACUUM, cardDetail.getLastVacuumDt());
                 }
