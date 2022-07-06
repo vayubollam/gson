@@ -404,9 +404,6 @@ public class CardsDetailsFragment extends MainActivityFragment {
 
     private View.OnClickListener activeCarWashListener = view -> {
         boolean hasInternetConnection = ConnectionUtil.haveNetworkConnection(getContext());
-        if (!hasInternetConnection) {
-            Alerts.prepareGeneralErrorDialog(getContext(), AnalyticsUtils.getCardFormName()).show();
-        } else {
             CardDetail cardDetail = cardsDetailsAdapter.getCardItems().get(clickedCardIndex.getValue()).getCardDetail();
             AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.activateCarWashClick,
                     new Pair<>(AnalyticsUtils.Param.carWashCardType, viewModel.cards.getValue().get(clickedCardIndex.getValue()).getLongName())
@@ -435,7 +432,16 @@ public class CardsDetailsFragment extends MainActivityFragment {
                         CardsUtil.showWashInprogressAlert(getContext());
                     } else if (!cardDetail.getCanWash() && cardDetail.getCardType() == CardType.SP) {
                         if (cardDetail.getLastWashStoreId() != null && cardDetail.getCardType() == CardType.SP) {
-                            showStoreAddressAlert(cardDetail.getLastWashStoreId(), Constants.TYPE_WASH, cardDetail.getLastWashDt());
+                            if (!hasInternetConnection) {
+                                Alerts.prepareGeneralErrorDialog(
+                                        getContext(),
+                                        AnalyticsUtils.getCardFormName()).show();
+                            } else {
+                                showStoreAddressAlert(
+                                        cardDetail.getLastWashStoreId(),
+                                        Constants.TYPE_WASH,
+                                        cardDetail.getLastWashDt());
+                            }
                         }
                     } else {
                         AnalyticsUtils.logCarwashActivationEvent(getContext(), AnalyticsUtils.Event.FORMSTEP, "Enter 3 digits", cardDetail.getCardType());
@@ -449,8 +455,6 @@ public class CardsDetailsFragment extends MainActivityFragment {
                     }
                 }
             }
-        }
-
     };
 
     private View.OnClickListener cardReloadListener = view -> {
