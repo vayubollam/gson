@@ -25,6 +25,7 @@ class DonatePetroPointsFragment : MainActivityFragment() {
 //        viewModel = ViewModelProvider(this,viewModelFactory).get(DonatePetroPointsViewModel::class.java)
     }
 
+    // TODO: Don't allow the keyboard to resize the layout, make a custom layout for edittext with $ sign, color the points red
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -33,6 +34,10 @@ class DonatePetroPointsFragment : MainActivityFragment() {
         binding.closeButton.setOnClickListener { v ->
             Navigation.findNavController(requireView()).navigateUp()
         }
+        binding.enableDeduction = false
+        binding.enableDonation = false
+        binding.enableIncrement = true
+        binding.petroPoints = 123000000;
 
         return binding.root
     }

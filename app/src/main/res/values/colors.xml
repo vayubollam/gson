@@ -21,5 +21,5 @@
     <color name="red">#EB182C</color>
     <color name="red_pressed">#c41b2d</color>
     <color name="red_link_button_pressed">#28ec1c2f</color>
-
+    <color name="grey_8d8d">#8d8d8d</color>
 </resources>
