@@ -179,7 +179,7 @@ public class CardDetail {
     }
 
     public boolean isSuspendedCard() {
-        return ((status != null && status.equals("Suspended"))||(status != null && status.equals("Cancelled")));
+        return (status != null && (status.equals("Suspended") || status.equals("Cancelled")));
     }
 
     public int getVacuumRemaining() {
