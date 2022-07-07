@@ -147,7 +147,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
                 }
                 AnalyticsUtils.setCurrentScreenName(getActivity(), screenName);
             }
-            if (cardsDetailsAdapter != null) {
+            if (cardsDetailsAdapter != null && ConnectionUtil.haveNetworkConnection(getContext())) {
                 CardType cardAdapterCardType = cardsDetailsAdapter.getCardItems().get(viewModel.getClickedCardIndex()).getCardDetail().getCardType();
                 if (cardAdapterCardType == CardType.SP || cardAdapterCardType == CardType.WAG) {
                     viewModel.getProgressDetails(cardsDetailsAdapter.getCardItems().get(viewModel.getClickedCardIndex()).getCardNumber(), cardsDetailsAdapter.getCardItems().get(viewModel.getClickedCardIndex()).getCardDetail().getCardType()).observe(getViewLifecycleOwner(), result -> {
@@ -191,7 +191,6 @@ public class CardsDetailsFragment extends MainActivityFragment {
         viewModel.getSettings().observe(getViewLifecycleOwner(), result -> {
             if (result.status == Resource.Status.LOADING) {
             } else if (result.status == Resource.Status.ERROR) {
-                Alerts.prepareGeneralErrorDialog(getContext(), AnalyticsUtils.getCardFormName()).show();
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 vacuumToggle = result.data.getSettings().toggleFeature.isVacuumScanBarcode();
                 if (cardsDetailsAdapter != null) {
@@ -478,26 +477,24 @@ public class CardsDetailsFragment extends MainActivityFragment {
     private View.OnClickListener vacuumListener = view -> {
         Timber.d("vacuumListner" + clickedCardIndex.getValue());
         boolean hasInternetConnection = ConnectionUtil.haveNetworkConnection(getContext());
-        if (!hasInternetConnection) {
-            Alerts.prepareGeneralErrorDialog(getContext(), AnalyticsUtils.getCardFormName()).show();
-        } else {
-            CardDetail cardDetail = cardsDetailsAdapter.getCardItems().get(clickedCardIndex.getValue()).getCardDetail();
-            ExpandedCardItem cardItem = new ExpandedCardItem(getContext(), cardDetail);
-            if (cardDetail.getVacuumInProgress()) {
-                CardsUtil.showVacuumInprogressAlert(getContext());
-            } else if (!cardDetail.getCanVacuum() && cardDetail.getCardType() == CardType.SP) {
-                if (cardDetail.getLastVacuumSiteId() != null) {
-                    showStoreAddressAlert(cardDetail.getLastVacuumSiteId(), Constants.TYPE_VACUUM, cardDetail.getLastVacuumDt());
-                }
-            } else if (!cardDetail.getCanVacuum() && cardDetail.getCardType() == CardType.WAG) {
-                // Do nothing for WAG
+        CardDetail cardDetail = cardsDetailsAdapter.getCardItems().get(clickedCardIndex.getValue()).getCardDetail();
+        ExpandedCardItem cardItem = new ExpandedCardItem(getContext(), cardDetail);
+        if (cardDetail.getVacuumInProgress()) {
+            CardsUtil.showVacuumInprogressAlert(getContext());
+        } else if (!cardDetail.getCanVacuum() && cardDetail.getCardType() == CardType.SP) {
+            if (cardDetail.getLastVacuumSiteId() != null && hasInternetConnection) {
+                showStoreAddressAlert(cardDetail.getLastVacuumSiteId(), Constants.TYPE_VACUUM, cardDetail.getLastVacuumDt());
             } else {
-                CardsDetailsFragmentDirections.ActionCardsDetailsFragmentToVacuumBarcodeFragment
-                        action = CardsDetailsFragmentDirections.actionCardsDetailsFragmentToVacuumBarcodeFragment();
-                action.setCardNumber(cardItem.getCardNumber());
-                action.setCardIndex(clickedCardIndex.getValue());
-                Navigation.findNavController(getView()).navigate(action);
+                Alerts.prepareGeneralErrorDialog(getContext(), AnalyticsUtils.getCardFormName()).show();
             }
+        } else if (!cardDetail.getCanVacuum() && cardDetail.getCardType() == CardType.WAG) {
+            // Do nothing for WAG
+        } else {
+            CardsDetailsFragmentDirections.ActionCardsDetailsFragmentToVacuumBarcodeFragment
+                    action = CardsDetailsFragmentDirections.actionCardsDetailsFragmentToVacuumBarcodeFragment();
+            action.setCardNumber(cardItem.getCardNumber());
+            action.setCardIndex(clickedCardIndex.getValue());
+            Navigation.findNavController(getView()).navigate(action);
         }
     };
 
