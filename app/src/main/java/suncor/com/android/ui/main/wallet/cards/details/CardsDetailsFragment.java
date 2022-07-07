@@ -187,7 +187,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
                 }
             }
         });
-//
+
         viewModel.getSettings().observe(getViewLifecycleOwner(), result -> {
             if (result.status == Resource.Status.LOADING) {
             } else if (result.status == Resource.Status.ERROR) {
@@ -213,8 +213,9 @@ public class CardsDetailsFragment extends MainActivityFragment {
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    clickedCardIndex.setValue(linearLayoutManager.findFirstCompletelyVisibleItemPosition());
-                    viewModel.setClickedCardIndex(clickedCardIndex.getValue());
+                    try {
+                        clickedCardIndex.setValue(linearLayoutManager.findFirstCompletelyVisibleItemPosition());
+                        viewModel.setClickedCardIndex(clickedCardIndex.getValue());
 
                     if (viewModel.cardDetail.hasActiveObservers()) {
                         viewModel.cardDetail.removeObservers(getViewLifecycleOwner());
@@ -265,15 +266,17 @@ public class CardsDetailsFragment extends MainActivityFragment {
                             });
 
 
-                        } else {
-                            Timber.d("TIMER-BLOCK-else stop called");
-                            cardsDetailsAdapter.getCardItems().get(clickedCardIndex.getValue()).setTimer(false);
-                            if (viewModel.cardDetail.hasActiveObservers()) {
-                                viewModel.cardDetail.removeObservers(getViewLifecycleOwner());
+                            } else {
+                                Timber.d("TIMER-BLOCK-else stop called");
+                                cardsDetailsAdapter.getCardItems().get(clickedCardIndex.getValue()).setTimer(false);
+                                if (viewModel.cardDetail.hasActiveObservers()) {
+                                    viewModel.cardDetail.removeObservers(getViewLifecycleOwner());
+                                }
                             }
                         }
+                    } catch (Exception e) {
+                        Timber.d("Index Exception");
                     }
-
                 } else if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
                     try {
                         Timber.d("Drag-State");
@@ -401,9 +404,6 @@ public class CardsDetailsFragment extends MainActivityFragment {
 
     private View.OnClickListener activeCarWashListener = view -> {
         boolean hasInternetConnection = ConnectionUtil.haveNetworkConnection(getContext());
-        if (!hasInternetConnection) {
-            Alerts.prepareGeneralErrorDialog(getContext(), AnalyticsUtils.getCardFormName()).show();
-        } else {
             CardDetail cardDetail = cardsDetailsAdapter.getCardItems().get(clickedCardIndex.getValue()).getCardDetail();
             AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.activateCarWashClick,
                     new Pair<>(AnalyticsUtils.Param.carWashCardType, viewModel.cards.getValue().get(clickedCardIndex.getValue()).getLongName())
@@ -432,7 +432,16 @@ public class CardsDetailsFragment extends MainActivityFragment {
                         CardsUtil.showWashInprogressAlert(getContext());
                     } else if (!cardDetail.getCanWash() && cardDetail.getCardType() == CardType.SP) {
                         if (cardDetail.getLastWashStoreId() != null && cardDetail.getCardType() == CardType.SP) {
-                            showStoreAddressAlert(cardDetail.getLastWashStoreId(), Constants.TYPE_WASH, cardDetail.getLastWashDt());
+                            if (!hasInternetConnection) {
+                                Alerts.prepareGeneralErrorDialog(
+                                        getContext(),
+                                        AnalyticsUtils.getCardFormName()).show();
+                            } else {
+                                showStoreAddressAlert(
+                                        cardDetail.getLastWashStoreId(),
+                                        Constants.TYPE_WASH,
+                                        cardDetail.getLastWashDt());
+                            }
                         }
                     } else {
                         AnalyticsUtils.logCarwashActivationEvent(getContext(), AnalyticsUtils.Event.FORMSTEP, "Enter 3 digits", cardDetail.getCardType());
@@ -446,8 +455,6 @@ public class CardsDetailsFragment extends MainActivityFragment {
                     }
                 }
             }
-        }
-
     };
 
     private View.OnClickListener cardReloadListener = view -> {
@@ -478,8 +485,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
             ExpandedCardItem cardItem = new ExpandedCardItem(getContext(), cardDetail);
             if (cardDetail.getVacuumInProgress()) {
                 CardsUtil.showVacuumInprogressAlert(getContext());
-            }
-           else if (!cardDetail.getCanVacuum() && cardDetail.getCardType() == CardType.SP) {
+            } else if (!cardDetail.getCanVacuum() && cardDetail.getCardType() == CardType.SP) {
                 if (cardDetail.getLastVacuumSiteId() != null) {
                     showStoreAddressAlert(cardDetail.getLastVacuumSiteId(), Constants.TYPE_VACUUM, cardDetail.getLastVacuumDt());
                 }
