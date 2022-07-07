@@ -113,7 +113,6 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
                     return;
                 case ERROR:
                     adapter.isEligible = false;
-                    petroPointsBalance.set(viewModel.getSessionManager().getProfile().getPointsBalance());
                     adapter.notifyDataSetChanged();
             }
         });
