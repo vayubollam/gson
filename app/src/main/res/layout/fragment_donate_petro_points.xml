@@ -138,22 +138,38 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
-                        <androidx.appcompat.widget.AppCompatTextView
+                        <androidx.appcompat.widget.LinearLayoutCompat
                             android:id="@+id/redeem_title"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="24dp"
                             android:layout_marginEnd="16dp"
-                            android:fontFamily="@font/gibson_semibold"
                             android:gravity="center"
-                            android:text="@string/i_am_donating_x_points"
-                            android:textColor="@color/grey_8d8d"
-                            android:textSize="20sp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.0"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/gibson_semibold"
+                                android:text="@string/i_am_donating_x_points"
+                                android:textColor="@color/grey_8d8d"
+                                android:maxLines="1"
+                                android:textSize="20sp" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/gibson_semibold"
+                                android:text="@{@string/x_points(petroPoints.toString())}"
+                                android:maxLines="1"
+                                android:textColor="#eb1d2e"
+                                android:textSize="20sp" />
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
 
                         <ImageButton
                             android:id="@+id/image_button_negative"
@@ -169,9 +185,11 @@
 
                         <androidx.appcompat.widget.AppCompatEditText
                             android:id="@+id/input_field"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
                             android:layout_marginTop="24dp"
+                            android:layout_marginEnd="8dp"
                             android:background="@null"
                             android:fontFamily="@font/gibson_regular"
                             android:gravity="center"
