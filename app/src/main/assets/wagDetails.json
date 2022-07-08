@@ -1,0 +1,14 @@
+"{\n" +
+"      \"lastWashDt\": \"2022-07-07T15:16:45.787\",\n" +
+"      \"lastWashStoreId\": \"f3q44R/Jfog/u6o6ck5TUA==\",\n" +
+"      \"cardNumberEncrypted\": \"cTQX2jTzrqSfLF+olV1HoV09gN4RAIKdzD2l2QOk8Xk=\",\n" +
+"      \"unitsRemaining\": 17,\n" +
+"      \"cardType\": \"WAG\",\n" +
+"      \"vacuumInProgress\": false,\n" +
+"      \"canWash\": true,\n" +
+"      \"canVacuum\": true,\n" +
+"      \"washInProgress\": false,\n" +
+"      \"cardNumber\": \"706981007005445432\",\n" +
+"      \"status\": \"Used\",\n" +
+"      \"vacuumRemaining\": 31\n" +
+"    }"
