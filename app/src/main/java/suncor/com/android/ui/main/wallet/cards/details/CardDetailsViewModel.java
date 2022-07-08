@@ -7,6 +7,7 @@ import android.os.Handler;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
 import java.util.ArrayList;
@@ -43,6 +44,8 @@ public class CardDetailsViewModel extends ViewModel {
     private MutableLiveData<Boolean> isCarWashBalanceZero = new MutableLiveData<>();
     private MutableLiveData<Boolean> isInitialCall = new MutableLiveData<>();
     private MutableLiveData<Integer> clickedCardIndex = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> _vacuumVisibilityViewState = new MutableLiveData<>(false);
+    public LiveData<Boolean> vacuumVisibilityViewState = _vacuumVisibilityViewState;
     private String newlyAddedCardNumber;
     private final SettingsApi settingsApi;
     final int interval = 360000;
@@ -208,7 +211,20 @@ public class CardDetailsViewModel extends ViewModel {
     }
 
     public LiveData<Resource<SettingsResponse>> getSettings() {
-        return settingsApi.retrieveSettings();
+       return Transformations.map(settingsApi.retrieveSettings(),this::mapSettingResponseToVacuumVisibility);
+    }
+
+    private Resource<SettingsResponse> mapSettingResponseToVacuumVisibility(Resource<SettingsResponse> response) {
+        if (response.status == Resource.Status.SUCCESS && response.data != null) {
+            final boolean userVacuumToggle = getUserProfile() != null && getUserProfile().toggleFeature != null && getUserProfile().toggleFeature.isVacuumScanBarcode();
+            if (userVacuumToggle) {
+                _vacuumVisibilityViewState.setValue(true);
+            } else {
+                final boolean vacuumToggle = response.data.getSettings().toggleFeature.isVacuumScanBarcode();
+                _vacuumVisibilityViewState.setValue(vacuumToggle);
+            }
+        }
+        return response;
     }
 
     protected void setRecurringService(String cardNumber, CardType cardType,boolean initCall) {

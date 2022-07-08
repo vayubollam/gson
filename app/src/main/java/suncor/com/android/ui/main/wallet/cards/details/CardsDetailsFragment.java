@@ -47,6 +47,7 @@ import suncor.com.android.databinding.FragmentCardsDetailsBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.googleapis.passes.GooglePassesApiGateway;
 import suncor.com.android.googlepay.passes.LoyalityData;
+import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.DirectionsResult;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.SettingsResponse;
@@ -79,7 +80,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
     private float previousBrightness;
     private CardsDetailsAdapter cardsDetailsAdapter;
     private ObservableBoolean isRemoving = new ObservableBoolean(false);
-    private boolean vacuumToggle = false;
+    private boolean profileToggleFeature, vacuumToggle = false;
     private LocationLiveData locationLiveData;
     private LatLng currentLocation;
 
@@ -188,14 +189,11 @@ public class CardsDetailsFragment extends MainActivityFragment {
             }
         });
 
-        viewModel.getSettings().observe(getViewLifecycleOwner(), result -> {
-            if (result.status == Resource.Status.LOADING) {
-            } else if (result.status == Resource.Status.ERROR) {
-            } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
-                vacuumToggle = result.data.getSettings().toggleFeature.isVacuumScanBarcode();
-                if (cardsDetailsAdapter != null) {
-                    cardsDetailsAdapter.updateVacuumToggle(vacuumToggle);
-                }
+        viewModel.getSettings().observe(getViewLifecycleOwner(), result -> { });
+        viewModel.vacuumVisibilityViewState.observe(getViewLifecycleOwner(), vacuumState -> {
+            if (cardsDetailsAdapter != null) {
+                vacuumToggle = vacuumState;
+                cardsDetailsAdapter.updateVacuumToggle(vacuumState);
             }
         });
         binding = FragmentCardsDetailsBinding.inflate(inflater, container, false);
