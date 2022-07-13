@@ -93,6 +93,8 @@ public class SessionManager implements SessionChangeListener {
             @Override
             public void onSuccess() {
                 userLocalSettings.setString(UserLocalSettings.RECENTLY_SEARCHED, null);
+                userLocalSettings.setBool(UserLocalSettings.USER_VACUUM_TOGGLE, null);
+                userLocalSettings.setBool(UserLocalSettings.SETTING_VACUUM_TOGGLE, null);
                 setProfile(null);
                 accountState = null;
                 loginState.postValue(LoginState.LOGGED_OUT);
@@ -198,6 +200,8 @@ public class SessionManager implements SessionChangeListener {
                 public void onSuccess(WLResponse wlResponse) {
                     Timber.d("Profile received, response: " + wlResponse.getResponseText());
                     Profile profile = gson.fromJson(wlResponse.getResponseText(), Profile.class);
+                    Boolean userVacuumToggle = (profile != null && profile.toggleFeature != null) ? profile.toggleFeature.isVacuumScanBarcode() : null;
+                    userLocalSettings.setBool(UserLocalSettings.USER_VACUUM_TOGGLE, userVacuumToggle);
                     onSuccess.accept(profile);
                 }
 
@@ -292,6 +296,7 @@ public class SessionManager implements SessionChangeListener {
 
         userLocalSettings.setString(UserLocalSettings.RECENTLY_SEARCHED, null);
 
+
         isRetrievingProfile.set(true);
 
         retrieveProfile((profile) -> {
@@ -345,6 +350,21 @@ public class SessionManager implements SessionChangeListener {
             application.startActivity(intent);
         }
         cancelLogin();
+    }
+
+    public MutableLiveData<Boolean> getVacuumToggle(final MutableLiveData<Boolean> _vacuumToggleViewState) {
+        Boolean settingsVacuumToggle = getUserLocalSettings().getBool(UserLocalSettings.SETTING_VACUUM_TOGGLE, null);
+        Boolean userVacuumToggle = getUserLocalSettings().getBool(UserLocalSettings.USER_VACUUM_TOGGLE, false);
+        if (settingsVacuumToggle != null) {
+            if (settingsVacuumToggle) {
+                _vacuumToggleViewState.postValue(true);
+            } else {
+                _vacuumToggleViewState.postValue(userVacuumToggle);
+            }
+        } else {
+            _vacuumToggleViewState.postValue(null);
+        }
+        return _vacuumToggleViewState;
     }
 
     public void setRewardedPoints(int rewardedPoints) {

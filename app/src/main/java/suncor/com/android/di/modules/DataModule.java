@@ -44,6 +44,7 @@ import suncor.com.android.data.users.UsersApi;
 import suncor.com.android.data.users.UsersApiImpl;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.redeem.response.OrderResponse;
+import suncor.com.android.utilities.UserLocalSettings;
 
 @Module
 public class DataModule {
@@ -164,5 +165,11 @@ public class DataModule {
     @Singleton
     CarwashApi providesCarwashApi() {
         return new CarwashApiImpl();
+    }
+
+    @Provides
+    @Singleton
+    UserLocalSettings providesUserLocalSettings(SuncorApplication application){
+        return new UserLocalSettings(application);
     }
 }

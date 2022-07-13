@@ -4,6 +4,7 @@ package suncor.com.android.ui.main.wallet.cards.details;
 import android.content.Context;
 import android.os.Handler;
 
+import androidx.arch.core.util.Function;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -30,6 +31,7 @@ import suncor.com.android.model.cards.CardType;
 import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.main.wallet.cards.CardsLoadType;
 import suncor.com.android.utilities.Timber;
+import suncor.com.android.utilities.UserLocalSettings;
 
 public class CardDetailsViewModel extends ViewModel {
 
@@ -210,22 +212,39 @@ public class CardDetailsViewModel extends ViewModel {
         return loyalityData;
     }
 
-    public LiveData<Resource<SettingsResponse>> getSettings() {
-       return Transformations.map(settingsApi.retrieveSettings(),this::mapSettingResponseToVacuumVisibility);
+    public LiveData<Boolean> getSettings() {
+       return Transformations.switchMap(sessionManager.getVacuumToggle(_vacuumVisibilityViewState),this::mapToExtraCallIfRequired);
     }
 
-    private Resource<SettingsResponse> mapSettingResponseToVacuumVisibility(Resource<SettingsResponse> response) {
-        if (response.status == Resource.Status.SUCCESS && response.data != null) {
-            final boolean userVacuumToggle = getUserProfile() != null && getUserProfile().toggleFeature != null && getUserProfile().toggleFeature.isVacuumScanBarcode();
-            if (userVacuumToggle) {
-                _vacuumVisibilityViewState.setValue(true);
-            } else {
-                final boolean vacuumToggle = response.data.getSettings().toggleFeature.isVacuumScanBarcode();
-                _vacuumVisibilityViewState.setValue(vacuumToggle);
-            }
-        }
-        return response;
+    public LiveData<Resource<SettingsResponse>> getSettingsFromRemote() {
+       return settingsApi.retrieveSettings();
     }
+
+    private LiveData<Boolean> mapToExtraCallIfRequired(final Boolean response) {
+        if (response == null) {
+            return Transformations.map(settingsApi.retrieveSettings(), this::mapToResponse);
+        } else {
+            _vacuumVisibilityViewState.postValue(response);
+            return _vacuumVisibilityViewState;
+        }
+    }
+
+    private Boolean mapToResponse(final Resource<SettingsResponse> response) {
+        Boolean userVacuumToggle = sessionManager.getUserLocalSettings().getBool(UserLocalSettings.USER_VACUUM_TOGGLE, false);
+        if (response.status == Resource.Status.SUCCESS && response.data != null) {
+            if (userVacuumToggle) {
+                return true;
+            } else {
+                boolean vacuumToggle = response.data.getSettings().toggleFeature.isVacuumScanBarcode();
+                sessionManager.getUserLocalSettings().setBool(UserLocalSettings.SETTING_VACUUM_TOGGLE, vacuumToggle);
+                return vacuumToggle;
+            }
+        } else {
+            return userVacuumToggle;
+        }
+    }
+
+
 
     protected void setRecurringService(String cardNumber, CardType cardType,boolean initCall) {
         isInitialCall.postValue(initCall);

@@ -36,6 +36,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import javax.inject.Inject;
 
@@ -189,13 +191,6 @@ public class CardsDetailsFragment extends MainActivityFragment {
             }
         });
 
-        viewModel.getSettings().observe(getViewLifecycleOwner(), result -> { });
-        viewModel.vacuumVisibilityViewState.observe(getViewLifecycleOwner(), vacuumState -> {
-            if (cardsDetailsAdapter != null) {
-                vacuumToggle = vacuumState;
-                cardsDetailsAdapter.updateVacuumToggle(vacuumState);
-            }
-        });
         binding = FragmentCardsDetailsBinding.inflate(inflater, container, false);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
         binding.cardDetailRecycler.setLayoutManager(linearLayoutManager);
@@ -383,6 +378,17 @@ public class CardsDetailsFragment extends MainActivityFragment {
         super.onActivityCreated(savedInstanceState);
     }
 
+    @Override
+    public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        viewModel.getSettings().observe(getViewLifecycleOwner(), result -> {
+            if (cardsDetailsAdapter != null) {
+                vacuumToggle = result;
+                cardsDetailsAdapter.updateVacuumToggle(result);
+            }
+        });
+    }
+
     void cardViewMoreHandler(ExpandedCardItem expandedCardItem) {
         RemoveCardBottomSheet removeCardBottomSheet = new RemoveCardBottomSheet();
         removeCardBottomSheet.setClickListener(v -> {
@@ -499,7 +505,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
 
     private View.OnClickListener gpaySaveToWalletListener = view -> {
         showAddCardProgress();
-        viewModel.getSettings().observe(getViewLifecycleOwner(), result -> {
+        viewModel.getSettingsFromRemote().observe(getViewLifecycleOwner(), result -> {
             if (result.status == Resource.Status.LOADING) {
             } else if (result.status == Resource.Status.ERROR) {
                 hideAddCardProgress();
