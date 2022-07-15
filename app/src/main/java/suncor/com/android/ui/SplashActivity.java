@@ -43,6 +43,7 @@ import suncor.com.android.ui.tutorial.TutorialFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.ConnectionUtil;
 import suncor.com.android.utilities.FingerprintManager;
+import suncor.com.android.utilities.SharedPrefsHelper;
 import suncor.com.android.utilities.UserLocalSettings;
 
 import static suncor.com.android.utilities.Constants.ALERT;
@@ -209,9 +210,11 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
     private void handleSettingsResponse(SettingsResponse settingsResponse) {
         String minVersion = settingsResponse.getSettings().getMinAndroidVersion();
         String currentVersion = BuildConfig.VERSION_NAME;
-        if (sessionManager.getUserLocalSettings() != null) {
+        if (sessionManager.getSharedPrefsHelper() != null) {
             Boolean settingsVacuum = (settingsResponse.getSettings() != null && settingsResponse.getSettings().toggleFeature != null) ? settingsResponse.getSettings().toggleFeature.isVacuumScanBarcode() : null;
-            sessionManager.getUserLocalSettings().setBool(UserLocalSettings.SETTING_VACUUM_TOGGLE, settingsVacuum);
+            if (settingsVacuum != null) {
+                sessionManager.getSharedPrefsHelper().put(SharedPrefsHelper.SETTING_VACUUM_TOGGLE, settingsVacuum);
+            }
         }
         if (currentVersion.compareTo(minVersion) < 0) {
             binding.profilePd.setVisibility(View.GONE);

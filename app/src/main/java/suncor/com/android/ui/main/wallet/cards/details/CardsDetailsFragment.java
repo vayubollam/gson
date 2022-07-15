@@ -381,10 +381,28 @@ public class CardsDetailsFragment extends MainActivityFragment {
     @Override
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        viewModel.getSettings().observe(getViewLifecycleOwner(), result -> {
+        viewModel.getVacuumStatus();
+        viewModel.vacuumVisibilityViewState.observe(getViewLifecycleOwner(), result -> {
             if (cardsDetailsAdapter != null) {
-                vacuumToggle = result;
-                cardsDetailsAdapter.updateVacuumToggle(result);
+                    vacuumToggle = result;
+                    cardsDetailsAdapter.updateVacuumToggle(result);
+                }
+        });
+        viewModel.callSettingApiEvent.observe(getViewLifecycleOwner(),res->{
+            callSettingsApi();
+        });
+    }
+
+    private void callSettingsApi() {
+        viewModel.getSettingsFromRemote().observe(getViewLifecycleOwner(), result -> {
+            if (result.status == Resource.Status.SUCCESS) {
+                viewModel.getVacuumStatus();
+            } else if (result.status == Resource.Status.ERROR) {
+                Alerts.prepareGeneralErrorDialog(
+                        getContext(),
+                        AnalyticsUtils.getCardFormName()).show();
+            } else {
+                //Do nothing or show a loader
             }
         });
     }
