@@ -150,7 +150,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
                 }
                 AnalyticsUtils.setCurrentScreenName(getActivity(), screenName);
             }
-            if (cardsDetailsAdapter != null && ConnectionUtil.haveNetworkConnection(getContext())) {
+            if (cardsDetailsAdapter != null) {
                 CardType cardAdapterCardType = cardsDetailsAdapter.getCardItems().get(viewModel.getClickedCardIndex()).getCardDetail().getCardType();
                 if (cardAdapterCardType == CardType.SP || cardAdapterCardType == CardType.WAG) {
                     viewModel.getProgressDetails(cardsDetailsAdapter.getCardItems().get(viewModel.getClickedCardIndex()).getCardNumber(), cardsDetailsAdapter.getCardItems().get(viewModel.getClickedCardIndex()).getCardDetail().getCardType()).observe(getViewLifecycleOwner(), result -> {
@@ -159,7 +159,9 @@ public class CardsDetailsFragment extends MainActivityFragment {
                             showAddCardProgress();
                         } else if (result.status == Resource.Status.ERROR) {
                             hideAddCardProgress();
-                            Alerts.prepareGeneralErrorDialog(getContext(), AnalyticsUtils.getCardFormName()).show();
+                            if(ConnectionUtil.haveNetworkConnection(getContext())) {
+                                Alerts.prepareGeneralErrorDialog(getContext(), AnalyticsUtils.getCardFormName()).show();
+                            }
                         } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                             hideAddCardProgress();
                             if ((result.data.getCanVacuum() != null) || (result.data.getCanWash() != null) || (result.data.getVacuumInProgress() != null) && (result.data.getWashInProgress() != null)) {
@@ -504,10 +506,12 @@ public class CardsDetailsFragment extends MainActivityFragment {
         if (cardDetail.getVacuumInProgress()) {
             CardsUtil.showVacuumInprogressAlert(getContext());
         } else if (!cardDetail.getCanVacuum() && cardDetail.getCardType() == CardType.SP) {
-            if (cardDetail.getLastVacuumSiteId() != null && hasInternetConnection) {
-                showStoreAddressAlert(cardDetail.getLastVacuumSiteId(), Constants.TYPE_VACUUM, cardDetail.getLastVacuumDt());
-            } else {
-                Alerts.prepareGeneralErrorDialog(getContext(), AnalyticsUtils.getCardFormName()).show();
+            if (cardDetail.getLastVacuumSiteId() != null) {
+                  if(hasInternetConnection){
+                      showStoreAddressAlert(cardDetail.getLastVacuumSiteId(), Constants.TYPE_VACUUM, cardDetail.getLastVacuumDt());
+                  } else {
+                      Alerts.prepareGeneralErrorDialog(getContext(), AnalyticsUtils.getCardFormName()).show();
+                  }
             }
         } else if (!cardDetail.getCanVacuum() && cardDetail.getCardType() == CardType.WAG) {
             // Do nothing for WAG
