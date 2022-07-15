@@ -43,6 +43,8 @@ import suncor.com.android.ui.tutorial.TutorialFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.ConnectionUtil;
 import suncor.com.android.utilities.FingerprintManager;
+import suncor.com.android.utilities.SharedPrefsHelper;
+import suncor.com.android.utilities.UserLocalSettings;
 
 import static suncor.com.android.utilities.Constants.ALERT;
 import static suncor.com.android.utilities.Constants.ALERT_INTERACTION;
@@ -192,7 +194,9 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
                             .show();
                 }
                 if (resource.status == Resource.Status.SUCCESS) {
-                    handleSettingsResponse(resource.data);
+                    if (resource.data != null) {
+                        handleSettingsResponse(resource.data);
+                    }
                 }
             });
         } else {
@@ -206,6 +210,12 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
     private void handleSettingsResponse(SettingsResponse settingsResponse) {
         String minVersion = settingsResponse.getSettings().getMinAndroidVersion();
         String currentVersion = BuildConfig.VERSION_NAME;
+        if (sessionManager.getSharedPrefsHelper() != null) {
+            Boolean settingsVacuum = (settingsResponse.getSettings() != null && settingsResponse.getSettings().toggleFeature != null) ? settingsResponse.getSettings().toggleFeature.isVacuumScanBarcode() : null;
+            if (settingsVacuum != null) {
+                sessionManager.getSharedPrefsHelper().put(SharedPrefsHelper.SETTING_VACUUM_TOGGLE, settingsVacuum);
+            }
+        }
         if (currentVersion.compareTo(minVersion) < 0) {
             binding.profilePd.setVisibility(View.GONE);
             AnalyticsUtils.logEvent(application.getApplicationContext(), "error_log", new Pair<>("errorMessage",getString(R.string.update_required_dialog_title)));

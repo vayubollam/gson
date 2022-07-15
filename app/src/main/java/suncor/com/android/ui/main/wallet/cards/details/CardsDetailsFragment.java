@@ -36,6 +36,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import javax.inject.Inject;
 
@@ -47,6 +49,7 @@ import suncor.com.android.databinding.FragmentCardsDetailsBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.googleapis.passes.GooglePassesApiGateway;
 import suncor.com.android.googlepay.passes.LoyalityData;
+import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.DirectionsResult;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.SettingsResponse;
@@ -79,7 +82,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
     private float previousBrightness;
     private CardsDetailsAdapter cardsDetailsAdapter;
     private ObservableBoolean isRemoving = new ObservableBoolean(false);
-    private boolean vacuumToggle = false;
+    private boolean profileToggleFeature, vacuumToggle = false;
     private LocationLiveData locationLiveData;
     private LatLng currentLocation;
 
@@ -190,16 +193,6 @@ public class CardsDetailsFragment extends MainActivityFragment {
             }
         });
 
-        viewModel.getSettings().observe(getViewLifecycleOwner(), result -> {
-            if (result.status == Resource.Status.LOADING) {
-            } else if (result.status == Resource.Status.ERROR) {
-            } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
-                vacuumToggle = result.data.getSettings().toggleFeature.isVacuumScanBarcode();
-                if (cardsDetailsAdapter != null) {
-                    cardsDetailsAdapter.updateVacuumToggle(vacuumToggle);
-                }
-            }
-        });
         binding = FragmentCardsDetailsBinding.inflate(inflater, container, false);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
         binding.cardDetailRecycler.setLayoutManager(linearLayoutManager);
@@ -387,6 +380,35 @@ public class CardsDetailsFragment extends MainActivityFragment {
         super.onActivityCreated(savedInstanceState);
     }
 
+    @Override
+    public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        viewModel.getVacuumStatus();
+        viewModel.vacuumVisibilityViewState.observe(getViewLifecycleOwner(), result -> {
+            if (cardsDetailsAdapter != null) {
+                    vacuumToggle = result;
+                    cardsDetailsAdapter.updateVacuumToggle(result);
+                }
+        });
+        viewModel.callSettingApiEvent.observe(getViewLifecycleOwner(),res->{
+            callSettingsApi();
+        });
+    }
+
+    private void callSettingsApi() {
+        viewModel.getSettingsFromRemote().observe(getViewLifecycleOwner(), result -> {
+            if (result.status == Resource.Status.SUCCESS) {
+                viewModel.getVacuumStatus();
+            } else if (result.status == Resource.Status.ERROR) {
+                Alerts.prepareGeneralErrorDialog(
+                        getContext(),
+                        AnalyticsUtils.getCardFormName()).show();
+            } else {
+                //Do nothing or show a loader
+            }
+        });
+    }
+
     void cardViewMoreHandler(ExpandedCardItem expandedCardItem) {
         RemoveCardBottomSheet removeCardBottomSheet = new RemoveCardBottomSheet();
         removeCardBottomSheet.setClickListener(v -> {
@@ -505,7 +527,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
 
     private View.OnClickListener gpaySaveToWalletListener = view -> {
         showAddCardProgress();
-        viewModel.getSettings().observe(getViewLifecycleOwner(), result -> {
+        viewModel.getSettingsFromRemote().observe(getViewLifecycleOwner(), result -> {
             if (result.status == Resource.Status.LOADING) {
             } else if (result.status == Resource.Status.ERROR) {
                 hideAddCardProgress();

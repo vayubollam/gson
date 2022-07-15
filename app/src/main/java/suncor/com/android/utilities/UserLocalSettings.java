@@ -24,7 +24,17 @@ public class UserLocalSettings {
         return preferences.getBoolean(key, defValue);
     }
 
+    public Boolean getBool(String key, Boolean defValue) {
+        return preferences.getBoolean(key, defValue);
+    }
+
     public void setBool(String key, boolean value) {
+        preferences.edit()
+                .putBoolean(key, value)
+                .apply();
+    }
+
+    public void setBool(String key, Boolean value) {
         preferences.edit()
                 .putBoolean(key, value)
                 .apply();
