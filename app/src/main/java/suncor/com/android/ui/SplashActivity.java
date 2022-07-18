@@ -27,6 +27,8 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.transition.Fade;
 
+import java.text.DecimalFormat;
+
 import javax.inject.Inject;
 
 import dagger.android.support.DaggerAppCompatActivity;
@@ -41,6 +43,7 @@ import suncor.com.android.model.SettingsResponse;
 import suncor.com.android.ui.main.MainActivity;
 import suncor.com.android.ui.tutorial.TutorialFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
+import suncor.com.android.utilities.CommonUtils;
 import suncor.com.android.utilities.ConnectionUtil;
 import suncor.com.android.utilities.FingerprintManager;
 import suncor.com.android.utilities.SharedPrefsHelper;
@@ -212,8 +215,10 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
         String currentVersion = BuildConfig.VERSION_NAME;
         if (sessionManager.getSharedPrefsHelper() != null) {
             Boolean settingsVacuum = (settingsResponse.getSettings() != null && settingsResponse.getSettings().toggleFeature != null) ? settingsResponse.getSettings().toggleFeature.isVacuumScanBarcode() : null;
+            int enrollmentBonus = (settingsResponse.getSettings() != null) ? settingsResponse.getSettings().getEnrollmentBonus() : 0;
             if (settingsVacuum != null) {
                 sessionManager.getSharedPrefsHelper().put(SharedPrefsHelper.SETTING_VACUUM_TOGGLE, settingsVacuum);
+                sessionManager.getUserLocalSettings().setInt(UserLocalSettings.ENROLLMENT_BONUS, enrollmentBonus);
             }
         }
         if (currentVersion.compareTo(minVersion) < 0) {

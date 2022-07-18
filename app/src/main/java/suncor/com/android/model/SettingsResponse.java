@@ -34,6 +34,9 @@ public class SettingsResponse {
         private GooglePassConfig googlePass;
         public ToggleFeature toggleFeature;
 
+        @SerializedName("enrollmentBonus")
+        private Integer enrollmentBonus;
+
         public String getDescriptionEN() {
             return descriptionEN;
         }
@@ -71,11 +74,15 @@ public class SettingsResponse {
         }
 
         public String getMaintenanceDisplayMsg() {
-           return Locale.getDefault().getDisplayLanguage().equals("English") ? maintenanceMsgEN : maintenanceMsgFR;
+            return Locale.getDefault().getDisplayLanguage().equals("English") ? maintenanceMsgEN : maintenanceMsgFR;
         }
 
         public GooglePassConfig getGooglePass() {
             return googlePass;
+        }
+
+        public Integer getEnrollmentBonus() {
+            return enrollmentBonus;
         }
     }
 

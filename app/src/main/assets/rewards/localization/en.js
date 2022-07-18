@@ -104,6 +104,6 @@ var EN = {
 	},
 	"rewardsJoin": {
 		"title": "Join Petro&#8209;Points.",
-		"description": "Earn 2,500 bonus points when you sign up."
+		"description": ""
 	}
 };
