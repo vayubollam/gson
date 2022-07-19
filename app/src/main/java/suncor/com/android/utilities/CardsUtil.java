@@ -92,6 +92,23 @@ public class CardsUtil {
         dialog.show();
     }
 
+    public static void showZeroVacuumAlert(Context context) {
+        Dialog dialog;
+        dialog = new AlertDialog.Builder(context)
+                .setTitle(R.string.zero_balance_vacuum_alert_title)
+                .setMessage(R.string.zero_balance_vacuum_alert_message)
+                .setPositiveButton(context.getResources().getString(R.string.reload_card_alert_visit_web), (dial, which) -> {
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.petro_vacuum_canada_reload_url)));
+                    context.startActivity(browserIntent);
+                }).setNegativeButton(context.getResources().getString(R.string.reload_card_alert_cancel), (dial, which) -> {
+                })
+                .setCancelable(false)
+                .create();
+
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+    }
+
     public static void showSuspendedCardAlert(Context context) {
         AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.error,
                 new Pair<>(AnalyticsUtils.Param.errorMessage,context.getString(R.string.carwash_zero_error_alert_error_message))
@@ -109,12 +126,18 @@ public class CardsUtil {
         builder.show();
     }
 
-    public static void ShowSuspendedCardAlertForActivateWash(Context context){
+    public static void ShowSuspendedCardAlertForActivateWash(Context context, String type) {
+        String title = null;
+        if (type.equalsIgnoreCase(Constants.TYPE_VACUUM)) {
+            title = context.getResources().getString(R.string.carwash_zero_vacuum_error_alert_title);
+        } else if (type.equalsIgnoreCase(Constants.TYPE_WASH)) {
+            title = context.getResources().getString(R.string.carwash_zero_error_alert_title);
+        }
         AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.error,
-                new Pair<>(AnalyticsUtils.Param.errorMessage,context.getString(R.string.carwash_zero_error_alert_error_message))
+                new Pair<>(AnalyticsUtils.Param.errorMessage, context.getString(R.string.carwash_zero_error_alert_error_message))
         );
         AlertDialog alertWashDialog = new AlertDialog.Builder(context)
-                .setTitle(R.string.carwash_zero_error_alert_title)
+                .setTitle(title)
                 .setMessage(R.string.carwash_zero_error_alert_message)
                 .setNegativeButton(R.string.carwash_zero_alert_close, (dialog, which) -> {
                     dialog.dismiss();
