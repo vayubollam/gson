@@ -78,7 +78,7 @@ var EN = {
 		}
 	},
 	"rewardsPartners": {
-		"title": "Earn Petro&#8209;Points faster with our partners.",
+		"title": "Earn points faster with our partners.",
 		"partner1": {
 			"description": "Earn 2,000 points for joining and collect bonuses."
 		},
