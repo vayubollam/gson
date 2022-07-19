@@ -423,13 +423,13 @@ public class CardsDetailsFragment extends MainActivityFragment {
                 action.setSingleTicketNumber(viewModel.cards.getValue().get(clickedCardIndex.getValue()).getTicketNumber());
                 Navigation.findNavController(getView()).navigate(action);
             } else {
-                if (viewModel.getIsCarWashBalanceZero().getValue() != null &&
+                 if (cardDetail.isSuspendedCard()) {
+                    CardsUtil.ShowSuspendedCardAlertForActivateWash(getContext(), Constants.TYPE_WASH);
+                } else if (cardDetail.isExpiredCard()||cardDetail.getBalance() <= 0) {
+                    CardsUtil.showOtherCardAvailableAlert(getContext());
+                } else if (viewModel.getIsCarWashBalanceZero().getValue() != null &&
                         viewModel.getIsCarWashBalanceZero().getValue()) {
                     CardsUtil.showZeroBalanceAlert(getActivity(), buySingleTicketListener, null);
-                } else if (cardDetail.isSuspendedCard()) {
-                    CardsUtil.ShowSuspendedCardAlertForActivateWash(getContext(), Constants.TYPE_WASH);
-                } else if (cardDetail.getBalance() <= 0) {
-                    CardsUtil.showOtherCardAvailableAlert(getContext());
                 } else if (cardDetail.getWashInProgress()) {
                     CardsUtil.showWashInprogressAlert(getContext());
                 } else if (!cardDetail.getCanWash() && cardDetail.getCardType() == CardType.SP) {
@@ -484,7 +484,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
         ExpandedCardItem cardItem = new ExpandedCardItem(getContext(), cardDetail);
         if (cardDetail.isSuspendedCard()) {
             CardsUtil.ShowSuspendedCardAlertForActivateWash(getContext(), Constants.TYPE_VACUUM);
-        } else if (cardDetail.getVacuumRemaining() <= 0) {
+        } else if (cardDetail.isExpiredCard()||cardDetail.getVacuumRemaining() <= 0) {
             CardsUtil.showZeroVacuumAlert(getContext());
         } else if (cardDetail.getVacuumInProgress()) {
             CardsUtil.showVacuumInprogressAlert(getContext());
