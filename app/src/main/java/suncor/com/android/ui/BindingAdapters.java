@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewCompat;
 import androidx.databinding.BindingAdapter;
 import androidx.databinding.InverseBindingListener;
@@ -18,7 +19,9 @@ import androidx.databinding.InverseBindingMethods;
 
 import java.util.HashMap;
 
+import suncor.com.android.R;
 import suncor.com.android.model.station.Station;
+import suncor.com.android.ui.common.SuncorButton;
 import suncor.com.android.uicomponents.SuncorTextInputLayout;
 
 @InverseBindingMethods({
@@ -210,6 +213,15 @@ public class BindingAdapters {
             }
 
             view.setText(sb.toString());
+        }
+    }
+
+    @BindingAdapter({"enableDisable"})
+    public static void setEnableDisableState(SuncorButton button, boolean enabled) {
+        if (enabled) {
+            button.setBackgroundTintList(ContextCompat.getColorStateList(button.getContext(), R.color.red));
+        } else {
+            button.setBackgroundTintList(ContextCompat.getColorStateList(button.getContext(), R.color.black_40));
         }
     }
 

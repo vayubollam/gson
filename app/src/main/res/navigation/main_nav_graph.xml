@@ -108,6 +108,13 @@
             app:enterAnim="@anim/slide_up"
             app:exitAnim="@anim/dummy"
             app:popExitAnim="@anim/slide_down" />
+        <action
+            android:id="@+id/action_rewards_signedin_tab_to_donatePetroPointsFragment"
+            app:destination="@id/donatePetroPointsFragment"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_down"
+            />
     </keep_state_fragment>
 
     <keep_state_fragment
@@ -943,6 +950,10 @@
             app:argType="string" />
     </keep_state_fragment>
 
+    <keep_state_fragment
+        android:id="@+id/donatePetroPointsFragment"
+        android:name="suncor.com.android.ui.main.rewards.donate.DonatePetroPointsFragment"
+        android:label="DonatePetroPointsFragment" />
 
 
 </navigation>

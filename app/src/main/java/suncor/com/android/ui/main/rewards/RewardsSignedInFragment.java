@@ -1,6 +1,5 @@
 package suncor.com.android.ui.main.rewards;
 
-import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Pair;
@@ -13,7 +12,6 @@ import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -237,7 +235,8 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
                     Navigation.findNavController(requireView()).navigate(action);
                 }
             } else if(genericEGiftCard.getGroup().equalsIgnoreCase(Constants.GROUP_DONATE)){
-                // Handling for donate gift card
+                // Handling for donate gift card need to change once listing logic is available.
+                 Navigation.findNavController(requireView()).navigate(R.id.action_rewards_signedin_tab_to_donatePetroPointsFragment);
             }else {
                 RewardsSignedInFragmentDirections.ActionRewardsSignedinTabToMerchantDetailsFragment action = RewardsSignedInFragmentDirections.actionRewardsSignedinTabToMerchantDetailsFragment(genericEGiftCard);
                 Navigation.findNavController(requireView()).navigate(action);

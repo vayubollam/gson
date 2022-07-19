@@ -888,4 +888,13 @@
     <string name="account_deletion_phone_field_required">This field is required!</string>
     <string name="account_deletion_submitted">Submitting</string>
     <string name="different_reason">A different reason:</string>
+
+    <!--  Donate petro points default screen  -->
+    <string name="donate_points_remaining">You have %s points</string>
+    <string name="donate_cate_title_caremakers_foundation">Petro-Canada CareMakers Foundation</string>
+    <string name="donate_subtitle_caremakers">By donating Petro-Points , you are helping organizations across Canada that support family caregivers.</string>
+    <string name="i_am_donating_x_points">I am donating\u0020</string>
+    <string name="x_points">%s points</string>
+    <string name="donation_tax_notice">Donation of Petro-Points is not eligible for tax receipts.</string>
+    <string name="donate_points">DONATE POINTS</string>
 </resources>
