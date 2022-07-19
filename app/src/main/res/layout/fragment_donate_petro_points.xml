@@ -10,6 +10,14 @@
         <variable
             name="petroPoints"
             type="Integer" />
+
+        <variable
+            name="donateAmount"
+            type="Integer" />
+
+        <variable
+            name="vm"
+            type="suncor.com.android.ui.main.rewards.donate.DonatePetroPointsViewModel" />
         <!--Following three variables set for testing only.
          Logic might change with addition of viewModel-->
         <variable
@@ -40,7 +48,7 @@
             android:layout_marginBottom="30dp"
             android:fontFamily="@font/gibson_semibold"
             android:gravity="center"
-            android:text="@{@string/donate_points_remaining(petroPoints.toString())}"
+            android:text="@{@string/donate_points_remaining(vm.getFormattedPoints())}"
             android:textAppearance="@style/Caption1"
             android:textColor="@color/black_60"
             app:layout_constraintBottom_toTopOf="@+id/small_image"
@@ -164,7 +172,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/gibson_semibold"
-                                android:text="@{@string/x_points(petroPoints.toString())}"
+                                android:text="@{@string/x_points(donateAmount.toString())}"
                                 android:maxLines="1"
                                 android:textColor="#eb1d2e"
                                 android:textSize="20sp" />

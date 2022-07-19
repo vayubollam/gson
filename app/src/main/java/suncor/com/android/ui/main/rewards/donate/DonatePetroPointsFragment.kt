@@ -16,23 +16,24 @@ import javax.inject.Inject
 
 class DonatePetroPointsFragment : MainActivityFragment() {
 
-//    @Inject
-//    var viewModelFactory: ViewModelFactory
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
 
     private lateinit var viewModel: DonatePetroPointsViewModel
     private lateinit var binding: FragmentDonatePetroPointsBinding
     private var originalMode : Int? = null
+    private var donateAmount = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        viewModel = ViewModelProvider(this,viewModelFactory).get(DonatePetroPointsViewModel::class.java)
+        viewModel = ViewModelProvider(this,viewModelFactory).get(DonatePetroPointsViewModel::class.java)
         originalMode = activity?.window?.getSoftInputMode()
         activity?.window?.setSoftInputMode(
             WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING
         )
     }
 
-    // TODO: Don't allow the keyboard to resize the layout, make a custom layout for edittext with $ sign, color the points red
+    // TODO: make a custom layout for edittext with $ sign
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -44,7 +45,9 @@ class DonatePetroPointsFragment : MainActivityFragment() {
         binding.enableDeduction = false
         binding.enableDonation = false
         binding.enableIncrement = true
-        binding.petroPoints = 123000000;
+        binding.petroPoints = viewModel.getPetroPoints()
+        binding.donateAmount = donateAmount
+        binding.vm = viewModel
 
         return binding.root
     }
