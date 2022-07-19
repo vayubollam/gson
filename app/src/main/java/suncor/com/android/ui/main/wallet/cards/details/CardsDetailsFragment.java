@@ -39,6 +39,7 @@ import com.google.android.gms.maps.model.LatLng;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+
 import javax.inject.Inject;
 
 import kotlin.Unit;
