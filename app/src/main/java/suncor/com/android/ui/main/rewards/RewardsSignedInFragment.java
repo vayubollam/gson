@@ -28,7 +28,6 @@ import javax.inject.Inject;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentRewardsSignedinBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
-import suncor.com.android.model.Resource;
 import suncor.com.android.model.merchants.Merchant;
 import suncor.com.android.model.redeem.response.MemberEligibilityResponse;
 import suncor.com.android.ui.main.BottomNavigationFragment;
@@ -106,6 +105,7 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
                     MemberEligibilityResponse data = response.data;
                     if (data != null) {
                         isRedeemable = data.getEligible();
+                        viewModel.updatePetroPoints(data.getPointsBalance());
                         petroPointsBalance.set(data.getPointsBalance());
                         adapter.isEligible = isRedeemable;
                         adapter.notifyDataSetChanged();
@@ -113,6 +113,7 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
                     return;
                 case ERROR:
                     adapter.isEligible = false;
+                    petroPointsBalance.set(viewModel.getPetroPointsBalance());
                     adapter.notifyDataSetChanged();
             }
         });

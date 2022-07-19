@@ -17,7 +17,6 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.model.merchants.Merchant;
 import suncor.com.android.model.redeem.response.MemberEligibilityResponse;
 import suncor.com.android.ui.common.Event;
-import suncor.com.android.ui.common.cards.CardFormatUtils;
 
 public class RewardsSignedInViewModel extends ViewModel {
 
@@ -79,8 +78,8 @@ public class RewardsSignedInViewModel extends ViewModel {
 
     public Reward[] getRewards() {
         return rewards;
-
     }
+
     public SessionManager getSessionManager(){
         return sessionManager;
     }
@@ -92,5 +91,22 @@ public class RewardsSignedInViewModel extends ViewModel {
     public LiveData<Resource<MemberEligibilityResponse>> getMemberEligibility(){
         memberEligibilityResponse =  repository.getMemberEligibility();
        return memberEligibilityResponse;
+    }
+
+    public void updatePetroPoints(int pointsBalance) {
+        try {
+            sessionManager.getProfile().setPointsBalance(pointsBalance);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public int getPetroPointsBalance() {
+        try {
+            return sessionManager.getProfile().getPointsBalance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 }
