@@ -19,6 +19,16 @@ public class GenericEGiftCard implements Parcelable {
     private String smallImage;
     private String shortName;
     private String screenName;
+    private String group;
+
+    public String getGroup() {
+        return group;
+    }
+
+    public void setGroup(String group) {
+        this.group = group;
+    }
+
     private boolean isDataDynamic;
     private boolean isMoreGIftCard;
 
