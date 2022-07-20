@@ -252,25 +252,26 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
     private void eCardClicked(GenericEGiftCard genericEGiftCard) {
         try {
             if (genericEGiftCard.isDataDynamic()) {
-            if (genericEGiftCard.getGroup().equalsIgnoreCase(Constants.GROUP_MORE)) {
-                String merchantList = gson.toJson(viewModel.getMerchantList());
-                RewardsSignedInFragmentDirections.ActionRewardsSignedinTabToMoreEGiftCardCategories action = RewardsSignedInFragmentDirections.actionRewardsSignedinTabToMoreEGiftCardCategories();
-                action.setMerchantList(merchantList);
-                NavDestination navDestination = Navigation.findNavController(requireView()).getCurrentDestination();
-                if (navDestination != null && navDestination.getId() == R.id.rewards_signedin_tab) {
-                    Navigation.findNavController(requireView()).navigate(action);
+                if (genericEGiftCard.isMoreGIftCard()) {
+                    String merchantList = gson.toJson(viewModel.getMerchantList());
+                    RewardsSignedInFragmentDirections.ActionRewardsSignedinTabToMoreEGiftCardCategories action = RewardsSignedInFragmentDirections.actionRewardsSignedinTabToMoreEGiftCardCategories();
+                    action.setMerchantList(merchantList);
+                    NavDestination navDestination = Navigation.findNavController(requireView()).getCurrentDestination();
+                    if (navDestination != null && navDestination.getId() == R.id.rewards_signedin_tab) {
+                        Navigation.findNavController(requireView()).navigate(action);
+                    }
+                } else {
+                    RewardsSignedInFragmentDirections.ActionRewardsSignedinTabToMerchantDetailsFragment action = RewardsSignedInFragmentDirections.actionRewardsSignedinTabToMerchantDetailsFragment(genericEGiftCard);
+                    NavDestination navDestination = Navigation.findNavController(requireView()).getCurrentDestination();
+                    if (navDestination != null && navDestination.getId() == R.id.rewards_signedin_tab) {
+                        Navigation.findNavController(requireView()).navigate(action);
+                    }
                 }
-            } else if(genericEGiftCard.getGroup().equalsIgnoreCase(Constants.GROUP_DONATE)){
-                // Handling for donate gift card
-            }else {
-                RewardsSignedInFragmentDirections.ActionRewardsSignedinTabToMerchantDetailsFragment action = RewardsSignedInFragmentDirections.actionRewardsSignedinTabToMerchantDetailsFragment(genericEGiftCard);
+            } else {
+                RewardsSignedInFragmentDirections.ActionRewardsSignedinTabToRewardsDetailsFragment action = RewardsSignedInFragmentDirections.actionRewardsSignedinTabToRewardsDetailsFragment(genericEGiftCard);
                 Navigation.findNavController(requireView()).navigate(action);
-            }
-        } else {
-            RewardsSignedInFragmentDirections.ActionRewardsSignedinTabToRewardsDetailsFragment action = RewardsSignedInFragmentDirections.actionRewardsSignedinTabToRewardsDetailsFragment(genericEGiftCard);
-            Navigation.findNavController(requireView()).navigate(action);
 
-        }
+            }
         } catch (Exception e) {
             Timber.d(e);
         }
