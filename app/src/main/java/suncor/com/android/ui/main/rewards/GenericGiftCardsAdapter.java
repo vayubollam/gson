@@ -76,7 +76,6 @@ public class GenericGiftCardsAdapter extends RecyclerView.Adapter< RecyclerView.
             int imageId = context.getResources().getIdentifier(giftCard.getLargeImage(), "drawable", context.getPackageName());
             binding.setGiftCard(giftCard);
             binding.setImage(context.getDrawable(imageId));
-            binding.executePendingBindings();
 
             binding.cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -86,6 +85,7 @@ public class GenericGiftCardsAdapter extends RecyclerView.Adapter< RecyclerView.
                     }
                 }
             });
+            binding.executePendingBindings();
         }
     }
 
@@ -102,7 +102,6 @@ public class GenericGiftCardsAdapter extends RecyclerView.Adapter< RecyclerView.
             int imageId = context.getResources().getIdentifier(giftCard.getLargeImage(), "drawable", context.getPackageName());
             binding.setImage(context.getDrawable(imageId));
             binding.setGiftCard(giftCard);
-            binding.executePendingBindings();
 
             if(!isEligible){
                 clickListener = null;
@@ -112,8 +111,10 @@ public class GenericGiftCardsAdapter extends RecyclerView.Adapter< RecyclerView.
                 binding.redemptionUnavailableText.setVisibility(View.VISIBLE);
             }else{
                 clickListener = clickListenerForFurtherUse;
+                binding.constraintLayout.setDisabled(false);
+                binding.constraintLayout.setAlpha(1f);
+                binding.title.setAlpha(1f);
                 binding.redemptionUnavailableText.setVisibility(View.GONE);
-
             }
 
             binding.cardView.setOnClickListener(new View.OnClickListener() {
@@ -124,6 +125,8 @@ public class GenericGiftCardsAdapter extends RecyclerView.Adapter< RecyclerView.
                     }
                 }
             });
+
+            binding.executePendingBindings();
         }
     }
 }
