@@ -73,7 +73,6 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        eGiftCardsList.add(0, getGIftCardAt( 0));
         viewModel.merchantsLiveData.observe(getViewLifecycleOwner(), merchants -> {
             if (merchants != null) {
                 for (Merchant m : merchants) {
@@ -101,7 +100,7 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
                 eGiftCardsList.add(3, getGIftCardAt(3));
             }
         });
-
+        eGiftCardsList.add(0, getGIftCardAt( 0));
         adapter = new GenericGiftCardsAdapter(eGiftCardsList, this::eCardClicked, isRedeemable);
         binding.rewardsList.setAdapter(adapter);
 
