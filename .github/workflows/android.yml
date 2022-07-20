@@ -4,8 +4,24 @@ on:
   push:
     tags:
       - "*"
+  permissions:
+    contents: read
+    issues: read
+    checks: write
+    pull-requests: write
 
 jobs:
+
+  test-results:
+    name: Test Results (Sample RUN)
+    if: github.event.workflow_run.conclusion != 'skipped'
+    runs-on: ubuntu-latest
+    permissions:
+      checks: write
+      pull-requests: write
+      # required by download step to access artifacts API
+      actions: read
+
   build:
 
     runs-on: ubuntu-latest
@@ -18,37 +34,37 @@ jobs:
         java-version: '11'
         distribution: 'adopt'
         cache: gradle
-        
+
         # Actions sets GITHUB_REF tag in form refs/tags/QUTCarwash-3.3.0-RC-3.0.0
       # split on '/' and then '-' with awk to get the QUTCarwash part out for SchemeFeature
     - name: Get build Env and Feature from tag
       run: |
           ENV=$(echo ${GITHUB_REF} | awk -F/ '{print $3}' | awk -F- '{print $1}')
           echo BUILD_ENV=$ENV >> $GITHUB_ENV
-          
-    - name: Set KEY_PASSWORD and STORE_PASSWORD  
+
+    - name: Set KEY_PASSWORD and STORE_PASSWORD
       run: |
           echo KEY_PASSWORD=${{ secrets.ANDROIDSECRETKEYPASSWORD }} >> $GITHUB_ENV
           echo STORE_PASSWORD=${{ secrets.ANDROIDSECRETSTOREPASSWORD }}  >> $GITHUB_ENV
-      
+
     - name: Get FULL_DATE
       run: |
           echo FULL_DATE=$(TZ="Canada/Eastern" date) >> $GITHUB_ENV
     - name: Get SHORT_DATE
       run: |
           echo SHORT_DATE=$(TZ="Canada/Eastern" date +%Y%m%d%H) >> $GITHUB_ENV
-          
+
     # this gets the first 6 characters of the git hash, used for labelling
     - name: Get short hash
       run: |
           short=${GITHUB_SHA::6}
           echo SHORT_HASH=$short >> $GITHUB_ENV
-          
+
     - name: Echo env for logs
       run: |
           echo BUILD_ENV=$BUILD_ENV
           echo SHORT_HASH=$SHORT_HASH
-   
+
     - name: Update app buildSettings.properties to show build date
       run: |
           sed -i -e 's/__BUILD_DATE__/${{ env.FULL_DATE }}/g' "app/src/main/assets/buildSettings.properties"
@@ -80,7 +96,64 @@ jobs:
       run: ./gradlew clean
     - name: Compile and Build
       run: ./gradlew assemble${{ env.BUILD_ENV }}Release
-   
+
+    - name: Download and Extract Artifacts
+      env:
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      run: |
+        mkdir -p artifacts && cd artifacts
+        artifacts_url=${{ github.event.workflow_run.artifacts_url }}
+        gh api "$artifacts_url" -q '.artifacts[] | [.name, .archive_download_url] | @tsv' | while read artifact
+        do
+          IFS=$'\t' read name url <<< "$artifact"
+          gh api $url > "$name.zip"
+          unzip -d "$name" "$name.zip"
+        done
+
+    - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action/composite@master-2.x
+        with:
+          commit: ${{ github.event.workflow_run.head_sha }}
+          check_name: Test Results (reference)
+          event_file: artifacts/Event File/event.json
+          event_name: ${{ github.event.workflow_run.event }}
+          check_run_annotations_branch: "master, devel-1.0, devel-2.0"
+          files: "artifacts/**/*.xml"
+          log_level: DEBUG
+    - name: Set badge color
+      shell: bash
+      run: |
+        case ${{ fromJSON( steps.test-results.outputs.json ).conclusion }} in
+          success)
+            echo "BADGE_COLOR=31c653" >> $GITHUB_ENV
+            ;;
+          failure)
+            echo "BADGE_COLOR=800000" >> $GITHUB_ENV
+            ;;
+          neutral)
+            echo "BADGE_COLOR=696969" >> $GITHUB_ENV
+            ;;
+        esac
+
+    - name: Create badge
+        uses: emibcn/badge-action@d6f51ff11b5c3382b3b88689ae2d6db22d9737d1
+        with:
+          label: Tests
+          status: '${{ fromJSON( steps.test-results.outputs.json ).formatted.stats.tests }} tests, ${{ fromJSON( steps.test-results.outputs.json ).formatted.stats.runs }} runs: ${{ fromJSON( steps.test-results.outputs.json ).conclusion }}'
+          color: ${{ env.BADGE_COLOR }}
+          path: badge.svg
+
+    - name: Upload badge to Gist
+        # Upload only for master branch
+        if: >
+          github.event_name == 'workflow_run' && github.event.workflow_run.head_branch == 'master' ||
+          github.event_name != 'workflow_run' && github.ref == 'refs/heads/master'
+        uses: andymckay/append-gist-action@1fbfbbce708a39bd45846f0955ed5521f2099c6d
+        with:
+          token: ${{ secrets.GIST_TOKEN }}
+          gistURL: https://gist.githubusercontent.com/EnricoMi/612cb538c14731f1a8fefe504f519395
+          file: badge.svg
+
     - name: Upload Artifact
       uses: actions/upload-artifact@v2.2.0
       with:
