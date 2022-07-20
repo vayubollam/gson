@@ -167,12 +167,28 @@ public class SettingsResponse {
         @SerializedName("VACUUM_SCAN_BARCODE")
         private boolean vacuumScanBarcode;
 
+        @SerializedName("CARWASH_RELOAD")
+        private boolean carWashReload;
+
+        @SerializedName("DONATE_PETRO_POINTS")
+        private boolean donatePetroPoints;
+
         public boolean isVacuumScanBarcode() {
             return vacuumScanBarcode;
         }
 
-        public void setVacuumScanBarcode(boolean vacuumScanBarcode) {
+        public boolean isDonatePetroPoints() {
+            return donatePetroPoints;
+        }
+
+        public boolean isCarWashReload() {
+            return carWashReload;
+        }
+
+        public void setVacuumScanBarcode(boolean vacuumScanBarcode, boolean donatePetroPoints, boolean carWashReload) {
             this.vacuumScanBarcode = vacuumScanBarcode;
+            this.donatePetroPoints = donatePetroPoints;
+            this.carWashReload = carWashReload;
         }
     }
 }

@@ -35,12 +35,26 @@ public class ExpandedCardItem {
     private int height = 0;
     private int vacuumRemaining;
     private int balanceRemaining;
+    private boolean canWash;
+    private boolean canVacuum;
+    private String lastWashStoreId;
+    private String lastVacuumSiteId;
+    private boolean washInProgress;
+    private boolean vacuumInProgress;
+    private String  lastWashDt;
+    private String  lastVacuumDt;
+    private boolean timer;
 
     public ExpandedCardItem(Context context, CardDetail cardDetail) {
         this.cardDetail = cardDetail;
         this.cardType = cardDetail.getCardType();
         this.cardCategory = cardDetail.getCardCategory();
         this.vacuumRemaining = cardDetail.getVacuumRemaining();
+        this.vacuumInProgress = cardDetail.getVacuumInProgress();
+        this.washInProgress = cardDetail.getWashInProgress();
+        this.canVacuum = cardDetail.getCanVacuum();
+        this.canWash = cardDetail.getCanWash();
+        this.timer = cardDetail.isTimerInProgress();
         if (cardDetail.getCardCategory() == CardDetail.CardCategory.PARTNER) {
             balance = context.getString(R.string.cards_partners_balance_template, context.getString(R.string.cards_partners_balance_value));
             isBalanceDetailsVisible = false;
@@ -251,5 +265,77 @@ public class ExpandedCardItem {
 
     public boolean isWashBalanceZero() {
         return balanceRemaining == 0;
+    }
+
+    public boolean isCanWash() {
+        return canWash;
+    }
+
+    public void setCanWash(boolean canWash) {
+        this.canWash = canWash;
+    }
+
+    public boolean isCanVacuum() {
+        return canVacuum;
+    }
+
+    public void setCanVacuum(boolean canVacuum) {
+        this.canVacuum = canVacuum;
+    }
+
+    public String getLastWashStoreId() {
+        return lastWashStoreId;
+    }
+
+    public void setLastWashStoreId(String lastWashStoreId) {
+        this.lastWashStoreId = lastWashStoreId;
+    }
+
+    public String getLastVacuumSiteId() {
+        return lastVacuumSiteId;
+    }
+
+    public void setLastVacuumSiteId(String lastVacuumSiteId) {
+        this.lastVacuumSiteId = lastVacuumSiteId;
+    }
+
+    public boolean isWashInProgress() {
+        return washInProgress;
+    }
+
+    public void setWashInProgress(boolean washInProgress) {
+        this.washInProgress = washInProgress;
+    }
+
+    public boolean isVacuumInProgress() {
+        return vacuumInProgress;
+    }
+
+    public void setVacuumInProgress(boolean vacuumInProgress) {
+        this.vacuumInProgress = vacuumInProgress;
+    }
+
+    public String getLastWashDt() {
+        return lastWashDt;
+    }
+
+    public void setLastWashDt(String lastWashDt) {
+        this.lastWashDt = lastWashDt;
+    }
+
+    public String getLastVacuumDt() {
+        return lastVacuumDt;
+    }
+
+    public void setLastVacuumDt(String lastVacuumDt) {
+        this.lastVacuumDt = lastVacuumDt;
+    }
+
+    public boolean isTimer() {
+        return timer;
+    }
+
+    public void setTimer(boolean timer) {
+        this.timer = timer;
     }
 }
