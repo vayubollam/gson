@@ -182,6 +182,10 @@ public class CardDetail {
         return (status != null && (status.equals("Suspended") || status.equals("Cancelled")));
     }
 
+    public boolean isExpiredCard() {
+        return (status != null &&  (status.equals("Expired") || status.equals("Depleted")));
+    }
+
     public int getVacuumRemaining() {
         return vacuumRemaining;
     }

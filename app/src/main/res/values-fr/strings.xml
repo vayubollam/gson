@@ -611,6 +611,9 @@
     <string name="zero_balance_alert_view">Voir les détails</string>
     <string name="zero_balance_other_available_message">Votre carte semble vide. Ne vous inquiétez pas - vous avez d\'autres options dans votre compte.</string>
 
+    <string name="zero_balance_vacuum_alert_title">Vous n\'avez plus d\'utilisation de l\'aspirateur</string>
+    <string name="zero_balance_vacuum_alert_message">On dirait que vous n\'avez plus d\'utilisation de l\'aspirateur gratuite.\nPas de soucis - Vous pouvez visiter le site Web pour ajouter plus de lavages et obtenir plus d\'utilisations de l\'aspirateur.</string>
+
     <string name="account_page_header">Compte</string>
 
     <string name="tutorial_silde_page1_header">Tout nouveau menu</string>
@@ -760,6 +763,9 @@
     <string name="reload_card_alert_visit_web">visiter le web</string>
     <string name="petro_canada_reload_url">https://www.petro-canada.ca/fr/personnel/mes-petro-points?modalUrl=%2Ffr%2Fpersonnel%2Fmes-petro-points%2Frecharger%2Frecharger-carte</string>
 
+    <!--vacuum reload -->
+    <string name="petro_vacuum_canada_reload_url">https://www.petro-canada.ca/fr/personnel/mes-petro-points?returnUrl=/fr/personnel/lave-auto</string>
+
     <string name="select_value">Valeur</string>
     <string name="authorization_petropoints_balance">Vous commencez à %s points</string>
 
@@ -778,6 +784,8 @@
     <string name="carwash_zero_error_alert_error_message">Cette carte n\'est plus valide.</string>
     <string name="carwash_zero_alert_close">Annuler</string>
     <string name="carwash_zero_alert_buy">Visiter le site Web</string>
+
+    <string name="carwash_zero_vacuum_error_alert_title">Impossible d\'activer l\'aspirateur</string>
 
     <string name="carwash_daily_vacuum_used_alert">Utilisation quotidienne de l\'aspirateur effectuée</string>
     <string name="carwash_daily_vacuum_used_message">Votre utilisation de l\'aspirateur pour la journée a été faite à %s à %s.</string>
