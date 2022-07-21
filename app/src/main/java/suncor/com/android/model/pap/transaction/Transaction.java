@@ -374,7 +374,7 @@ public class Transaction {
                 return TransactionStatus.NO_REDEMPTION;
 
             // Under-pump and points redeemed == actual Fuel-up Amount in points
-            if (isUnderPump && getPointsRedeemed() == subtotal * 1000) {
+            if (isUnderPump && getPointsRedeemed() == (int) (subtotal * 1000.0)) {
                 return TransactionStatus.NORMAL;
             } else {
                 return TransactionStatus.PARTIAL_REDEMPTION;

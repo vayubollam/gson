@@ -133,5 +133,17 @@ public class TransactionTest {
         assertEquals( transaction.getTransactionStatus("100000","120"), Transaction.TransactionStatus.NORMAL );
     }
 
+    // Double value checks
+    @Test
+    public void getTransactionStatus_UnderPump_fuel_10_pump_407_redeem_4_070_get_100_000_returns_Normal() {
+        Transaction transaction = new Transaction();
+        transaction.setTestValues(
+                4.07,
+                false,
+                4070
+        );
+        assertEquals( transaction.getTransactionStatus("5000","10"), Transaction.TransactionStatus.NORMAL );
+    }
+
 
 }
