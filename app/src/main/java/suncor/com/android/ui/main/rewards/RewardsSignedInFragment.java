@@ -98,9 +98,10 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
                 }
 
                 eGiftCardsList.add(3, getGIftCardAt(3));
+                eGiftCardsList.add(0, getGIftCardAt( 0));
             }
         });
-        eGiftCardsList.add(0, getGIftCardAt( 0));
+
         adapter = new GenericGiftCardsAdapter(eGiftCardsList, this::eCardClicked, isRedeemable);
         binding.rewardsList.setAdapter(adapter);
 
@@ -279,34 +280,10 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
 
     }
 
-    private void mapRewardsListIntoGeneric(ArrayList<Reward> rewardsList) {
-
-        eGiftCardsList.clear();
-
-        for (Reward reward : rewardsList) {
-            if (!reward.getName().equals(Constants.E_GIFT_CARD)) {
-                GenericEGiftCard giftCard = new GenericEGiftCard();
-                giftCard.setName(reward.getName());
-                giftCard.setPoints(reward.getPoints());
-                giftCard.setTitle(reward.getTitle());
-                giftCard.setSubtitle(reward.getSubtitle());
-                giftCard.setHowToUse(reward.getDescription());
-                giftCard.setLargeImage(reward.getLargeImage());
-                giftCard.setSmallImage(reward.getSmallImage());
-                giftCard.setDataDynamic(false);
-                giftCard.setMoreGIftCard(false);
-
-                eGiftCardsList.add(giftCard);
-            }
-
-        }
-
-    }
-
-    public GenericEGiftCard getGIftCardAt(int index) {
+    public GenericEGiftCard getGIftCardAt(int index){
         GenericEGiftCard eGiftCard = new GenericEGiftCard();
 
-        switch (index) {
+        switch (index){
             case 0:
                 eGiftCard.setSmallImage(Constants.DONATE_IMAGE_SMALL);
                 eGiftCard.setLargeImage(Constants.DONATE_IMAGE_LARGE);
@@ -332,6 +309,7 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
                 eGiftCard.setHowToUse(getResources().getString(R.string.rewards_signedin_redeeming_your_rewards_desc_dining_card));
                 eGiftCard.setDataDynamic(true);
                 eGiftCard.seteGifts(null);
+                eGiftCard.setGroup(Constants.GROUP_MORE);
                 eGiftCard.setScreenName(Constants.MORE_GIFT_CARD_SCREEN_NAME);
                 eGiftCard.setShortName(Constants.MORE_GIFT_CARD_SHORT_NAME);
                 break;
@@ -339,4 +317,30 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
 
         return eGiftCard;
     }
+
+    private void mapRewardsListIntoGeneric(ArrayList<Reward> rewardsList) {
+
+        eGiftCardsList.clear();
+
+        for (Reward reward : rewardsList) {
+            if (!reward.getName().equals(Constants.E_GIFT_CARD)) {
+                GenericEGiftCard giftCard = new GenericEGiftCard();
+                giftCard.setName(reward.getName());
+                giftCard.setPoints(reward.getPoints());
+                giftCard.setTitle(reward.getTitle());
+                giftCard.setSubtitle(reward.getSubtitle());
+                giftCard.setHowToUse(reward.getDescription());
+                giftCard.setLargeImage(reward.getLargeImage());
+                giftCard.setSmallImage(reward.getSmallImage());
+                giftCard.setDataDynamic(false);
+                giftCard.setMoreGIftCard(false);
+                giftCard.setGroup(Constants.GROUP_REWARDS);
+
+                eGiftCardsList.add(giftCard);
+            }
+
+        }
+
+    }
+
 }
