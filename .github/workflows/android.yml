@@ -169,7 +169,7 @@ jobs:
 
       # this on failure, the workflow does not fail even if this upload fails but throws the error on email
     - name: Announce if build fails with info
-      uses: actions/failure-info@v2
+      uses: actions/setup-java@v2
       if_error_or_failure:
         if: >-
           github.event.state == 'error' ||
