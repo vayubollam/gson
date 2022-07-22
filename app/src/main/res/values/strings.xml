@@ -893,5 +893,6 @@
     <string name="account_deletion_different_reason_validation">This field cannot be left blank if selected !</string>
     <string name="account_deletion_phone_field_required">This field is required!</string>
     <string name="account_deletion_submitted">Submitting</string>
-    <string name="different_reason">A different reason:</string>
+    <string name="different_reason_one">A different reason:</string>
+    <string name="different_reason_two">A different reason:</string>
 </resources>
