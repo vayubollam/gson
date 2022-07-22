@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -415,13 +416,27 @@ public class HomeFragment extends BottomNavigationFragment {
 
         if (mViewModel.isUserLoggedIn()) {
             getView().post(() -> {
-                int flags = getActivity().getWindow().getDecorView().getSystemUiVisibility();
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    flags &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+                if (getActivity() != null){
+                    int flags = getActivity().getWindow().getDecorView().getSystemUiVisibility();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        flags &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+                    }
+                    getActivity().getWindow().getDecorView().setSystemUiVisibility(flags);
                 }
-                getActivity().getWindow().getDecorView().setSystemUiVisibility(flags);
             });
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(getActivity() != null){
+            int flags = getActivity().getWindow().getDecorView().getSystemUiVisibility();
+            flags |= View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
+            getActivity(). getWindow().getDecorView().setSystemUiVisibility(flags);
+            getActivity().getWindow().setStatusBarColor(Color.TRANSPARENT);
+        }
+
     }
 
     @Override
