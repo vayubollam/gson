@@ -112,6 +112,9 @@ public class GenericGiftCardsAdapter extends RecyclerView.Adapter< RecyclerView.
                 binding.redemptionUnavailableText.setVisibility(View.VISIBLE);
             }else{
                 clickListener = clickListenerForFurtherUse;
+                binding.constraintLayout.setDisabled(false);
+                binding.constraintLayout.setAlpha(1f);
+                binding.title.setAlpha(1f);
                 binding.redemptionUnavailableText.setVisibility(View.GONE);
 
             }
