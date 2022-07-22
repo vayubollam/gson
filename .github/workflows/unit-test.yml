@@ -19,6 +19,20 @@ jobs:
         run: ./gradlew testDebugUnitTest
         continue-on-error: true # IMPORTANT: allow pipeline to continue to Android Test Report step
 
+      # this on failure, the workflow does not fail even if this upload fails but throws the error on email
+      - name: Announce if build fails with info
+        uses: actions/failure-info@v2
+        if_error_or_failure:
+          if: >-
+            github.event.state == 'error' ||
+            github.event.state == 'failure'
+          steps:
+            - env:
+                DESCRIPTION: ${{ github.event.description }}
+              run: |
+                echo The status is error or failed: $DESCRIPTION
+                echo gh run view --job job-id --log-failed | grep error
+
       - name: Add coverage to PR
         uses: sonarsource/sonarqube-scan-action@master
         env:
