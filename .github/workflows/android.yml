@@ -18,8 +18,10 @@ jobs:
           DESCRIPTION: ${{ github.event.description }}
         run: |
           echo The status is error or failed: $DESCRIPTION
+          echo gh run view --job job-id --log-failed | grep error
 
   build:
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
@@ -177,21 +179,6 @@ jobs:
         APPCNTR_USERNAME="${{ secrets[env.APPCNTR_USERNAME]}}"
         APPCNTR_PASSWORD="${{ secrets[env.APPCNTR_PASSWORD]}}"
         java -Dhttp.agent='Mozilla/5.0 (Windows NT 6.1)' -cp 'applicationcenterdeploytool.jar:json4j.jar' com.ibm.appcenter.Upload -l 'Petro-Canada ${{env.BUILD_SCHEME}}' -s "$APPCNTR_URL" -c applicationcenter -u "$APPCNTR_USERNAME" -p "$APPCNTR_PASSWORD" -e -isActive true -isInstaller true -f app/build/outputs/apk/${{ env.BUILD_ENV }}/release/*.apk
-
-      # this on failure, the workflow does not fail even if this upload fails but throws the error on email
-    - name: Announce if build fails with info
-      uses: actions/setup-java@v2
-      if_error_or_failure:
-        if: >-
-          github.event.state == 'error' ||
-          github.event.state == 'failure'
-        steps:
-          - name: Get the Description or info
-          - env:
-              DESCRIPTION: ${{ github.event.description }}
-            run: |
-              echo The status is error or failed: $DESCRIPTION
-              echo gh run view --job job-id --log-failed | grep error
 
     - name: Setup JFrog
       uses: jfrog/setup-jfrog-cli@v1
