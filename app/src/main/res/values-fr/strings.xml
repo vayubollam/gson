@@ -426,7 +426,7 @@
     <string name="offers_leaving_app_alert_button">Continuer</string>
     <string name="rbc_url">https://www.rbcbanqueroyale.com/petro-canada/index.html?suncor&amp;utm_source=suncor&amp;utm_medium=3pb&amp;utm_campaign=petrocanada_3cpl&amp;utm_content=pc_app_link</string>
     <string name="transaction_type_pp">Petro Points</string>
-    <string name="rewards_guest_join_button">Inscrivez-vous et commencez à économiser</string>
+    <string name="rewards_guest_join_button">Inscrivez-vous pour économiser</string>
     <string name="navigation_rewards_tab">Petro-Points</string>
     <string name="cards_remove_card_alert_title">Êtes-vous sûr?</string>
     <string name="cards_remove_card_alert_message">Cela supprimera la carte de votre compte et tout solde résiduel ne sera plus protégé.</string>
