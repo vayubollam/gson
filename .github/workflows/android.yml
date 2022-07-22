@@ -170,7 +170,6 @@ jobs:
       # this on failure, the workflow does not fail even if this upload fails but throws the error on email
     - name: Announce if build fails with info
       if_error_or_failure:
-        runs-on: ubuntu-latest
         if: >-
           github.event.state == 'error' ||
           github.event.state == 'failure'
