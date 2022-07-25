@@ -19,9 +19,10 @@ sonarqube {
         property "sonar.exclusions", "**/*.png,**/*.cer,**/RS*"
         property "sonar.coverage.jacoco.xmlReportPaths", "$buildDir/reports/jacoco/test/jacocoTestReport.xml"
         property "sonar.junit.reportPaths", "$buildDir/test-results/test/"
-        property "sonar.exclusions", "**/xmldefs/**,**/spec/api.json"
-        property "sonar.dynamicAnalysis", "reuseReports"
-        property "sonar.java.coveragePlugin", "clover"
-        property "sonar.tests", "."
+        property "sonar.exclusions", '**/*Test*/**,' +
+                '*.json,' +
+                '**/*test*/**,' +
+                '**/.gradle/**,' +
+                '**/R.class'
     }
 }
