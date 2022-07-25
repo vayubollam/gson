@@ -5,6 +5,7 @@ import android.content.res.AssetManager;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DecimalFormat;
 
 public class CommonUtils {
 
@@ -24,4 +25,8 @@ public class CommonUtils {
         return json;
     }
 
+    public static String getFormattedPoints(int enrollmentsPoints){
+        DecimalFormat formatter = new DecimalFormat("#,###,###");
+        return formatter.format(enrollmentsPoints);
+    }
 }

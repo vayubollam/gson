@@ -4,9 +4,12 @@ package suncor.com.android.ui.main.wallet.cards.details;
 import android.content.Context;
 import android.os.Handler;
 
+import androidx.arch.core.util.Function;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
 import java.util.ArrayList;
@@ -28,7 +31,10 @@ import suncor.com.android.model.cards.CardDetail;
 import suncor.com.android.model.cards.CardType;
 import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.main.wallet.cards.CardsLoadType;
+import suncor.com.android.utilities.SharedPrefsHelper;
+import suncor.com.android.utilities.SingleLiveEvent;
 import suncor.com.android.utilities.Timber;
+import suncor.com.android.utilities.UserLocalSettings;
 
 public class CardDetailsViewModel extends ViewModel {
 
@@ -43,6 +49,13 @@ public class CardDetailsViewModel extends ViewModel {
     private MutableLiveData<Boolean> isCarWashBalanceZero = new MutableLiveData<>();
     private MutableLiveData<Boolean> isInitialCall = new MutableLiveData<>();
     private MutableLiveData<Integer> clickedCardIndex = new MutableLiveData<>();
+    private MutableLiveData<Boolean> _vacuumVisibility = new MutableLiveData<Boolean>(false);
+    private MediatorLiveData<Boolean> _vacuumVisibilityViewState = new MediatorLiveData<Boolean>();
+    public LiveData<Boolean> vacuumVisibilityViewState = _vacuumVisibilityViewState;
+    private SingleLiveEvent<Void> _callSettingApiEvent = new SingleLiveEvent<>();
+    public LiveData<Void> callSettingApiEvent = _callSettingApiEvent;
+
+
     private String newlyAddedCardNumber;
     private final SettingsApi settingsApi;
     final int interval = 360000;
@@ -54,6 +67,16 @@ public class CardDetailsViewModel extends ViewModel {
         this.cardsRepository = cardsRepository;
         this.sessionManager = sessionManager;
         this.settingsApi = settingsApi;
+        _vacuumVisibilityViewState.addSource(_vacuumVisibility, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean == null) {
+                    _callSettingApiEvent.call();
+                } else {
+                    _vacuumVisibilityViewState.setValue(aBoolean);
+                }
+            }
+        });
     }
 
     public void retrieveCards() {
@@ -207,8 +230,13 @@ public class CardDetailsViewModel extends ViewModel {
         return loyalityData;
     }
 
-    public LiveData<Resource<SettingsResponse>> getSettings() {
-        return settingsApi.retrieveSettings();
+    public void getVacuumStatus() {
+        Boolean vacuumResponse = sessionManager.getVacuumToggle();
+        _vacuumVisibility.postValue(vacuumResponse);
+    }
+
+    public LiveData<Resource<SettingsResponse>> getSettingsFromRemote() {
+       return settingsApi.retrieveSettings();
     }
 
     protected void setRecurringService(String cardNumber, CardType cardType,boolean initCall) {

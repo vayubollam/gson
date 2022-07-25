@@ -2,9 +2,12 @@ package suncor.com.android.model.account;
 
 import androidx.annotation.Nullable;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.text.ParseException;
 
 import suncor.com.android.BuildConfig;
+import suncor.com.android.model.SettingsResponse;
 import suncor.com.android.utilities.DateUtils;
 import suncor.com.android.utilities.Timber;
 
@@ -25,6 +28,8 @@ public class Profile {
     private String retailId;
     private boolean rbcLinked;
     private String accountDeleteDateTime;
+    @SerializedName("toggleFeature")
+    public ToggleFeature toggleFeature;
 
     public String getRetailId() {
         return retailId;
@@ -68,6 +73,14 @@ public class Profile {
 
     public void setPetroPointsNumber(String petroPointsNumber) {
         this.petroPointsNumber = petroPointsNumber;
+    }
+
+    public ToggleFeature getToggleFeature() {
+        return toggleFeature;
+    }
+
+    public void setToggleFeature(ToggleFeature toggleFeature) {
+        this.toggleFeature = toggleFeature;
     }
 
     public int getPointsBalance() {
@@ -173,5 +186,34 @@ public class Profile {
         StringBuilder sb = new StringBuilder(streetAddress);
         sb.append(",").append(city).append(",").append(province).append(",").append(postalCode);
         return sb.toString();
+    }
+
+    public static class ToggleFeature {
+        @SerializedName("VACUUM_SCAN_BARCODE")
+        private boolean vacuumScanBarcode;
+
+        @SerializedName("CARWASH_RELOAD")
+        private boolean carWashReload;
+
+        @SerializedName("DONATE_PETRO_POINTS")
+        private boolean donatePetroPoints;
+
+        public boolean isVacuumScanBarcode() {
+            return vacuumScanBarcode;
+        }
+
+        public boolean isDonatePetroPoints() {
+            return donatePetroPoints;
+        }
+
+        public boolean isCarWashReload() {
+            return carWashReload;
+        }
+
+        public void setVacuumScanBarcode(boolean vacuumScanBarcode, boolean donatePetroPoints, boolean carWashReload) {
+            this.vacuumScanBarcode = vacuumScanBarcode;
+            this.donatePetroPoints = donatePetroPoints;
+            this.carWashReload = carWashReload;
+        }
     }
 }
