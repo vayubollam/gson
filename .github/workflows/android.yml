@@ -1,7 +1,6 @@
 name: Android CI
 
 on:
-  workflow_dispatch:
   pull_request:
     branches: [ master ]
   push:
@@ -202,7 +201,6 @@ jobs:
         ./build.sh --log-path ${{ runner.temp }}/build_logs
     - name: Upload logs on fail
       if: ${{ failure() }}
-      uses: actions/upload-artifact@v3
-      with:
-        name: Build failure logs
-        path: ${{ runner.temp }}/build_logs
+      run: |
+        echo The status is error or failed: $DESCRIPTION
+        echo gh run view --job job-id --log-failed | grep error
