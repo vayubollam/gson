@@ -2,13 +2,11 @@ sonarqube {
 
     properties {
         property "sonar.projectKey", "SEApplicationsOrg_rfmp-suncor-android-petro-canada-app"
-        property "sonar.projectName", "suncor.com.android"
         def libraries = project.android.sdkDirectory.getPath() + "/platforms/android-23/android.jar"
         if (project.plugins.hasPlugin('com.android. application')) {
             "build/intermediates/exploded-aar/**/classes.jar"
         }
         property "sonar.sources", "src/main/java"
-        property "sonar.sources", "src/test/java"
         // Analyze tests classes
         if (project.plugins.hasPlugin('com.android.application')) {
             property "sonar.tests", "src/test/java, src/androidTest/java"
@@ -18,12 +16,5 @@ sonarqube {
         property "sonar.exclusions", "**/databinding/**/*.*, **/android/databinding/*Binding.*"
         property "sonar.exclusions", "**/BuildConfig.*, **/Manifest*.*,**/*Module_*Factory.*"
         property "sonar.exclusions", "**/*.png,**/*.cer,**/RS*"
-        property "sonar.coverage.jacoco.xmlReportPaths", "$buildDir/reports/jacoco/test/jacocoTestReport.xml"
-        property "sonar.junit.reportPaths", "$buildDir/test-results/test/"
-        property "sonar.exclusions", '**/*Test*/**,' +
-                '*.json,' +
-                '**/*test*/**,' +
-                '**/.gradle/**,' +
-                '**/R.class'
     }
 }

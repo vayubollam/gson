@@ -1,8 +1,6 @@
 name: Android CI
 
 on:
-  pull_request:
-    branches: [ master ]
   push:
     tags:
       - "*"
@@ -211,6 +209,6 @@ jobs:
       - name: Needs context
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NEEDS_CONTEXT: ${{ toJSON(needs.build.outputs) }}
+          NEEDS_CONTEXT: ${{ toJSON(needs) }}
         run: |
           echo "$NEEDS_CONTEXT"
