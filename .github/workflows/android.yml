@@ -202,6 +202,7 @@ jobs:
     steps:
       - name: Needs context
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NEEDS_CONTEXT: ${{ toJSON(needs) }}
         run: |
           echo "$NEEDS_CONTEXT"
