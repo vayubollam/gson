@@ -8,6 +8,17 @@ on:
       - "*"
 
 jobs:
+  sonar:
+    name: SonarQube
+    runs-on: poc-runner
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: sonarsource/sonarqube-scan-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
 
   test-case-analysis:
     runs-on: ubuntu-latest
@@ -206,4 +217,4 @@ jobs:
           NEEDS_CONTEXT: ${{ toJSON(needs) }}
         run: |
           echo "$NEEDS_CONTEXT"
-          gh run view --job build --log-failed | grep error
+          echo "$gh run view --job build --log-failed | grep What went wrong"
