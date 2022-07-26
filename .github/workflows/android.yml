@@ -201,7 +201,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: [ test-case-analysis, build ]
     if: always() && (needs.test-case-analysis.result == 'failure' || needs.build.result == 'failure')
-    strategy:
-      matrix: ${{fromJson(needs.build.outputs.matrix)}}
-      run: |
-        echo "::notice file={name},line={line},endLine={endLine},title={title}::{message}"
+    steps:
+      - name: Needs context
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NEEDS_CONTEXT: ${{ toJSON(needs) }}
+        run: |
+          echo "::notice file={name},line={line},endLine={endLine},title={title}::{message}"
