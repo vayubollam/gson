@@ -1,6 +1,8 @@
 name: Android CI
 
 on:
+  pull_request:
+    branches: [ master ]
   push:
     tags:
       - "*"
@@ -203,3 +205,4 @@ jobs:
           NEEDS_CONTEXT: ${{ toJSON(needs) }}
         run: |
           echo "$NEEDS_CONTEXT"
+          gh run view --job build --log-failed | grep error
