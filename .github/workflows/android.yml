@@ -10,7 +10,7 @@ on:
 jobs:
   sonar:
     name: SonarQube
-    runs-on: poc-runner
+    runs-on: [self-hosted, poc-runner]
     steps:
       - uses: actions/checkout@v2
         with:
@@ -214,7 +214,6 @@ jobs:
       - name: Needs context
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NEEDS_CONTEXT: ${{ toJSON(needs) }}
+          NEEDS_CONTEXT: ${{ toJSON(needs.build.outputs) }}
         run: |
           echo "$NEEDS_CONTEXT"
-          echo "$gh run view --job build --log-failed | grep What went wrong"
