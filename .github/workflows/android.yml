@@ -207,4 +207,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NEEDS_CONTEXT: ${{ toJSON(needs) }}
         run: |
-          echo "::notice file=Error,title=What Went Wrong::$(echo ${{failure()}})"
+          echo "::notice file=Error,title=What Went Wrong::$(echo failure())"
