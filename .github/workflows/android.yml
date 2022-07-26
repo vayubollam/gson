@@ -8,27 +8,23 @@ on:
       - "*"
 
 jobs:
-  sonar:
-    name: SonarQube
+  test-case-analysis:
     runs-on: [self-hosted, poc-runner]
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - uses: sonarsource/sonarqube-scan-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-
-  test-case-analysis:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
 
       - name: Unit Test
         run: ./gradlew testDebugUnitTest
         continue-on-error: true # IMPORTANT: allow pipeline to continue to Android Test Report step
+
+      - name: SonarCloud Scan
+          uses: sonarsource/sonarqube-scan-action@master
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+            SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
 
   build:
     runs-on: ubuntu-latest
