@@ -133,5 +133,71 @@ public class TransactionTest {
         assertEquals( transaction.getTransactionStatus("100000","120"), Transaction.TransactionStatus.NORMAL );
     }
 
+    // Double value checks
+    @Test
+    public void getTransactionStatus_UnderPump_fuel_10_pump_407_redeem_4_070_get_100_000_returns_Normal() {
+        Transaction transaction = new Transaction();
+        transaction.setTestValues(
+                4.07,
+                false,
+                4070
+        );
+        assertEquals( transaction.getTransactionStatus("5000","10"), Transaction.TransactionStatus.NORMAL );
+    }
+
+    /*
+    * Fuel : 10.45
+    * Pump : 5.60
+    * Redeem: 10.45
+    * Get: 5.59
+    * */
+    @Test
+    public void getTransactionStatus_Underpump_partial_redemption(){
+        Transaction transaction = new Transaction();
+        transaction.setTestValues(
+                5.60,
+                false,
+                5590
+        );
+        assertEquals( transaction.getTransactionStatus("10450","10.45"), Transaction.TransactionStatus.PARTIAL_REDEMPTION );
+
+    }
+
+    /*
+    * Fuel : 10.45
+    * Pump : 5.60
+    * Redeem: 10.45
+    * Get: 0
+    * */
+    @Test
+    public void getTransactionStatus_Underpump_No_Redemption(){
+        Transaction transaction = new Transaction();
+        transaction.setTestValues(
+                5.60,
+                false,
+                0
+        );
+        assertEquals( transaction.getTransactionStatus("10450","10.45"), Transaction.TransactionStatus.NO_REDEMPTION );
+
+    }
+
+    /*
+    * Fuel : 10.45
+    * Pump : 5.60
+    * Redeem: 0
+    * Get: 0
+    * */
+    @Test
+    public void getTransactionStatus_Underpump_No_Redeem_normal(){
+        Transaction transaction = new Transaction();
+        transaction.setTestValues(
+                5.60,
+                false,
+                0
+        );
+        assertEquals( transaction.getTransactionStatus("0","10.45"), Transaction.TransactionStatus.NORMAL );
+
+    }
+
 
 }
