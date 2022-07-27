@@ -82,7 +82,7 @@ public class SettingsResponse {
         }
 
         public Integer getEnrollmentBonus() {
-            return enrollmentBonus;
+            return (enrollmentBonus != null) ? enrollmentBonus : 0;
         }
     }
 
@@ -127,7 +127,7 @@ public class SettingsResponse {
         private int otherAmountHighLimit;
         private int otherAmountLowLimit;
         private int geofenceDistanceMeters;
-        private HashMap<String,String> preAuthLimits;
+        private HashMap<String, String> preAuthLimits;
         private String p97TenantID;
 
         public int getGeofenceDistanceMeters() {
@@ -151,7 +151,7 @@ public class SettingsResponse {
         }
     }
 
-    public static class GooglePassConfig{
+    public static class GooglePassConfig {
         private String googlePassesClassId;
         private String googlePassesIssuerId;
         private String googlePassesAccountEmailAddress;

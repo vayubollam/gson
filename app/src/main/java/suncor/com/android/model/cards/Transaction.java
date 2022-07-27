@@ -3,7 +3,6 @@ package suncor.com.android.model.cards;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.room.util.StringUtil;
 
 import com.google.gson.annotations.SerializedName;
 
