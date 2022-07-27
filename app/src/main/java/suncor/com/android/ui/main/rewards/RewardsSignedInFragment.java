@@ -111,7 +111,9 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
                     MemberEligibilityResponse data = response.data;
                     if (data != null) {
                         Timber.d("API Test"+ data.getCategories().get(0).getInfo().getTitle());
+                        Timber.d("API Test Category Id"+ data.getCategories().get(0).getCategoryId());
                         Timber.d("API Test"+ data.getCategories().get(0).getPrograms().get(0).getInfo().getTitle());
+                        Timber.d("API Test Program ID"+ data.getCategories().get(0).getPrograms().get(0).getProgramId());
                         isRedeemable = data.getEligible();
                         viewModel.updatePetroPoints(data.getPointsBalance());
                         petroPointsBalance.set(data.getPointsBalance());

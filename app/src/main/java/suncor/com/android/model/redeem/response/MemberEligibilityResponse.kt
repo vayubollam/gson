@@ -7,7 +7,7 @@ data class MemberEligibilityResponse(
 )
 
 data class Category(
-    val categoryID: Long,
+    val categoryId: Long,
     val name: String,
     private val en: CategoryInfo?,
     private val fr: CategoryInfo?,
@@ -23,7 +23,7 @@ data class CategoryInfo(
 )
 
 data class Program(
-    val programID: Long,
+    val programId: Long,
     val name: String,
     private val en: ProgramInfo?,
     private val fr: ProgramInfo?,
