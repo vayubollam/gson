@@ -203,10 +203,12 @@ jobs:
     if: always() && (needs.test-case-analysis.result == 'failure' || needs.build.result == 'failure')
     steps:
       - if: ${{ failure() }}
-        run: gh run view --job step2 --log-failed
+        run: gh run view --log-failed
       - name: Needs context
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NEEDS_CONTEXT: ${{ toJSON(needs) }}
-        run: |
-          echo "::notice file=Error,title=What Went Wrong::Error"
+      - name: Dump steps context
+          env:
+            STEPS_CONTEXT: ${{ toJson(steps) }}
+          run: echo "::notice file=Error,title=What Went Wrong::$STEPS_CONTEXT"
