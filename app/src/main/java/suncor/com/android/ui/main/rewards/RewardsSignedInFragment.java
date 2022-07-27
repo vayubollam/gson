@@ -98,7 +98,7 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
                 }
 
                 eGiftCardsList.add(3, getGIftCardAt(3));
-                eGiftCardsList.add(0, getGIftCardAt( 0));
+                eGiftCardsList.add(0, getGIftCardAt(0));
             }
         });
 
@@ -110,6 +110,8 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
                 case SUCCESS:
                     MemberEligibilityResponse data = response.data;
                     if (data != null) {
+                        Timber.d("API Test"+ data.getCategories().get(0).getInfo().getTitle());
+                        Timber.d("API Test"+ data.getCategories().get(0).getPrograms().get(0).getInfo().getTitle());
                         isRedeemable = data.getEligible();
                         viewModel.updatePetroPoints(data.getPointsBalance());
                         petroPointsBalance.set(data.getPointsBalance());
@@ -263,9 +265,9 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
                     if (navDestination != null && navDestination.getId() == R.id.rewards_signedin_tab) {
                         Navigation.findNavController(requireView()).navigate(action);
                     }
-                } else if(genericEGiftCard.getGroup().equalsIgnoreCase(Constants.GROUP_DONATE)){
+                } else if (genericEGiftCard.getGroup().equalsIgnoreCase(Constants.GROUP_DONATE)) {
                     // Handling for donate gift card
-                }else {
+                } else {
                     RewardsSignedInFragmentDirections.ActionRewardsSignedinTabToMerchantDetailsFragment action = RewardsSignedInFragmentDirections.actionRewardsSignedinTabToMerchantDetailsFragment(genericEGiftCard);
                     Navigation.findNavController(requireView()).navigate(action);
                 }
@@ -280,10 +282,10 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
 
     }
 
-    public GenericEGiftCard getGIftCardAt(int index){
+    public GenericEGiftCard getGIftCardAt(int index) {
         GenericEGiftCard eGiftCard = new GenericEGiftCard();
 
-        switch (index){
+        switch (index) {
             case 0:
                 eGiftCard.setSmallImage(Constants.DONATE_IMAGE_SMALL);
                 eGiftCard.setLargeImage(Constants.DONATE_IMAGE_LARGE);
