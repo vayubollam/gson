@@ -209,6 +209,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NEEDS_CONTEXT: ${{ toJSON(needs) }}
       - name: Dump steps context
-          env:
-            STEPS_CONTEXT: ${{ toJson(steps) }}
-          run: echo "::notice file=Error,title=What Went Wrong::$STEPS_CONTEXT"
+        env:
+          STEPS_CONTEXT: ${{ toJson(steps) }}
+        run: echo "::notice file=Error,title=What Went Wrong::$STEPS_CONTEXT"
