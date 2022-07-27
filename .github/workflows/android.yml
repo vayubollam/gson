@@ -207,5 +207,5 @@ jobs:
       - name: Needs context
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NEEDS_CONTEXT: ${{ toJSON(needs.build.result) }}
+          NEEDS_CONTEXT: ${{ toJSON(needs.build.outputs) }}
         run: echo "::notice file=Error,title=What Went Wrong::$NEEDS_CONTEXT"
