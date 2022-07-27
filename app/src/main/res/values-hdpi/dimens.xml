@@ -5,7 +5,6 @@
     <dimen name="carwash_verification_input_margin">20dp</dimen>
     <dimen name="carwash_barcode_title">20sp</dimen>
     <dimen name="carwash_barcode_subtitle">14sp</dimen>
-    <dimen name="carwash_barcode_padding">8dp</dimen>
     <dimen name="carwash_barcode_image_height">80dp</dimen>
     <dimen name="carwash_security_subtitle_size">14sp</dimen>
     <dimen name="carwash_barcode_divider_padding">24dp</dimen>

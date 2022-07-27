@@ -138,24 +138,10 @@
         <item name="android:minWidth">72dp</item>
     </style>
 
-    <style name="FilledButton.Red.ML">
-        <item name="android:textSize">14sp</item>
-        <item name="android:minHeight">44dp</item>
-        <item name="android:minWidth">72dp</item>
-    </style>
-
     <style name="FilledButton.Red.M">
         <item name="android:textSize">14sp</item>
         <item name="android:minHeight">36dp</item>
         <item name="android:minWidth">64dp</item>
-    </style>
-
-    <style name="FilledButton.Red.S">
-        <item name="android:textSize">12sp</item>
-        <item name="android:minWidth">56dp</item>
-        <item name="android:minHeight">28dp</item>
-        <item name="android:paddingStart">12dp</item>
-        <item name="android:paddingEnd">12dp</item>
     </style>
 
     <style name="FilledButton.White">
@@ -168,26 +154,6 @@
         <item name="android:textSize">16sp</item>
         <item name="android:minHeight">48dp</item>
         <item name="android:minWidth">72dp</item>
-    </style>
-
-    <style name="FilledButton.White.ML">
-        <item name="android:textSize">14sp</item>
-        <item name="android:minHeight">44dp</item>
-        <item name="android:minWidth">72dp</item>
-    </style>
-
-    <style name="FilledButton.White.M">
-        <item name="android:textSize">14sp</item>
-        <item name="android:minHeight">36dp</item>
-        <item name="android:minWidth">64dp</item>
-    </style>
-
-    <style name="FilledButton.White.S">
-        <item name="android:textSize">12sp</item>
-        <item name="android:minWidth">56dp</item>
-        <item name="android:minHeight">28dp</item>
-        <item name="android:paddingStart">12dp</item>
-        <item name="android:paddingEnd">12dp</item>
     </style>
 
     <style name="LinkButton" parent="@style/Widget.MaterialComponents.Button.TextButton">
@@ -208,22 +174,10 @@
         <item name="android:textColor">@color/black_100</item>
     </style>
 
-    <style name="LinkButton.Black.L">
-        <item name="android:textSize">16sp</item>
-        <item name="android:minHeight">48dp</item>
-        <item name="android:minWidth">72dp</item>
-    </style>
-
     <style name="LinkButton.Black.ML">
         <item name="android:textSize">14sp</item>
         <item name="android:minHeight">44dp</item>
         <item name="android:minWidth">72dp</item>
-    </style>
-
-    <style name="LinkButton.Black.M">
-        <item name="android:textSize">14sp</item>
-        <item name="android:minHeight">36dp</item>
-        <item name="android:minWidth">64dp</item>
     </style>
 
     <style name="LinkButton.Black.S">
@@ -259,14 +213,6 @@
         <item name="android:paddingEnd">12dp</item>
     </style>
 
-    <style name="LinkButton.Red.S">
-        <item name="android:textSize">12sp</item>
-        <item name="android:minWidth">56dp</item>
-        <item name="android:minHeight">28dp</item>
-        <item name="android:paddingStart">12dp</item>
-        <item name="android:paddingEnd">12dp</item>
-    </style>
-
     <style name="OutlinedButton" parent="@style/Widget.MaterialComponents.Button.OutlinedButton">
         <item name="fontFamily">@font/gibson_semibold</item>
         <item name="android:textColor">@color/black_100</item>
@@ -288,25 +234,12 @@
         <item name="android:minWidth">72dp</item>
     </style>
 
-    <style name="OutlinedButton.ML">
-        <item name="android:textSize">14sp</item>
-        <item name="android:minHeight">44dp</item>
-        <item name="android:minWidth">72dp</item>
-    </style>
-
     <style name="OutlinedButton.M">
         <item name="android:textSize">14sp</item>
         <item name="android:minHeight">36dp</item>
         <item name="android:minWidth">64dp</item>
     </style>
 
-    <style name="OutlinedButton.S">
-        <item name="android:textSize">12sp</item>
-        <item name="android:minWidth">56dp</item>
-        <item name="android:minHeight">28dp</item>
-        <item name="android:paddingStart">12dp</item>
-        <item name="android:paddingEnd">12dp</item>
-    </style>
     <!-- End Button styles -->
 
 

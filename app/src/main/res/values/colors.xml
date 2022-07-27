@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">@color/black_20</color>
     <color name="colorAccent">@color/red</color>
     <color name="black_100">#000000</color>
@@ -15,9 +14,6 @@
     <color name="black_C">#CC000000</color>
     <color name="white">#FFFFFF</color>
     <color name="blue">#0076FF</color>
-    <color name="greeen">#EB182C</color>
-    <color name="yellow">#FFDF00</color>
-    <color name="orange">#EB182C</color>
     <color name="red">#EB182C</color>
     <color name="red_pressed">#c41b2d</color>
     <color name="red_link_button_pressed">#28ec1c2f</color>

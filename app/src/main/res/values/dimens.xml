@@ -6,16 +6,8 @@
     <dimen name="stations_recycler_view_padding">12dp</dimen>
 
     <dimen name="small_button_height">36dp</dimen>
-    <dimen name="filter_item_text_size">18sp</dimen>
     <dimen name="min_button_dim">44dp</dimen>
     <dimen name="page_top_padding">16dp</dimen>
-    <dimen name="error_hint_spacing">16dp</dimen>
-    <dimen name="edit_text_bottom_padding_hint_collapsed">22dp</dimen>
-    <dimen name="edit_text_bottom_padding_hint_expanded">32dp</dimen>
-    <dimen name="edit_text_top_padding_hint_collapsed">14dp</dimen>
-    <dimen name="edit_text_top_padding_hint_expanded">4dp</dimen>
-    <dimen name="error_text_size">14sp</dimen>
-    <dimen name="space_between_hint_and_label">4dp</dimen>
     <dimen name="cards_default_radius">8dp</dimen>
     <dimen name="station_remove_hint_width">16dp</dimen>
 
@@ -44,13 +36,11 @@
     <dimen name="action_menu_card_view_radius">12dp</dimen>
     <dimen name="action_menu_translationZ">12dp</dimen>
     <dimen name="action_menu_layout_margin">16dp</dimen>
-    <dimen name="action_menu_fixed_height">358dp</dimen>
     <dimen name="carwash_welcome_card_height">130dp</dimen>
     <dimen name="carwash_margin_16">16dp</dimen>
     <dimen name="carwash_margin_24">24dp</dimen>
     <dimen name="carwash_list_margin_top">16dp</dimen>
     <dimen name="carwash_card_elevation">2dp</dimen>
-    <dimen name="carwash_barcode_image_width">280dp</dimen>
     <dimen name="carwash_barcode_image_height">100dp</dimen>
     <dimen name="carwash_security_subtitle_size">18sp</dimen>
     <dimen name="carwash_barcode_divider_padding">24dp</dimen>

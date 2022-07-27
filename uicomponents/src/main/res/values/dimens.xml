@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="chevron_icon_size">24dp</dimen>
     <dimen name="app_bar_layout_expanded_title_top_margin">16dp</dimen>
     <dimen name="select_input_two_lines_height">100dp</dimen>
 </resources>
