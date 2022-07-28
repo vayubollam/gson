@@ -1,6 +1,8 @@
 package suncor.com.android.data.redeem;
 
 
+import static suncor.com.android.utilities.Constants.ACCEPT_LANGUAGE;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -82,7 +84,11 @@ public class MerchantsApiImpl implements MerchantsApi {
         try {
             URI adapterPath = new URI("/adapters/suncor/v1/rfmp-secure/membereligible");
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.PROTECTED_SCOPE);
-
+            if (Locale.getDefault().getLanguage().equalsIgnoreCase("fr")) {
+                request.addHeader(ACCEPT_LANGUAGE, "fr-CA");
+            } else {
+                request.addHeader(ACCEPT_LANGUAGE, "en-CA");
+            }
             request.send( new WLResponseListener() {
                 @Override
                 public void onSuccess(WLResponse wlResponse) {
