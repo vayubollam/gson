@@ -1,5 +1,9 @@
 package suncor.com.android.ui.main.profile.help;
 
+import static suncor.com.android.utilities.Constants.ALERT_INTERACTION;
+import static suncor.com.android.utilities.Constants.ALERT_SELECTION;
+import static suncor.com.android.utilities.Constants.ALERT_TITLE;
+
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.InsetDrawable;
@@ -12,6 +16,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -70,6 +75,16 @@ public class FAQFragment extends MainActivityFragment {
 
             AnalyticsUtils.logEvent(getContext(), "tap_to_email", new Pair<>("emailTapped", email));
         });
+
+        binding.chatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder dialog =  createAlert(getString(R.string.offers_leaving_app_alert_message),
+                        getString(R.string.offers_leaving_app_alert_title));
+
+                dialog.show();
+            }
+        });
     }
 
     @Override
@@ -87,5 +102,24 @@ public class FAQFragment extends MainActivityFragment {
     private void launchFAQResponseActivity() {
         Navigation.findNavController(getView()).navigate(R.id.action_FAQFragment_to_FAQResponse);
     }
+
+
+        private AlertDialog.Builder createAlert(String message, String title) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+            builder.setMessage(message)
+                    .setTitle(title);
+
+            builder.setPositiveButton(getString(R.string.offers_leaving_app_alert_button), ((dialog, which) -> {
+                String url = getString(R.string.chat_option_url);
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));
+                startActivity(intent);
+            }));
+
+            builder.setNegativeButton(R.string.cancel,  (dialog, which) ->{
+                dialog.cancel();
+            });
+            return builder;
+        }
 
 }
