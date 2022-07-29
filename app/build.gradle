@@ -5,6 +5,7 @@ apply from: "./versionCode.gradle"
 apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'org.sonarqube'
 apply from: "../android-sonarqube.gradle"
+apply from: "$project.rootDir/jacoco.gradle"
 
 repositories {
     jcenter()
@@ -22,7 +23,7 @@ android {
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
         versionCode getDate()
-        versionName "3.6.0"
+        versionName "3.7.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField "String", "GOOGLE_API_KEY", MAP_API_KEY
         resValue "string", "MAP_API_KEY", MAP_API_KEY
@@ -71,11 +72,13 @@ android {
             signingConfig signingConfigs.release
             minifyEnabled true
             shrinkResources true
+            testCoverageEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
             minifyEnabled false
             shrinkResources false
+            testCoverageEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }

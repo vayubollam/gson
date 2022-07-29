@@ -101,7 +101,7 @@
     <string name="enrollment_terms_agreement">En ouvrant un compte, j\'accepte les <a href="https://www.petro-canada.ca/fr/personnel/conditions#petropoints">Conditions du programme Petro‑Points</a>.</string>
     <string name="enrollment_join_button">Joindre</string>
     <string name="back_to_home">RETOUR À L\'ACCUIEL</string>
-    <string name="enrollment_form_header">Commençons votre inscription et obtenez 2 500 Petro-Points.</string>
+    <string name="enrollment_form_header">Commençons votre inscription et obtenez %s Petro-Points.</string>
     <string name="enrollment_first_name_error">Veuillez entrer un prénom.</string>
     <string name="enrollment_last_name_error">Veuillez entrer un nom.</string>
     <string name="enrollment_email_empty_error">Veuillez entrer une adresse.</string>
@@ -192,7 +192,8 @@
     <string name="login_create_password_button">Changer mon mot de passe</string>
     <string name="login_create_password_duplicated_alert_title">Mot de passe invalide</string>
     <string name="login_create_password_duplicated_alert_message">Votre nouveau mot de passe ne peut pas être le même que votre temporaire mot de passe.</string>
-    <string name="enrollment_form_header_ghost">Remplissez votre adhésion et obtenez 2 500 points.</string>
+    <string name="enrollment_form_header_ghost">Remplissez votre adhésion et obtenez %s points.</string>
+    <string name="rewards_guest_description">Vous obtiendrez %s Petro&#8209;Points simplement en vous inscrivant.</string>
     <string name="navigation_cards_tab">Wallet</string>
     <string name="cards_fragment_title">Wallet</string>
     <string name="profile_top_questions">Questions les plus fréquentes</string>
@@ -219,9 +220,9 @@
     <string name="cards_ppts_balance_template">%s points</string>
     <string name="cards_ppts_monetary_balance_template">ou %s $ de rabais</string>
     <string name="cards_rbc_label">RBC</string>
-    <string name="cards_sp_label">Carte accès</string>
+    <string name="cards_sp_label">Carte accès lave-auto</string>
     <string name="cards_wag_label">Lavez Partez</string>
-    <string name="cards_wag_expanded_label">Carte Lavez Partez</string>
+    <string name="cards_wag_expanded_label">Lavez Partez</string>
 
     <string name="customer_support_email">servicealaclientele@petro-canada.ca</string>
     <string name="profile_get_help_call">Appeler</string>
@@ -229,8 +230,10 @@
     <string name="enrollment_phone_field_invalid_format">Veuillez entrer un numéro de téléphone valide (p. ex., 514-123-4567)</string>
     <string name="cards_fsr_description">Notre carte Économie sur l\'essence en prime vous permet d\'économiser %d ¢ le litre sur 200 litres d\'essence.\n\u2014\nRechargez votre carte à petro-points.com.</string>
     <string name="cards_wag_description">À utiliser aux établissements avec lave-auto GlideWash ou SuperDoux participants.</string>
+    <string name="cards_wag_description_vacuum_expire">Votre utilisation de l\'aspirateur expire 7 jours après le lavage connecté.</string>
     <string name="cards_zero_balance_description">\u2014\nRechargez-la sur le site <a href="https://www.petro-canada.ca/fr/personnel/mes-petro-points?modalUrl=%2Ffr%2Fpersonnel%2Fmes-petro-points%2Frecharger%2Frecharger-carte">petro-canada.ca</a>.</string>
     <string name="cards_sp_description">Lavez votre voiture une fois par jour pendant 90 jours. À utiliser aux établissements avec lave-auto GlideWash ou SuperDoux participants.</string>
+    <string name="cards_sp_vacuum_description">Lavez votre voiture et passez l\'aspirateur une fois par jour. À utiliser aux établissements avec lave-auto GlideWash ou SuperDoux participants.</string>
     <string name="cards_ppc_description">Économisez chaque fois que vous utilisez votre Carte Prix Préférentiel.</string>
     <string name="cards_rbc_description">Notre programme RBC Petro‑Canada vous aide à économiser sur l\'essence et à accumuler des points plus rapidement.</string>
     <string name="cards_caa_description">Vous pouvez également convertir vos points en dollars CAA ou les utiliser pour obtenir une nouvelle adhésion de base d\'un an à la CAA.</string>
@@ -294,6 +297,16 @@
     <plurals name="cards_days_balance_expanded">
         <item quantity="one">%s jour restant</item>
         <item quantity="other">%s jours restants</item>
+    </plurals>
+
+    <plurals name="cards_days_left_expanded">
+        <item quantity="one">jour restant</item>
+        <item quantity="other">jours restants</item>
+    </plurals>
+
+    <plurals name="cards_wash_left_expanded">
+        <item quantity="one">lavage restant</item>
+        <item quantity="other">lavages restants</item>
     </plurals>
 
     <plurals name="cards_washes_balance">
@@ -413,7 +426,7 @@
     <string name="offers_leaving_app_alert_button">Continuer</string>
     <string name="rbc_url">https://www.rbcbanqueroyale.com/petro-canada/index.html?suncor&amp;utm_source=suncor&amp;utm_medium=3pb&amp;utm_campaign=petrocanada_3cpl&amp;utm_content=pc_app_link</string>
     <string name="transaction_type_pp">Petro Points</string>
-    <string name="rewards_guest_join_button">Inscrivez-vous et commencez à économiser</string>
+    <string name="rewards_guest_join_button">Inscrivez-vous pour économiser</string>
     <string name="navigation_rewards_tab">Petro-Points</string>
     <string name="cards_remove_card_alert_title">Êtes-vous sûr?</string>
     <string name="cards_remove_card_alert_message">Cela supprimera la carte de votre compte et tout solde résiduel ne sera plus protégé.</string>
@@ -458,7 +471,7 @@
     <string name="profile_personnal_informations_password">Mot de passe</string>
     <string name="update_password_progress">Mise à jour…</string>
     <string name="profile_security_question_header">Question de sécurité</string>
-    <string name="profile_security_question_content">Nous ne voulons pas vous ralentir. Nous voulons juste nous assurer qu\'il s\'agit bien de vous avant de poursuivre.</string>
+    <string name="profile_security_question_content">Nous voulons vous aider à protéger vos renseignements. Répondez à la question de sécurité pour continuer.</string>
     <string name="profile_security_question_error">Une réponse est exigée.</string>
     <string name="profile_security_question_continue">Continuer</string>
     <string name="profile_security_question_checking_answer">Vérification de la réponse…</string>
@@ -538,7 +551,7 @@
 
     <string name="action_menu_what_would_you_like_to_do">Que voulez-vous \nfaire?</string>
     <string name="action_menu_scan_card">Scanner ma Petro-Points</string>
-    <string name="action_menu_wash_car">Laver mon véhicule</string>
+    <string name="action_menu_wash_car">Nettoyer mon véhicule</string>
     <string name="action_menu_account">Aller à mon compte</string>
 
     <string name="carwash_header">Nettoyons votre véhicule</string>
@@ -547,7 +560,7 @@
     <string name="carwash_no_card_get_ticket_message">Ajoutez votre carte de lave-auto à votre application Wallet ou achetez un billet de lavage au dépanneur.</string>
     <string name="carwash_nocard_add_card_button">Ajouter une carte</string>
     <string name="carwash_get_ticket_button"><a href="https://www.petro-canada.ca/fr/personnel/mes-petro-points?modalUrl=%2Ffr%2Fpersonnel%2Fmes-petro-points%2Frecharger%2Frecharger-carte">Recharger en Ligne</a></string>
-    <string name="carwash_getwash_message_card_only">Sélectionnez votre carte de lavage pour commencer.</string>
+    <string name="carwash_getwash_message_card_only">Pour commencer, sélectionnez une carte.</string>
     <string name="carwash_getwash_message_ticket_only">Sélectionnez votre billet de lavage pour commencer.</string>
     <string name="carwash_getwash_message_card_and_ticket">Sélectionnez votre carte ou billet de lavage pour commencer.</string>
     <string name="carwash_no_carwash_station_available">Pas de lave-auto</string>
@@ -705,7 +718,7 @@
     <string name="view_receipt">Voir le reçu</string>
     <string name="email_receipt_subject">Reçu d\'essence de Petro-Canada: %1$s</string>
     <string name="email_receipt_body">Voici votre reçu d\'essence pour %1$s:\n</string>
-    <string name="your_transaction_availble_in_your_account">Votre transaction a bien été traitée, mais nous ne pouvons pas générer de reçu pour le moment.\nDans 24 heures, vous pourrez consulter l\'historique de transactions pour retrouver votre reçu ou demander une copie du reçu dans un dépanneur.</string>
+    <string name="your_transaction_availble_in_your_account">Les renseignements relatifs à votre achat seront disponibles à partir de votre compte. Vous pouvez également obtenir votre reçu au distributeur ou au dépanneur.</string>
 
     <!-- Payment  -->
     <string name="pump_unavailable_title">Distributeur non disponible</string>
@@ -760,10 +773,20 @@
     <string name="carwash_zero_days">Vous n\'avez plus de jours. <a href="https://www.petro-canada.ca/fr/personnel/mes-petro-points/recharger/carte-acces-lave-auto/etape-1-numero-carte">Rechargez votre carte à Petro-Canada.ca.</a></string>
     <string name="carwash_error_alert_title">Impossible d\'activer le lavage</string>
     <string name="carwash_error_alert_copy">Mousse alors! Quelque chose a mal tourné. Essayez de nouveau ou communiquez avec le préposé.</string>
+    <string name="carwash_error_message">Mousse alors! Quelque chose a mal tourné.</string>
     <string name="carwash_zero_error_alert_title">Impossible d\'activer le lavage</string>
-    <string name="carwash_zero_error_alert_message">Cette carte n\'est plus valide. De nouvelles cartes peuvent être achetées sur notre site Web ou au dépanneur.</string>
+    <string name="carwash_zero_error_alert_message">Cette carte n\'est plus valide. Veuillez vous rendre au dépanneur ou visiter le site Web pour acheter une nouvelle carte de lave-auto.</string>
+    <string name="carwash_zero_error_alert_error_message">Cette carte n\'est plus valide.</string>
     <string name="carwash_zero_alert_close">Annuler</string>
     <string name="carwash_zero_alert_buy">Visiter le site Web</string>
+
+    <string name="carwash_daily_vacuum_used_alert">Utilisation quotidienne de l\'aspirateur effectuée</string>
+    <string name="carwash_daily_vacuum_used_message">Votre utilisation de l\'aspirateur pour la journée a été faite à %s à %s.</string>
+    <string name="carwash_daily_wash_used_alert">Lavage quotidien utilisé</string>
+    <string name="carwash_daily_wash_used_message">Votre lavage du jour a été utilisé à %s à %s.</string>
+    <string name="session_in_progress_title">Séance en cours</string>
+    <string name="session_vacuum_in_progress_message">Vous ne pouvez pas utiliser un aspirateur pour le moment. Veuillez attendre quelques minutes et essayer de nouveau.</string>
+    <string name="session_wash_in_progress_message">Vous ne pouvez pas commencer un lavage pour le moment. Veuillez attendre quelques minutes et essayer de nouveau.</string>
 
     <string name="cards_days">%1$s jours</string>
     <string name="cards_washes">%1$s lavages</string>
@@ -778,6 +801,25 @@
     <string name="discount_prices">%1$s (a été %2$s)</string>
     <string name="petro_canada_carwash">https://www.petro-canada.ca/fr/personnel/lave-auto</string>
 
+    <string name="google_passes_name_label">Nom</string>
+    <string name="google_passes_email_label">Courriel</string>
+    <string name="google_passes_detail_label">Détails</string>
+    <string name="google_passes_detail_value">Échangez vos Petro-Points pour obtenir de l\'essence gratuite, des cartes-cadeaux électroniques et plus encore.</string>
+    <string name="google_passes_value_label">Valeur</string>
+    <string name="google_passes_value_value">Obtenez :\n1 L = 10 points\n1 $ = 10 points\n\nÉchangez :\n1 000 = 1 $ de rabais</string>
+    <string name="google_passes_howtouse_label">Utilisation</string>
+    <string name="google_passes_howtouse_value">Scannez votre carte au dépanneur pour obtenir ou échanger des points. Ou téléchargez notre application pour obtenir des points directement à la pompe.</string>
+    <string name="google_passes_termcondition_label">Conditions</string>
+    <string name="google_passes_termcondition_value">En utilisant cette carte, vous acceptez les conditions de Petro-Points. Consultez-les sur notre site Web.</string>
+
+    <!-- vacuum   -->
+    <string name="vacuum_barcode_header">Scannez le code à barres pour activer votre aspirateur</string>
+    <string name="vacuum_heading">Aspirateur</string>
+    <string name="wash_heading">lavage</string>
+    <plurals name="vacuum_left">
+        <item quantity="one">utilisation restante de l\'aspirateur</item>
+        <item quantity="other">utilisations restantes de l\'aspirateur</item>
+    </plurals>
     <!-- account details  -->
     <string name="account_details_page_header">Détails du compte</string>
     <string name="account_details_delete_button">Supprimer le compte</string>

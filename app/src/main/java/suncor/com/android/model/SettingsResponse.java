@@ -17,6 +17,7 @@ public class SettingsResponse {
         return buildInfo;
     }
 
+
     public static class Settings {
         private String dt;
         private String currentAndroidVersion;
@@ -31,6 +32,10 @@ public class SettingsResponse {
         private String maintenanceMsgFR;
         private String maintenanceMsgEN;
         private GooglePassConfig googlePass;
+        public ToggleFeature toggleFeature;
+
+        @SerializedName("enrollmentBonus")
+        private Integer enrollmentBonus;
 
         public String getDescriptionEN() {
             return descriptionEN;
@@ -69,11 +74,15 @@ public class SettingsResponse {
         }
 
         public String getMaintenanceDisplayMsg() {
-           return Locale.getDefault().getDisplayLanguage().equals("English") ? maintenanceMsgEN : maintenanceMsgFR;
+            return Locale.getDefault().getDisplayLanguage().equals("English") ? maintenanceMsgEN : maintenanceMsgFR;
         }
 
         public GooglePassConfig getGooglePass() {
             return googlePass;
+        }
+
+        public Integer getEnrollmentBonus() {
+            return enrollmentBonus;
         }
     }
 
@@ -159,6 +168,35 @@ public class SettingsResponse {
             return googlePassesAccountEmailAddress;
         }
 
+    }
+
+    public static class ToggleFeature {
+        @SerializedName("VACUUM_SCAN_BARCODE")
+        private boolean vacuumScanBarcode;
+
+        @SerializedName("CARWASH_RELOAD")
+        private boolean carWashReload;
+
+        @SerializedName("DONATE_PETRO_POINTS")
+        private boolean donatePetroPoints;
+
+        public boolean isVacuumScanBarcode() {
+            return vacuumScanBarcode;
+        }
+
+        public boolean isDonatePetroPoints() {
+            return donatePetroPoints;
+        }
+
+        public boolean isCarWashReload() {
+            return carWashReload;
+        }
+
+        public void setVacuumScanBarcode(boolean vacuumScanBarcode, boolean donatePetroPoints, boolean carWashReload) {
+            this.vacuumScanBarcode = vacuumScanBarcode;
+            this.donatePetroPoints = donatePetroPoints;
+            this.carWashReload = carWashReload;
+        }
     }
 }
 

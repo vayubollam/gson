@@ -24,12 +24,19 @@ import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.cards.AddCardRequest;
 import suncor.com.android.model.cards.CardDetail;
+import suncor.com.android.model.station.Station;
 import suncor.com.android.utilities.Timber;
 
 public class CardsApiImpl implements CardsApi {
-    private final static String GET_CARDS_ADAPTER_PATH = "/adapters/suncor/v5/rfmp-secure/cards";
+    private final static String GET_CARDS_ADAPTER_PATH = "/adapters/suncor/v6/rfmp-secure/cards";
     private final static String ADD_CARDS_ADAPTER_PATH = "/adapters/suncor/v4/rfmp-secure/cards";
     private final static String DELETE_CARDS_ADAPTER_PATH = "/adapters/suncor/v4/rfmp-secure/cards";
+    private final static String GET_SP_CARD_DETAIL_ADAPTER_PATH = "/adapters/suncor/v6/rfmp-secure/cards/SP/";
+    private final static String GET_WAG_CARD_DETAIL_ADAPTER_PATH = "/adapters/suncor/v6/rfmp-secure/cards/WAG/";
+   private final static String GET_STORE_DETAIL_ADAPTER_PATH = "adapters/suncor/v3/rfmp-secure/locationId";
+
+    public final int ADD_CARD_TIMEOUT = 60_000;
+
     private Gson gson;
 
     public CardsApiImpl(Gson gson) {
@@ -73,6 +80,7 @@ public class CardsApiImpl implements CardsApi {
         return result;
     }
 
+
     @Override
     public LiveData<Resource<CardDetail>> addCard(AddCardRequest cardRequest) {
         Timber.d("Add Card: " + cardRequest.getCardNumber());
@@ -80,7 +88,7 @@ public class CardsApiImpl implements CardsApi {
         result.postValue(Resource.loading());
         try {
             URI adapterPath = new URI(ADD_CARDS_ADAPTER_PATH);
-            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.POST, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
+            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.POST, ADD_CARD_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
             JSONObject body = new JSONObject(gson.toJson(cardRequest));
             request.send(body, new WLResponseListener() {
                 @Override
@@ -141,4 +149,116 @@ public class CardsApiImpl implements CardsApi {
 
         return result;
     }
+
+
+    @Override
+    public LiveData<Resource<CardDetail>> retrieveSPCardDetail(String cardNumber) {
+        Timber.d("fetching SP card details: " + cardNumber);
+        MutableLiveData<Resource<CardDetail>> result = new MutableLiveData<>();
+        result.postValue(Resource.loading());
+        try {
+            URI adapterPath = new URI(GET_SP_CARD_DETAIL_ADAPTER_PATH+cardNumber);
+            Timber.d("URI PATH : " + adapterPath);
+            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
+            request.send(new WLResponseListener() {
+                @Override
+                public void onSuccess(WLResponse wlResponse) {
+                    String jsonText = wlResponse.getResponseText();
+                    Timber.d("SP Card API success, response:\n" + jsonText);
+
+                    CardDetail cards = gson.fromJson(jsonText, CardDetail.class);
+                    if(Objects.nonNull(cards)){
+                        result.postValue(Resource.success(cards));
+                    }
+                }
+
+                @Override
+                public void onFailure(WLFailResponse wlFailResponse) {
+                    Timber.d("Cards API failed, " + wlFailResponse.toString());
+                    Timber.e(wlFailResponse.toString());
+                    result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
+                }
+            });
+        } catch (URISyntaxException e) {
+            Timber.e(e.toString());
+            result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
+        }
+
+        return result;
+    }
+
+    @Override
+    public LiveData<Resource<CardDetail>> retrieveWAGCardDetail(String cardNumber) {
+        Timber.d("fetching WAG card details: " + cardNumber);
+        MutableLiveData<Resource<CardDetail>> result = new MutableLiveData<>();
+        result.postValue(Resource.loading());
+        try {
+            URI adapterPath = new URI(GET_WAG_CARD_DETAIL_ADAPTER_PATH+cardNumber);
+            Timber.d("URI PATH : " + adapterPath);
+            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
+            request.send(new WLResponseListener() {
+                @Override
+                public void onSuccess(WLResponse wlResponse) {
+                    String jsonText = wlResponse.getResponseText();
+                    Timber.d("WAG Card API success, response:\n" + jsonText);
+
+                    CardDetail cards = gson.fromJson(jsonText, CardDetail.class);
+                    if(Objects.nonNull(cards)){
+                        result.postValue(Resource.success(cards));
+                    }
+                }
+
+                @Override
+                public void onFailure(WLFailResponse wlFailResponse) {
+                    Timber.d("Cards API failed, " + wlFailResponse.toString());
+                    Timber.e(wlFailResponse.toString());
+                    result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
+                }
+            });
+        } catch (URISyntaxException e) {
+            Timber.e(e.toString());
+            result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
+        }
+
+        return result;
+    }
+
+    @Override
+    public LiveData<Resource<Station>> retrieveStoreDetails(String storeId) {
+        Timber.d("fetching Store details: "+storeId);
+        MutableLiveData<Resource<Station>> result = new MutableLiveData<>();
+        result.postValue(Resource.loading());
+        try {
+            URI adapterPath = new URI(GET_STORE_DETAIL_ADAPTER_PATH);
+            Timber.d("URI PATH : " + adapterPath);
+            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
+            request.addHeader("x-store-id",storeId);
+            request.send(new WLResponseListener() {
+                @Override
+                public void onSuccess(WLResponse wlResponse) {
+                    String jsonText = wlResponse.getResponseText();
+                    Timber.d("Store success, response:\n" + jsonText);
+
+                   Station address = gson.fromJson(jsonText, Station.class);
+                    if(Objects.nonNull(address)){
+                        result.postValue(Resource.success(address));
+                    }
+                }
+
+                @Override
+                public void onFailure(WLFailResponse wlFailResponse) {
+                    Timber.d("Store API failed, " + wlFailResponse.toString());
+                    Timber.e(wlFailResponse.toString());
+                    result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
+                }
+            });
+        } catch (URISyntaxException e) {
+            Timber.e(e.toString());
+            result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
+        }
+
+        return result;
+    }
+
+
 }

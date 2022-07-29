@@ -113,6 +113,7 @@ public class FuellingFragment extends MainActivityFragment {
                                     Alerts.prepareGeneralErrorDialog(getContext(), PAY_AT_PUMP).show();
                                 } else if (result.status == Resource.Status.SUCCESS) {
                                     //Do-nothing
+                                    goBack();
                                 }
                             });
                         },  PAY_AT_PUMP).show();
@@ -151,7 +152,7 @@ public class FuellingFragment extends MainActivityFragment {
                                     getContext(),
                                     (dialogInterface, i) -> {
 
-                                        AnalyticsUtils.setCurrentScreenName(requireActivity(), "pay-at-pump-fuelling-transaction-cancelled" );
+                                        AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-fuelling-transaction-cancelled" );
 
                                         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alertInteraction,
                                                 new Pair<>(AnalyticsUtils.Param.alertTitle, getString(R.string.cancellation_alert_title)+"("+getString(R.string.cancellation_alert_body)+")"),
@@ -234,6 +235,6 @@ public class FuellingFragment extends MainActivityFragment {
 
     private void goBack() {
         NavController navController = Navigation.findNavController(getView());
-        navController.popBackStack();
+        navController.popBackStack(R.id.home_tab, false);
     }
 }

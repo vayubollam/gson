@@ -90,6 +90,9 @@ object Constants {
     const val INTERSITE = "intersite"
     const val INFO_TAP = "info_tap"
     const val MENU_TAP = "menu_tap"
+    const val WALLET_TYPE = "walletType"
+    const val ACTIVATE_CAR_WASH_SUCCESS = "activate_car_wash_success"
+    const val CW_CONFIRM_PIN = "cw_confirm_PIN"
 
     const val ITEM_ID = "item_id"
     const val ITEM_NAME = "item_name"
@@ -107,15 +110,39 @@ object Constants {
     const val INTERSITE_URL = "intersiteURL"
     const val INFO_TEXT = "infoText"
     const val MENU_SELECTION = "menuSelection"
+    const val ADD_PPTS_TO_WALLET = "add_ppts_to_wallet"
+    const val ADD_PPTS_TO_WALLET_ERROR = "add_ppts_to_wallet_error"
+    const val APP_RATING_PROMPT = "app_rating_prompt"
+    const val CAR_WASH_CARD_TYPE = "carWashCardType"
 
     const val INTERNAL_PROMOTIONS = "Internal Promotions"
     const val ACTIVATE_WNG = "Activate Wash by Wash & Go card"
     const val ACTIVATE_SP = "Activate Wash by Season Pass card"
     const val NONE = "None"
     const val DEFAULT_ERROR_SUNCORXXXX = "SUNCORXXXX"
+    const val ACTIVATE_CAR_WASH_CLICK = "activate_car_wash_click"
+    //
+    const val INCORRECT_PIN = "incorrectPin"
+    const val WASH_REJECTED = "washRejected"
+    const val POE_BUSY = "poeBusy"
+
+    const val TYPE_WASH="wash";
+    const val TYPE_VACUUM="vacuum";
+    const val CLICKED_CARD_INDEX="clickedCardIndex";
 
     //Paths
     const val GET_LOCATIONS_ADAPTER__PATH = "/adapters/suncor/v3/rfmp-secure/locations"
+
+    //Image expiry time
+    const val IMAGE_EXPIRY_DATE = "2022/05/23 23:59:00"
+
+    //Home page banners
+    const val SIGN_IN_BANNER = "sign_in_banner"
+    const val CONTACTLESS_PAYMENT_BANNER = "contactless_payment_banner"
+    const val POINTS_CONTEST_BANNER = "points_contest_banner"
+    const val REDEEM_FOR_FREE_GAS_BANNER = "redeem_for_free_gas_banner"
+    const val SAVE_AMOUNT_WITH_RBC_BANNER = "save_amount_with_rbc_banner"
+    const val CARWASH_ACTIVATION_BANNER = "carwash_activation_banner"
 
     //account
     const val UPDATE_PERSONAL_INFORMATION = "Update Personal Information"
@@ -125,4 +152,5 @@ object Constants {
     const val DELETE_ACCOUNT_NOTES = "Delete Account Notes"
     const val MY_PETRO_POINTS_ACCOUNT_NAVIGATION_LIST = "My petro points Account Navigation List"
     const val ANSWER_SECURITY_QUESTION= "Answer security question"
+    const val GPAY_ANALYTICS = "GPay"
 }

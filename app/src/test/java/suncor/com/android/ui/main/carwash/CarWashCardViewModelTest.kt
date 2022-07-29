@@ -1,4 +1,4 @@
-package suncor.com.android.ui.main.wallet.cards
+package suncor.com.android.ui.main.carwash
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData

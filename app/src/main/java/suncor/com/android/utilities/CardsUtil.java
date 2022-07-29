@@ -93,6 +93,9 @@ public class CardsUtil {
     }
 
     public static void showSuspendedCardAlert(Context context) {
+        AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.error,
+                new Pair<>(AnalyticsUtils.Param.errorMessage,context.getString(R.string.carwash_zero_error_alert_error_message))
+        );
         AlertDialog.Builder builder = new AlertDialog.Builder(context).setTitle(context.getResources().getString(R.string.reload_card_alet_title)).setMessage(context.getResources().getString(R.string.reload_card_alert_description))
                 .setPositiveButton(context.getResources().getString(R.string.reload_card_alert_visit_web), (dialog, which) -> {
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.petro_canada_reload_url)));
@@ -107,6 +110,9 @@ public class CardsUtil {
     }
 
     public static void ShowSuspendedCardAlertForActivateWash(Context context){
+        AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.error,
+                new Pair<>(AnalyticsUtils.Param.errorMessage,context.getString(R.string.carwash_zero_error_alert_error_message))
+        );
         AlertDialog alertWashDialog = new AlertDialog.Builder(context)
                 .setTitle(R.string.carwash_zero_error_alert_title)
                 .setMessage(R.string.carwash_zero_error_alert_message)
@@ -122,5 +128,34 @@ public class CardsUtil {
                 }).create();
         alertWashDialog.setCanceledOnTouchOutside(false);
         alertWashDialog.show();
+    }
+
+    public static void showDailyWashUsedAlert(Context context, String time, String address) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context).setTitle(context.getResources().getString(R.string.carwash_daily_wash_used_alert)).setMessage(context.getResources().getString(R.string.carwash_daily_wash_used_message,time,address))
+                .setPositiveButton(context.getResources().getString(R.string.ok), (dialog, which) -> {
+                    dialog.dismiss();
+                });
+        builder.show();
+    }
+    public static void showDailyVacuumUsedAlert(Context context, String time, String address) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context).setTitle(context.getResources().getString(R.string.carwash_daily_vacuum_used_alert)).setMessage(context.getResources().getString(R.string.carwash_daily_vacuum_used_message,time,address))
+                .setPositiveButton(context.getResources().getString(R.string.ok), (dialog, which) -> {
+                    dialog.dismiss();
+                });
+        builder.show();
+    }
+
+    public static void showWashInprogressAlert(Context context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context).setTitle(context.getResources().getString(R.string.session_in_progress_title)).setMessage(context.getResources().getString(R.string.session_wash_in_progress_message))
+                .setNegativeButton(context.getResources().getString(R.string.ok), (dialog, which) -> {
+                });
+        builder.show();
+    }
+
+    public static void showVacuumInprogressAlert(Context context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context).setTitle(context.getResources().getString(R.string.session_in_progress_title)).setMessage(context.getResources().getString(R.string.session_vacuum_in_progress_message))
+                .setNegativeButton(context.getResources().getString(R.string.ok), (dialog, which) -> {
+                });
+        builder.show();
     }
 }
