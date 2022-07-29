@@ -1,9 +1,5 @@
 package suncor.com.android.ui.main.profile.help;
 
-import static suncor.com.android.utilities.Constants.ALERT_INTERACTION;
-import static suncor.com.android.utilities.Constants.ALERT_SELECTION;
-import static suncor.com.android.utilities.Constants.ALERT_TITLE;
-
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.InsetDrawable;
@@ -109,7 +105,7 @@ public class FAQFragment extends MainActivityFragment {
             builder.setMessage(message)
                     .setTitle(title);
 
-            builder.setPositiveButton(getString(R.string.offers_leaving_app_alert_button), ((dialog, which) -> {
+            builder.setPositiveButton(getString(R.string.ok), ((dialog, which) -> {
                 String url = getString(R.string.chat_option_url);
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(url));
