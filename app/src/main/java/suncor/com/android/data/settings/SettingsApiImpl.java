@@ -17,7 +17,7 @@ import suncor.com.android.model.SettingsResponse;
 import suncor.com.android.utilities.Timber;
 
 public class SettingsApiImpl implements SettingsApi {
-    private static final String GET_SETTINGS_ADAPTER_PATH = "/adapters/suncor/v8/rfmp-secure/settings";
+    private static final String GET_SETTINGS_ADAPTER_PATH = "/adapters/suncor/v9/rfmp-secure/settings";
     private Gson gson;
 
     public SettingsApiImpl(Gson gson) {
