@@ -10,7 +10,6 @@ import com.worklight.wlclient.api.WLResponse;
 import com.worklight.wlclient.api.WLResponseListener;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.model.Resource;
@@ -19,7 +18,7 @@ import suncor.com.android.utilities.SharedPrefsHelper;
 import suncor.com.android.utilities.Timber;
 
 public class SettingsApiImpl implements SettingsApi {
-    private static final String GET_SETTINGS_ADAPTER_PATH = "/adapters/suncor/v7/rfmp-secure/settings";
+    private static final String GET_SETTINGS_ADAPTER_PATH = "/adapters/suncor/v9/rfmp-secure/settings";
     private Gson gson;
     private SharedPrefsHelper sharedPrefsHelper;
 
