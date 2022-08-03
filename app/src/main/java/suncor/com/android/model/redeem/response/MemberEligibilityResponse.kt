@@ -8,11 +8,9 @@ data class MemberEligibilityResponse(
 
 data class Category(
     val categoryId: Long,
-    val name: String,
     private val en: CategoryInfo?,
     private val fr: CategoryInfo?,
     val programs: List<Program>,
-    val enabled: Boolean
 ){
     val info: CategoryInfo
     get() =  en ?: fr!!
@@ -24,10 +22,8 @@ data class CategoryInfo(
 
 data class Program(
     val programId: Long,
-    val name: String,
     private val en: ProgramInfo?,
     private val fr: ProgramInfo?,
-    val enabled: Boolean,
 ){
     val info: ProgramInfo
     get() =  en ?: fr!!
