@@ -422,9 +422,9 @@
     <string name="offers_banner_4_button">Trouver un lave-auto</string>
     <string name="offers_banner_5_text">Économisez 3 ¢ le litre à chaque plein avec une carte RBC liée.</string>
     <string name="offers_banner_5_button">Pour commencer</string>
-    <string name="offers_leaving_app_alert_title">Vous quittez notre application.</string>
-    <string name="offers_leaving_app_alert_message">Nous ouvrons votre navigateur web.</string>
-    <string name="offers_leaving_app_alert_button">Continuer</string>
+    <string name="leaving_app_alert_title">Vous quittez notre application.</string>
+    <string name="leaving_app_alert_message">Nous ouvrons votre navigateur web.</string>
+    <string name="leaving_app_alert_button">Continuer</string>
     <string name="rbc_url">https://www.rbcbanqueroyale.com/petro-canada/index.html?suncor&amp;utm_source=suncor&amp;utm_medium=3pb&amp;utm_campaign=petrocanada_3cpl&amp;utm_content=pc_app_link</string>
     <string name="chat_option_url">https://www.petro-canada.ca/fr/personnel/communiquer-avec-le-service-a-la-clientele/envoyez-nous-un-message?initialWidth=1536&amp;childId=iframe-container&amp;parentTitle=Petro-Canada+Customer+Service+-+Petro-Canada+Contact+%7c+Petro-Canada&amp;parentUrl=https%3a%2f%2fwww.petro-canada.ca%2fen%2fpersonal%2fcontact-customer-service%3fmodalUrl%3d%252Fen%252Fpersonal%252Fcontact-customer-service%252Fsend-us-a-message</string>
     <string name="transaction_type_pp">Petro Points</string>

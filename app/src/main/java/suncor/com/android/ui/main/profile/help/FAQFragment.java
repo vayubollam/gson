@@ -73,9 +73,9 @@ public class FAQFragment extends MainActivityFragment {
 
             if(getActivity() != null){
                 NavigationConsentAlerts.createAlert(getActivity(),
-                        getString(R.string.offers_leaving_app_alert_title),
-                        getString(R.string.offers_leaving_app_alert_message),
-                        getString(R.string.offers_leaving_app_alert_button),
+                        getString(R.string.leaving_app_alert_title),
+                        getString(R.string.leaving_app_alert_message),
+                        getString(R.string.leaving_app_alert_button),
                         getString(R.string.cancel),
                         getString(R.string.chat_option_url),
                         FAQFragment.this :: redirectToUrl);

@@ -4,7 +4,9 @@ import android.content.Context
 import android.content.DialogInterface
 import androidx.appcompat.app.AlertDialog
 
-class NavigationConsentAlerts {
+class NavigationConsentAlerts
+{
+
 
     companion object Alerts{
 
