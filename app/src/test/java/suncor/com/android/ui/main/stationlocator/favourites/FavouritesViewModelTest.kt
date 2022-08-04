@@ -12,6 +12,7 @@ import org.junit.rules.TestRule
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito
+import org.mockito.Mockito.lenient
 import org.mockito.junit.MockitoJUnitRunner
 import suncor.com.android.data.favourite.FavouriteRepository
 import suncor.com.android.model.Resource
@@ -19,8 +20,8 @@ import suncor.com.android.model.Resource
 @RunWith(MockitoJUnitRunner::class)
 class FavouritesViewModelTest {
 
-    @Rule
-    val rule: TestRule = InstantTaskExecutorRule()
+    @get:Rule
+    val rule = InstantTaskExecutorRule()
 
     private lateinit var favouritesViewModel: FavouritesViewModel
 
@@ -50,7 +51,7 @@ class FavouritesViewModelTest {
     fun testLoadfavourites() {
         val apiResponse = MutableLiveData<Resource<Boolean>>()
         apiResponse.postValue(Resource.success(true))
-        Mockito.`when`<LiveData<Resource<Boolean>>>(
+        lenient().`when`<LiveData<Resource<Boolean>>>(
             favouriteRepository.loadFavourites()
         ).thenReturn(apiResponse)
 
