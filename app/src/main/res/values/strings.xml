@@ -108,6 +108,7 @@
     <string name="enrollment_join_button">Join</string>
     <string name="back_to_home">BACK TO HOME</string>
     <string name="enrollment_form_header">Let\'s get you signed up. Plus, collect %s Petro-Points.</string>
+    <string name="enrollment_form_header_exisiting">Hey %1$s, complete your sign up and receive %2$s points.</string>
     <string name="enrollment_form_title">Let\'s get you signed up.</string>
     <string name="enrollment_leave_alert_title">Leave Create Account?</string>
     <string name="enrollment_leave_alert_message">The details you\'ve entered won\'t be saved if you leave. Leave the Create Account form?</string>
@@ -289,7 +290,7 @@
     <string name="cards_wag_description">Use at any SuperWash or GlideWash location.\n\u2014</string>
     <string name="cards_wag_description_vacuum_expire">Your vacuum expires 7 days after connected wash</string>
     <string name="cards_zero_balance_description">Reload on <a href="https://www.petro-canada.ca/en/personal/my-petro-points?modalUrl=%2Fen%2Fpersonal%2Fmy-petro-points%2Freload%2Freload-card">petro-canada.ca</a>.</string>
-    <string name="cards_sp_description">Wash your car once every day for 90 days. Use at participating GlideWash and SuperWash locations.\n\u2014</string>
+    <string name="cards_sp_description">Wash your car once every day. Use at participating GlideWash and SuperWash locations.\n\u2014</string>
     <string name="cards_sp_vacuum_description">Wash and Vacuum your car once everyday. Use at any SuperWash or GlideWash location.</string>
     <string name="cards_ppc_description">Save on fuel every time your swipe your Preferred Price card.</string>
     <string name="cards_rbc_description">Our RBC–Petro‑Canada program helps you save on fuel and earn points faster.</string>

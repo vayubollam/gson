@@ -22,6 +22,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.view.ViewCompat;
 import androidx.core.widget.NestedScrollView;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -40,6 +41,7 @@ import suncor.com.android.mfp.ErrorCodes;
 
 import suncor.com.android.model.Resource;
 
+import suncor.com.android.model.account.NewEnrollment;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.BaseFragment;
 import suncor.com.android.ui.common.ModalDialog;
@@ -416,6 +418,20 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                 }
             });
         }
+        viewModel.getEnrollmentCardType().observe(getViewLifecycleOwner(), enrollmentType -> setTitle(enrollmentType));
+    }
+
+
+    private void setTitle(@Nullable  NewEnrollment.EnrollmentType cardType) {
+        String expandedTitle = "";
+        if (cardType == NewEnrollment.EnrollmentType.EXISTING) {
+            expandedTitle = getString(R.string.enrollment_form_header_exisiting, viewModel.getFirstNameField().getText(), viewModel.getEnrollmentBonusPoints());
+        } else if (cardType == NewEnrollment.EnrollmentType.GHOST) {
+            expandedTitle = getString(R.string.enrollment_form_header_ghost, viewModel.getEnrollmentBonusPoints());
+        } else {
+            expandedTitle = getString(R.string.enrollment_form_header, viewModel.getEnrollmentBonusPoints());
+        }
+        binding.appBar.setExpandedTitle(expandedTitle);
     }
 
 

@@ -79,6 +79,8 @@ public class EnrollmentFormViewModel extends ViewModel {
     private MutableLiveData<Event<Boolean>> _showBiometricAlert = new MutableLiveData<>();
     public LiveData<Event<Boolean>> showBiometricAlert = _showBiometricAlert;
     private SessionManager sessionManager;
+    private MutableLiveData<NewEnrollment.EnrollmentType> _cardStatusState = new MutableLiveData();
+
 
     @Inject
     public EnrollmentFormViewModel(EnrollmentsApi enrollmentsApi, SessionManager sessionManager, CanadaPostAutocompleteProvider canadaPostAutocompleteProvider, FingerprintManager fingerPrintManager) {
@@ -386,9 +388,15 @@ public class EnrollmentFormViewModel extends ViewModel {
         return cardStatus;
     }
 
+    public LiveData<NewEnrollment.EnrollmentType> getEnrollmentCardType() {
+        return _cardStatusState;
+    }
+
     public void setCardStatus(CardStatus cardStatus) {
-        if (cardStatus == null)
+        if (cardStatus == null) {
+            _cardStatusState.setValue(null);
             return;
+        }
         this.cardStatus = cardStatus;
         if (cardStatus.getCardType() == NewEnrollment.EnrollmentType.EXISTING) {
             firstNameField.setText(cardStatus.getUserInfo().getFirstName());
@@ -408,6 +416,7 @@ public class EnrollmentFormViewModel extends ViewModel {
             lastNameField.setText(cardStatus.getUserInfo().getLastName());
             postalCodeField.setText(cardStatus.getAddress().getPostalCode());
         }
+        _cardStatusState.setValue(cardStatus.getCardType());
     }
 
     public void setProvincesList(ArrayList<Province> provinces) {

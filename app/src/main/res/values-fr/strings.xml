@@ -194,6 +194,7 @@
     <string name="login_create_password_duplicated_alert_message">Votre nouveau mot de passe ne peut pas être le même que votre temporaire mot de passe.</string>
     <string name="enrollment_form_header_ghost">Remplissez votre adhésion et obtenez %s points.</string>
     <string name="rewards_guest_description">Vous obtiendrez %s Petro&#8209;Points simplement en vous inscrivant.</string>
+    <string name="enrollment_form_header_exisiting">%1$s, remplissez votre adhésion et obtenez %2$s points.</string>
     <string name="navigation_cards_tab">Wallet</string>
     <string name="cards_fragment_title">Wallet</string>
     <string name="profile_top_questions">Questions les plus fréquentes</string>
@@ -232,7 +233,7 @@
     <string name="cards_wag_description">À utiliser aux établissements avec lave-auto GlideWash ou SuperDoux participants.</string>
     <string name="cards_wag_description_vacuum_expire">Votre utilisation de l\'aspirateur expire 7 jours après le lavage connecté.</string>
     <string name="cards_zero_balance_description">\u2014\nRechargez-la sur le site <a href="https://www.petro-canada.ca/fr/personnel/mes-petro-points?modalUrl=%2Ffr%2Fpersonnel%2Fmes-petro-points%2Frecharger%2Frecharger-carte">petro-canada.ca</a>.</string>
-    <string name="cards_sp_description">Lavez votre voiture une fois par jour pendant 90 jours. À utiliser aux établissements avec lave-auto GlideWash ou SuperDoux participants.</string>
+    <string name="cards_sp_description">Lavez votre voiture une fois par jour. À utiliser aux établissements avec lave-auto GlideWash ou SuperDoux participants.</string>
     <string name="cards_sp_vacuum_description">Lavez votre voiture et passez l\'aspirateur une fois par jour. À utiliser aux établissements avec lave-auto GlideWash ou SuperDoux participants.</string>
     <string name="cards_ppc_description">Économisez chaque fois que vous utilisez votre Carte Prix Préférentiel.</string>
     <string name="cards_rbc_description">Notre programme RBC Petro‑Canada vous aide à économiser sur l\'essence et à accumuler des points plus rapidement.</string>

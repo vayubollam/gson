@@ -30,7 +30,6 @@
             android:id="@+id/app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:expandedTitle="@{vm.cardStatus.cardType == EnrollmentType.GHOST ? @string/enrollment_form_header_ghost(vm.getEnrollmentBonusPoints()):@string/enrollment_form_header(vm.getEnrollmentBonusPoints())}"
             app:title="@string/enrollment_form_title" />
 
         <suncor.com.android.uicomponents.ExtendedNestedScrollView
