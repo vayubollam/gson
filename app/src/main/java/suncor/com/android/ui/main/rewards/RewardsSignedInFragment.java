@@ -98,7 +98,9 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
                 }
 
                 eGiftCardsList.add(3, getGIftCardAt(3));
-                eGiftCardsList.add(0, getGIftCardAt(0));
+                if(viewModel.isDonateEnabled()){
+                    eGiftCardsList.add(0, getGIftCardAt(0));
+                }
             }
         });
 
