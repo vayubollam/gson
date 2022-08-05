@@ -95,6 +95,11 @@ public class MerchantsApiImpl implements MerchantsApi {
                     String jsonText = wlResponse.getResponseText();
                     Timber.d("Member Eligibility api call success, response:\n" + jsonText);
                     MemberEligibilityResponse response = gson.fromJson(jsonText, MemberEligibilityResponse.class);
+                    Timber.d("API Test"+ response.getCategories().get(0).getInfo().getTitle());
+                    Timber.d("API Test Category Id"+ response.getCategories().get(0).getCategoryId());
+                    Timber.d("API Test"+ response.getCategories().get(0).getPrograms().get(0).getInfo().getTitle());
+                    Timber.d("API Test Program ID"+ response.getCategories().get(0).getPrograms().get(0).getProgramId());
+                    Timber.d("API Test Program ID"+ response.getCategories().get(0).getPrograms().get(0).getInfo().getUrl());
                     result.postValue(Resource.success(response));
                 }
 
