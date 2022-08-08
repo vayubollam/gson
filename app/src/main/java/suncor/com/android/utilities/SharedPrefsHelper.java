@@ -11,6 +11,7 @@ public class SharedPrefsHelper {
 
     public static final String USER_VACUUM_TOGGLE = "userVacuumToggle";
     public static final String SETTING_VACUUM_TOGGLE = "settingVacuumToggle";
+    public static final String SETTING_DONATE_TOGGLE = "settingDonateToggle";
 
     private SharedPreferences mSharedPreferences;
 

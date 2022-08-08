@@ -5,7 +5,6 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
@@ -16,14 +15,10 @@ import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.google.gson.Gson;
-
 import java.util.ArrayList;
 import java.util.Arrays;
-
 import javax.inject.Inject;
-
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentRewardsSignedinBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
@@ -65,7 +60,6 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
                 }
             }
         });
-
     }
 
     @Override
@@ -116,7 +110,7 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
                         eGiftCardsList.add(3, getGIftCardAt(3));
 
                         // Handling the visibility of donate card as per the available element of programs.
-                        if (data.getCategories().size() > 0)
+                        if (viewModel.isDonateEnabled() && data.getCategories().size() > 0)
                             eGiftCardsList.add(0, getGIftCardAt(0));
 
                         adapter.notifyDataSetChanged();
@@ -345,9 +339,6 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
 
                 eGiftCardsList.add(giftCard);
             }
-
         }
-
     }
-
 }
