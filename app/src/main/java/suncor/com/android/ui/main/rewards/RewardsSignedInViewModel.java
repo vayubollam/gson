@@ -39,7 +39,7 @@ public class RewardsSignedInViewModel extends ViewModel {
     public RewardsSignedInViewModel(SessionManager sessionManager, RewardsReader rewardsReader, MerchantsRepository merchantsRepository) {
         rewards = rewardsReader.getRewards();
         this.sessionManager = sessionManager;
-        this.repository  = merchantsRepository;
+        this.repository = merchantsRepository;
         merchantsMutableLiveData = merchantsRepository.getMerchants();
         merchantsMutableLiveData.observeForever(merchantsResource -> {
             if (merchantsResource.status == Resource.Status.SUCCESS) {
@@ -80,7 +80,7 @@ public class RewardsSignedInViewModel extends ViewModel {
         return rewards;
     }
 
-    public SessionManager getSessionManager(){
+    public SessionManager getSessionManager() {
         return sessionManager;
     }
 
@@ -88,9 +88,9 @@ public class RewardsSignedInViewModel extends ViewModel {
         _navigateToDiscovery.postValue(Event.newEvent(true));
     }
 
-    public LiveData<Resource<MemberEligibilityResponse>> getMemberEligibility(){
-        memberEligibilityResponse =  repository.getMemberEligibility();
-       return memberEligibilityResponse;
+    public LiveData<Resource<MemberEligibilityResponse>> getMemberEligibility() {
+        memberEligibilityResponse = repository.getMemberEligibility();
+        return memberEligibilityResponse;
     }
 
     public void updatePetroPoints(int pointsBalance) {
@@ -109,4 +109,11 @@ public class RewardsSignedInViewModel extends ViewModel {
         }
         return 0;
     }
+
+    public boolean isDonateEnabled() {
+        Boolean donateToggle = sessionManager.getDonateToggle();
+        if (donateToggle != null) return donateToggle;
+        else return false;
+    }
+
 }

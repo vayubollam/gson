@@ -100,6 +100,7 @@ public class SessionManager implements SessionChangeListener {
                 userLocalSettings.setString(UserLocalSettings.RECENTLY_SEARCHED, null);
                 mSharedPrefsHelper.deleteSavedData(SharedPrefsHelper.USER_VACUUM_TOGGLE);
                 mSharedPrefsHelper.deleteSavedData(SharedPrefsHelper.SETTING_VACUUM_TOGGLE);
+                mSharedPrefsHelper.deleteSavedData(SharedPrefsHelper.SETTING_DONATE_TOGGLE);
                 setProfile(null);
                 accountState = null;
                 loginState.postValue(LoginState.LOGGED_OUT);
@@ -376,6 +377,14 @@ public class SessionManager implements SessionChangeListener {
         }
     }
 
+    public Boolean getDonateToggle() {
+        Boolean settingsDonateToggle = null;
+        if (mSharedPrefsHelper.checkHasKey(SharedPrefsHelper.SETTING_DONATE_TOGGLE)) {
+            settingsDonateToggle = mSharedPrefsHelper.get(SharedPrefsHelper.SETTING_DONATE_TOGGLE, false);
+        }
+        return settingsDonateToggle;
+    }
+
     public void setRewardedPoints(int rewardedPoints) {
         this.rewardedPoints = rewardedPoints;
     }
@@ -409,7 +418,7 @@ public class SessionManager implements SessionChangeListener {
         return userLocalSettings;
     }
 
-    public SharedPrefsHelper getSharedPrefsHelper(){
+    public SharedPrefsHelper getSharedPrefsHelper() {
         return mSharedPrefsHelper;
     }
 }

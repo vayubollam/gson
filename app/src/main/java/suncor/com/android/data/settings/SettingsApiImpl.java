@@ -44,6 +44,7 @@ public class SettingsApiImpl implements SettingsApi {
                     SettingsResponse settingsResponse = gson.fromJson(jsonText, SettingsResponse.class);
                     if (settingsResponse != null && settingsResponse.getSettings() != null && settingsResponse.getSettings().toggleFeature != null) {
                         sharedPrefsHelper.put(SharedPrefsHelper.SETTING_VACUUM_TOGGLE, settingsResponse.getSettings().toggleFeature.isVacuumScanBarcode());
+                        sharedPrefsHelper.put(SharedPrefsHelper.SETTING_DONATE_TOGGLE, settingsResponse.getSettings().toggleFeature.isDonatePetroPoints());
                     }
                     result.postValue(Resource.success(settingsResponse));
                 }
