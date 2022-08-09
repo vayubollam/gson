@@ -1,6 +1,7 @@
 package suncor.com.android.ui.main.rewards.donate
 
 import androidx.databinding.ObservableBoolean
+import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.ViewModel
 import suncor.com.android.mfp.SessionManager
@@ -10,11 +11,49 @@ import javax.inject.Inject
 class DonatePetroPointsViewModel @Inject constructor(val sessionManager: SessionManager) :
     ViewModel() {
 
-    var enableDeduction: ObservableBoolean = ObservableBoolean(false)
-    var enableIncrement: ObservableBoolean = ObservableBoolean(true)
-    var enableDonation: ObservableBoolean = ObservableBoolean(false)
-    var donationPoints: ObservableInt = ObservableInt(0)
-    var donateAmount: ObservableInt = ObservableInt(0)
+    val enableDeduction: ObservableBoolean = ObservableBoolean(false)
+    val enableIncrement: ObservableBoolean = ObservableBoolean(true)
+    val enableDonation: ObservableBoolean = ObservableBoolean(false)
+    val donationPoints: ObservableInt = ObservableInt(0)
+    val donateAmount: ObservableInt = ObservableInt(0)
+    val formattedDonationPoints: ObservableField<String> =
+        ObservableField(getFormattedDonatePoints())
+
+
+    fun incrementAmount() {
+        if (donateAmount.get() == getDonationLimit()) return
+        donateAmount.set(donateAmount.get() + 1)
+        updateData()
+    }
+
+    fun decrementAmount() {
+        if (donateAmount.get() <= 0) return
+        donateAmount.set(donateAmount.get() - 1)
+        updateData()
+    }
+
+    private fun updateData() {
+        donationPoints.set(getPointsFromDollar())
+        formattedDonationPoints.set(getFormattedDonatePoints())
+        if(donateAmount.get()>0){
+            enableDonation.set(true)
+            enableDeduction.set(true)
+        }else{
+            enableDonation.set(false)
+            enableDeduction.set(false)
+        }
+    }
+
+
+
+
+    private fun getPointsFromDollar(): Int {
+        return donateAmount.get() * 1000
+    }
+
+    private fun getDonationLimit(): Int {
+        return getPetroPoints() / 1000
+    }
 
     fun getPetroPoints(): Int {
         try {
@@ -29,33 +68,8 @@ class DonatePetroPointsViewModel @Inject constructor(val sessionManager: Session
         return CardFormatUtils.formatBalance(getPetroPoints())
     }
 
-    fun getFormattedDonatePoints(): String {
+    private fun getFormattedDonatePoints(): String {
         return CardFormatUtils.formatBalance(donationPoints.get());
-    }
-
-    fun incrementAmount() {
-        if (donateAmount.get() == getDonationLimit()) return
-        donateAmount.set(donateAmount.get() + 1)
-        updateData()
-    }
-
-    private fun updateData() {
-        donationPoints.set(getPointsFromDollar())
-        donationPoints.notifyChange()
-    }
-
-    private fun getPointsFromDollar(): Int {
-        return donateAmount.get() * 1000
-    }
-
-    fun decrementAmount() {
-        if (donateAmount.get() <= 0) return
-        donateAmount.set(donateAmount.get() - 1)
-        updateData()
-    }
-
-    private fun getDonationLimit(): Int {
-        return getPetroPoints() / 1000
     }
 
 }

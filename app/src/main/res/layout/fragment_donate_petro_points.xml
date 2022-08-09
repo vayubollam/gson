@@ -157,7 +157,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/gibson_semibold"
-                                android:text="@{@string/x_points(vm.getFormattedDonatePoints())}"
+                                android:text="@{@string/x_points(vm.formattedDonationPoints)}"
                                 android:maxLines="1"
                                 android:textColor="#eb1d2e"
                                 android:textSize="20sp" />
