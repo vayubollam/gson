@@ -101,7 +101,7 @@
     <string name="enrollment_terms_agreement">En ouvrant un compte, j\'accepte les <a href="https://www.petro-canada.ca/fr/personnel/conditions#petropoints">Conditions du programme Petro‑Points</a>.</string>
     <string name="enrollment_join_button">Joindre</string>
     <string name="back_to_home">RETOUR À L\'ACCUIEL</string>
-    <string name="enrollment_form_header">Commençons votre inscription et obtenez 2 500 Petro-Points.</string>
+    <string name="enrollment_form_header">Commençons votre inscription et obtenez %s Petro-Points.</string>
     <string name="enrollment_first_name_error">Veuillez entrer un prénom.</string>
     <string name="enrollment_last_name_error">Veuillez entrer un nom.</string>
     <string name="enrollment_email_empty_error">Veuillez entrer une adresse.</string>
@@ -192,7 +192,8 @@
     <string name="login_create_password_button">Changer mon mot de passe</string>
     <string name="login_create_password_duplicated_alert_title">Mot de passe invalide</string>
     <string name="login_create_password_duplicated_alert_message">Votre nouveau mot de passe ne peut pas être le même que votre temporaire mot de passe.</string>
-    <string name="enrollment_form_header_ghost">Remplissez votre adhésion et obtenez 2 500 points.</string>
+    <string name="enrollment_form_header_ghost">Remplissez votre adhésion et obtenez %s points.</string>
+    <string name="rewards_guest_description">Vous obtiendrez %s Petro&#8209;Points simplement en vous inscrivant.</string>
     <string name="navigation_cards_tab">Wallet</string>
     <string name="cards_fragment_title">Wallet</string>
     <string name="profile_top_questions">Questions les plus fréquentes</string>
@@ -425,7 +426,7 @@
     <string name="offers_leaving_app_alert_button">Continuer</string>
     <string name="rbc_url">https://www.rbcbanqueroyale.com/petro-canada/index.html?suncor&amp;utm_source=suncor&amp;utm_medium=3pb&amp;utm_campaign=petrocanada_3cpl&amp;utm_content=pc_app_link</string>
     <string name="transaction_type_pp">Petro Points</string>
-    <string name="rewards_guest_join_button">Inscrivez-vous et commencez à économiser</string>
+    <string name="rewards_guest_join_button">Inscrivez-vous pour économiser</string>
     <string name="navigation_rewards_tab">Petro-Points</string>
     <string name="cards_remove_card_alert_title">Êtes-vous sûr?</string>
     <string name="cards_remove_card_alert_message">Cela supprimera la carte de votre compte et tout solde résiduel ne sera plus protégé.</string>

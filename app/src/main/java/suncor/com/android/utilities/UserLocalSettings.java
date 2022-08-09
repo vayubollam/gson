@@ -12,6 +12,7 @@ import suncor.com.android.SuncorApplication;
 public class UserLocalSettings {
     public static final String RECENTLY_SEARCHED = "recentlySearched";
     public static final String LAST_SUCCESSFUL_PAP_DATE = "com.ibm.suncor.last_pap.date";
+    public static final String ENROLLMENT_BONUS = "enrollmentBonus";
     private SharedPreferences preferences;
 
 

@@ -107,7 +107,7 @@
     <string name="enrollment_terms_agreement">By creating an account, I agree to the Petro-Points <a href="https://www.petro-canada.ca/en/personal/terms-conditions#petropoints">terms and conditions</a></string>
     <string name="enrollment_join_button">Join</string>
     <string name="back_to_home">BACK TO HOME</string>
-    <string name="enrollment_form_header">Let\'s get you signed up. Plus, collect 2,500 Petro-Points.</string>
+    <string name="enrollment_form_header">Let\'s get you signed up. Plus, collect %s Petro-Points.</string>
     <string name="enrollment_form_title">Let\'s get you signed up.</string>
     <string name="enrollment_leave_alert_title">Leave Create Account?</string>
     <string name="enrollment_leave_alert_message">The details you\'ve entered won\'t be saved if you leave. Leave the Create Account form?</string>
@@ -190,7 +190,8 @@
     <string name="login_create_password_button">Change my password</string>
     <string name="login_create_password_duplicated_alert_title">Invalid password</string>
     <string name="login_create_password_duplicated_alert_message">Your new password can\'t be the same as your temporary password.</string>
-    <string name="enrollment_form_header_ghost">Almost there. Complete your registration and receive 2,500 points.</string>
+    <string name="enrollment_form_header_ghost">Almost there. Complete your registration and receive %s points.</string>
+    <string name="rewards_guest_description">Earn %s bonus points when you sign up.</string>
     <string name="home_nearest_no_stations_found">No stations found</string>
     <string name="home_nearest_no_station_message">We couldn\'t locate the nearest station at the moment.</string>
     <string name="home_nearest_error_title">Something went wrong</string>

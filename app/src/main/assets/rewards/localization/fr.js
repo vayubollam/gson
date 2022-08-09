@@ -104,6 +104,6 @@ var FR = {
 	},
 	"rewardsJoin": {
 		"title": "Inscrivez-vous à Petro&#8209;Points",
-		"description": "Vous obtiendrez 2 500 Petro&#8209;Points simplement en vous inscrivant."
+		"description": ""
 	}
 };
