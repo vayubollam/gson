@@ -22,7 +22,6 @@ class DonatePetroPointsFragment : MainActivityFragment() {
     private lateinit var viewModel: DonatePetroPointsViewModel
     private lateinit var binding: FragmentDonatePetroPointsBinding
     private var originalMode : Int? = null
-    private var donateAmount = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,20 +32,27 @@ class DonatePetroPointsFragment : MainActivityFragment() {
         )
     }
 
-    // TODO: make a custom layout for edittext with $ sign
+    // TODO: 1. Study DataBinding (Update views from viewmodel)
+    //  2. make a custom layout for edittext with $ sign
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentDonatePetroPointsBinding.inflate(inflater, container, false)
-        binding.closeButton.setOnClickListener { v ->
+
+        binding.closeButton.setOnClickListener {
             Navigation.findNavController(requireView()).navigateUp()
         }
-        binding.enableDeduction = false
-        binding.enableDonation = false
-        binding.enableIncrement = true
-        binding.petroPoints = viewModel.getPetroPoints()
-        binding.donateAmount = donateAmount
+
+        binding.imageButtonIncrement.setOnClickListener{
+            viewModel.incrementAmount()
+            binding.executePendingBindings()
+        }
+
+        binding.imageButtonDecrement.setOnClickListener {
+            viewModel.decrementAmount()
+        }
+
         binding.vm = viewModel
 
         return binding.root

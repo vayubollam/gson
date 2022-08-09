@@ -8,29 +8,14 @@
         <import type="android.text.Html" />
 
         <variable
-            name="petroPoints"
-            type="Integer" />
-
-        <variable
             name="donateAmount"
             type="Integer" />
 
         <variable
             name="vm"
             type="suncor.com.android.ui.main.rewards.donate.DonatePetroPointsViewModel" />
-        <!--Following three variables set for testing only.
-         Logic might change with addition of viewModel-->
-        <variable
-            name="enableDeduction"
-            type="Boolean" />
 
-        <variable
-            name="enableIncrement"
-            type="Boolean" />
 
-        <variable
-            name="enableDonation"
-            type="Boolean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -172,7 +157,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/gibson_semibold"
-                                android:text="@{@string/x_points(donateAmount.toString())}"
+                                android:text="@{@string/x_points(vm.getFormattedDonatePoints())}"
                                 android:maxLines="1"
                                 android:textColor="#eb1d2e"
                                 android:textSize="20sp" />
@@ -180,12 +165,12 @@
 
 
                         <ImageButton
-                            android:id="@+id/image_button_negative"
+                            android:id="@+id/image_button_decrement"
                             android:layout_width="32dp"
                             android:layout_height="32dp"
                             android:layout_marginStart="36dp"
                             android:background="@android:color/transparent"
-                            android:src="@{enableDeduction ? @drawable/ic_donate_minus_active : @drawable/ic_donate_minus_disabled}"
+                            android:src="@{vm.enableDeduction ? @drawable/ic_donate_minus_active : @drawable/ic_donate_minus_disabled}"
                             app:layout_constraintBottom_toBottomOf="@+id/input_field"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="@+id/input_field" />
@@ -208,18 +193,18 @@
                             android:textColor="@color/grey_8d8d"
                             android:textSize="60sp"
                             app:autoSizeTextType="uniform"
-                            app:layout_constraintEnd_toStartOf="@+id/image_button_positive"
-                            app:layout_constraintStart_toEndOf="@+id/image_button_negative"
+                            app:layout_constraintEnd_toStartOf="@+id/image_button_increment"
+                            app:layout_constraintStart_toEndOf="@+id/image_button_decrement"
                             app:layout_constraintTop_toBottomOf="@+id/redeem_title"
                             tools:text="$0" />
 
                         <ImageButton
-                            android:id="@+id/image_button_positive"
+                            android:id="@+id/image_button_increment"
                             android:layout_width="32dp"
                             android:layout_height="32dp"
                             android:layout_marginEnd="36dp"
                             android:background="@android:color/transparent"
-                            android:src="@{enableIncrement ? @drawable/ic_donate_plus_active : @drawable/ic_donate_plus_disabled}"
+                            android:src="@{vm.enableIncrement ? @drawable/ic_donate_plus_active : @drawable/ic_donate_plus_disabled}"
                             app:layout_constraintBottom_toBottomOf="@+id/input_field"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="@+id/input_field" />
@@ -274,7 +259,7 @@
                     android:layout_marginBottom="16dp"
                     android:enabled="false"
                     android:text="@string/donate_points"
-                    app:enableDisable="@{enableDonation}"
+                    app:enableDisable="@{vm.enableDonation}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     tools:visibility="visible" />
 
