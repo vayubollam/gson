@@ -91,6 +91,8 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
                         }
                     }
                 }
+
+                eGiftCardsList.add(3, getGIftCardAt(3));
             }
         });
 
@@ -106,8 +108,6 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
                         viewModel.updatePetroPoints(data.getPointsBalance());
                         petroPointsBalance.set(data.getPointsBalance());
                         adapter.isEligible = isRedeemable;
-
-                        eGiftCardsList.add(3, getGIftCardAt(3));
 
                         // Handling the visibility of donate card as per the available element of programs.
                         if (viewModel.isDonateEnabled() && data.getCategories().size() > 0)
