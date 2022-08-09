@@ -12,6 +12,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito
+import org.mockito.Mockito.lenient
 import org.mockito.junit.MockitoJUnitRunner
 import suncor.com.android.data.cards.CardsRepository
 import suncor.com.android.data.carwash.CarwashApi
@@ -110,7 +111,7 @@ class CarWashTransactionViewModelTest {
             cardList.addAll(mockCardsList)
         }
         apiResponse.postValue(Resource.success(cardList))
-        Mockito.`when`<LiveData<Resource<ArrayList<CardDetail>>>>(
+        lenient().`when`<LiveData<Resource<ArrayList<CardDetail>>>>(
             viewModel.getcards()
         ).thenReturn(apiResponse)
 
