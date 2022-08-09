@@ -51,6 +51,7 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
     private final ArrayList<GenericEGiftCard> eGiftCardsList = new ArrayList<>();
     private boolean systemMarginsAlreadyApplied;
     private boolean isRedeemable;
+    private MemberEligibilityResponse data;
     public ObservableInt petroPointsBalance = new ObservableInt();
     private GenericGiftCardsAdapter adapter;
 
@@ -98,7 +99,7 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
                 }
 
                 eGiftCardsList.add(3, getGIftCardAt(3));
-                if(viewModel.isDonateEnabled()){
+                if(!viewModel.isDonateEnabled()){
                     eGiftCardsList.add(0, getGIftCardAt(0));
                 }
             }
@@ -110,7 +111,7 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
         viewModel.getMemberEligibility().observe(getViewLifecycleOwner(), response -> {
             switch (response.status) {
                 case SUCCESS:
-                    MemberEligibilityResponse data = response.data;
+                     data = response.data;
                     if (data != null) {
                         Timber.d("API Test"+ data.getCategories().get(0).getInfo().getTitle());
                         Timber.d("API Test Category Id"+ data.getCategories().get(0).getCategoryId());
@@ -271,7 +272,13 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
                         Navigation.findNavController(requireView()).navigate(action);
                     }
                 } else if (genericEGiftCard.getGroup().equalsIgnoreCase(Constants.GROUP_DONATE)) {
-                    // Handling for donate gift card
+                    String categoriesList = gson.toJson(data!= null ? data : null);
+                    RewardsSignedInFragmentDirections.ActionRewardsSignedinTabToDonatePetroPointsFragment action = RewardsSignedInFragmentDirections.actionRewardsSignedinTabToDonatePetroPointsFragment();
+                    action.setCategoriesList(categoriesList);
+                    NavDestination navDestination = Navigation.findNavController(requireView()).getCurrentDestination();
+                    if (navDestination != null && navDestination.getId() == R.id.rewards_signedin_tab) {
+                        Navigation.findNavController(requireView()).navigate(action);
+                    }
                 } else {
                     RewardsSignedInFragmentDirections.ActionRewardsSignedinTabToMerchantDetailsFragment action = RewardsSignedInFragmentDirections.actionRewardsSignedinTabToMerchantDetailsFragment(genericEGiftCard);
                     Navigation.findNavController(requireView()).navigate(action);
@@ -345,9 +352,6 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
 
                 eGiftCardsList.add(giftCard);
             }
-
         }
-
     }
-
 }

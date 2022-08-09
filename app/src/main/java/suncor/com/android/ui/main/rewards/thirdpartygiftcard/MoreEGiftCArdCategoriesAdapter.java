@@ -69,9 +69,6 @@ public class MoreEGiftCArdCategoriesAdapter extends RecyclerView.Adapter<MoreEGi
                 }
             });
             binding.childRecycler.setAdapter(adapter);
-
-
-
             binding.executePendingBindings();
 
         }
