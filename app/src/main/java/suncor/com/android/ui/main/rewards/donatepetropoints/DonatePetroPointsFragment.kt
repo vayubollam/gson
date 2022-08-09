@@ -12,7 +12,6 @@ import suncor.com.android.di.viewmodel.ViewModelFactory
 import suncor.com.android.model.redeem.response.MemberEligibilityResponse
 import suncor.com.android.ui.common.OnBackPressedListener
 import suncor.com.android.ui.main.common.MainActivityFragment
-import suncor.com.android.ui.main.rewards.thirdpartygiftcard.MoreEGiftCardCategoriesViewModel
 import javax.inject.Inject
 
 class DonatePetroPointsFragment: MainActivityFragment(), OnBackPressedListener {
@@ -38,11 +37,13 @@ class DonatePetroPointsFragment: MainActivityFragment(), OnBackPressedListener {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentDonatePetroPointsBinding.inflate(inflater, container, false)
         arguments.let {
 
-            categoryString = DonatePetroPointsFragmentArgs.fromBundle(it!!).categoriesList
+            if(it != null){
+                categoryString = DonatePetroPointsFragmentArgs.fromBundle(it).categoriesList
+            }
         }
 
         categoryString.let {
