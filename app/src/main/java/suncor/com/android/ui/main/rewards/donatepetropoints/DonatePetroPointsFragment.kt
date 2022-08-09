@@ -59,15 +59,15 @@ class DonatePetroPointsFragment: MainActivityFragment(), OnBackPressedListener {
             ).popBackStack()
         }
 
+        val adapter = context?.let { DonateCategoryAdapter(it, memberEligibilityResponse.categories) }
+
+        binding.apply {
+
+            categoriesRecyclerView.adapter = adapter
+        }
+
         return binding.root
 
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        val adapter = context?.let { DonateCategoryAdapter(it, memberEligibilityResponse.categories) }
-        binding.categoriesRecyclerView.adapter = adapter
     }
 
     override fun onBackPressed() {
