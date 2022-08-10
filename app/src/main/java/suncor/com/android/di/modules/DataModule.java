@@ -3,6 +3,7 @@ package suncor.com.android.di.modules;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.gson.Gson;
+import com.worklight.wlclient.api.WLAuthorizationManager;
 
 import javax.inject.Singleton;
 
@@ -43,7 +44,10 @@ import suncor.com.android.data.transcations.TransactionApiImpl;
 import suncor.com.android.data.users.UsersApi;
 import suncor.com.android.data.users.UsersApiImpl;
 import suncor.com.android.mfp.SessionManager;
+import suncor.com.android.mfp.challengeHandlers.UserLoginChallengeHandler;
 import suncor.com.android.model.redeem.response.OrderResponse;
+import suncor.com.android.utilities.SharedPrefsHelper;
+import suncor.com.android.utilities.UserLocalSettings;
 
 @Module
 public class DataModule {
@@ -132,8 +136,8 @@ public class DataModule {
     }
 
     @Provides
-    SettingsApi provideSettingsApi(Gson gson) {
-        return new SettingsApiImpl(gson);
+    SettingsApi provideSettingsApi(Gson gson, SharedPrefsHelper sharedPrefsHelper) {
+        return new SettingsApiImpl(gson, sharedPrefsHelper);
     }
 
     @Provides

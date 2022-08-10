@@ -107,7 +107,7 @@
     <string name="enrollment_terms_agreement">By creating an account, I agree to the Petro-Points <a href="https://www.petro-canada.ca/en/personal/terms-conditions#petropoints">terms and conditions</a></string>
     <string name="enrollment_join_button">Join</string>
     <string name="back_to_home">BACK TO HOME</string>
-    <string name="enrollment_form_header">Let\'s get you signed up. Plus, collect 2,500 Petro-Points.</string>
+    <string name="enrollment_form_header">Let\'s get you signed up. Plus, collect %s Petro-Points.</string>
     <string name="enrollment_form_title">Let\'s get you signed up.</string>
     <string name="enrollment_leave_alert_title">Leave Create Account?</string>
     <string name="enrollment_leave_alert_message">The details you\'ve entered won\'t be saved if you leave. Leave the Create Account form?</string>
@@ -190,7 +190,8 @@
     <string name="login_create_password_button">Change my password</string>
     <string name="login_create_password_duplicated_alert_title">Invalid password</string>
     <string name="login_create_password_duplicated_alert_message">Your new password can\'t be the same as your temporary password.</string>
-    <string name="enrollment_form_header_ghost">Almost there. Complete your registration and receive 2,500 points.</string>
+    <string name="enrollment_form_header_ghost">Almost there. Complete your registration and receive %s points.</string>
+    <string name="rewards_guest_description">Earn %s bonus points when you sign up.</string>
     <string name="home_nearest_no_stations_found">No stations found</string>
     <string name="home_nearest_no_station_message">We couldn\'t locate the nearest station at the moment.</string>
     <string name="home_nearest_error_title">Something went wrong</string>
@@ -285,9 +286,11 @@
     <string name="cards_fsr_balance_conversion">Save %d¢ per litre</string>
     <string name="cards_ppc_balance_conversion">Save %d¢ per litre</string>
     <string name="cards_fsr_description">Our Fuel Savings Rewards card helps you save %d¢ per litre on 200 litres of fuel.\n\u2014\nReload your card at petro-points.com.</string>
-    <string name="cards_wag_description">Use at participating GlideWash and SuperWash locations.</string>
-    <string name="cards_zero_balance_description">\u2014\nReload on <a href="https://www.petro-canada.ca/en/personal/my-petro-points?modalUrl=%2Fen%2Fpersonal%2Fmy-petro-points%2Freload%2Freload-card">petro-canada.ca</a>.</string>
-    <string name="cards_sp_description">Wash your car once every day for 90 days. Use at participating GlideWash and SuperWash locations.</string>
+    <string name="cards_wag_description">Use at any SuperWash or GlideWash location.\n\u2014</string>
+    <string name="cards_wag_description_vacuum_expire">Your vacuum expires 7 days after connected wash</string>
+    <string name="cards_zero_balance_description">Reload on <a href="https://www.petro-canada.ca/en/personal/my-petro-points?modalUrl=%2Fen%2Fpersonal%2Fmy-petro-points%2Freload%2Freload-card">petro-canada.ca</a>.</string>
+    <string name="cards_sp_description">Wash your car once every day for 90 days. Use at participating GlideWash and SuperWash locations.\n\u2014</string>
+    <string name="cards_sp_vacuum_description">Wash and Vacuum your car once everyday. Use at any SuperWash or GlideWash location.</string>
     <string name="cards_ppc_description">Save on fuel every time your swipe your Preferred Price card.</string>
     <string name="cards_rbc_description">Our RBC–Petro‑Canada program helps you save on fuel and earn points faster.</string>
     <string name="cards_caa_description">You can also exchange your points for CAA Dollars or a new 1-year basic CAA Membership.</string>
@@ -799,6 +802,13 @@
     <string name="carwash_cards">Carwash Cards</string>
     <string name="car_wash_card_list">car-wash-card-list</string>
 
+    <string name="carwash_daily_vacuum_used_alert">Daily vacuum used</string>
+    <string name="carwash_daily_vacuum_used_message">Your vacuum for the day was used at %s at %s.</string>
+    <string name="carwash_daily_wash_used_alert">Daily wash used</string>
+    <string name="carwash_daily_wash_used_message">Your wash for the day was used at %s at %s.</string>
+    <string name="session_in_progress_title">Session in progress</string>
+    <string name="session_vacuum_in_progress_message">You cannot start a vacuum at this time. Please wait a few minutes and try again.</string>
+    <string name="session_wash_in_progress_message">You cannot start a wash at this time. Please wait a few minutes and try again.</string>
 
     <string name="cards_days">%1$s days</string>
     <string name="cards_washes">%1$s washes</string>

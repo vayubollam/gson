@@ -1,0 +1,95 @@
+// Include in App
+includeJacocoInto(project)
+
+// Include in all submodules
+subprojects { project ->
+    includeJacocoInto(project)
+}
+
+// `subprojects*.test` for some reason is not working,
+// so I had to specify the test tasks for all app and submodules
+task jacocoTestReport(type: JacocoReport, dependsOn: getTestTasks()) {
+
+    // Report type setting
+    reports {
+        xml.enabled = false
+        html.enabled = true
+        csv.enabled = false
+    }
+
+    // Files/Classes that should not be included in the code coverage report.
+    def fileFilter = getFilesToExclude()
+
+    // Init files
+    def sourceDirectoriesFiles = []
+    def classDirectoriesFiles = []
+
+    // App level
+    injectCoveredFiles(project, sourceDirectoriesFiles, classDirectoriesFiles, "QA", fileFilter)
+
+    // Submodule level
+    subprojects.each { subproject ->
+        injectCoveredFiles(subproject, sourceDirectoriesFiles, classDirectoriesFiles, "debug", fileFilter)
+    }
+
+    // Set the files
+    sourceDirectories.from(files(sourceDirectoriesFiles))
+    classDirectories.from(files(classDirectoriesFiles))
+
+    // Gather execution data from all app project and subprojects
+    classDirectories.from(fileTree(project.rootDir.absolutePath)
+            .include("**/build/jacoco/*.exec", "**.exec"))
+}
+
+def getTestTasks() {
+    return [
+            'app:testdebugUnitTest', // App
+            'uicomponent:testDebugUnitTest', // Component
+    ]
+}
+
+def getFilesToExclude() {
+    return [
+//            '**/*Application*.*', // todo discuss...
+//            '**/*Activity*.*',
+//            '**/*Fragment*.*',
+            '**/R.class', '**/R$*.class',
+            '**/BR.class', '**/BR$*.class',
+            '**/BuildConfig.*',
+            '**/Manifest*.*',
+            '**/*Test*.*',
+            'android/**/*.*',
+            '**/*$[0-9].*',
+            '**/databinding/*.class'
+    ]
+}
+
+def injectCoveredFiles(
+        Project project,
+        List<Object> sourceDirectoriesFiles,
+        List<Object> classDirectoriesFiles,
+        String debugString,
+        List<String> excludedFiles
+) {
+    // project.main.source.. doesn't work... :(
+    def javaTree = fileTree(dir: "$project.buildDir/intermediates/javac/$debugString", excludes: excludedFiles)
+    def kotlinTree = fileTree(dir: "$project.buildDir/tmp/kotlin-classes/$debugString", excludes: excludedFiles)
+    def javaSrc = "${project.projectDir}/src/main/java"
+    def kotlinSrc = "${project.projectDir}/src/main/kotlin"
+
+    sourceDirectoriesFiles.addAll([javaSrc, kotlinSrc])
+    classDirectoriesFiles.addAll([javaTree, kotlinTree])
+}
+
+def includeJacocoInto(Project project) {
+    project.with {
+        apply plugin: 'jacoco'
+        jacoco {
+            toolVersion = "$jacocoVersion"
+        }
+        tasks.withType(Test) {
+            jacoco.includeNoLocationClasses = true
+            jacoco.excludes = ['jdk.internal.*']
+        }
+    }
+}

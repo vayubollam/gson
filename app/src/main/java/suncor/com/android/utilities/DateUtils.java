@@ -119,4 +119,31 @@ public class DateUtils {
         return etDf.format(currentDate.getTime());
     }
 
+        public static long findDateDifference (String startDate, String endDate) throws ParseException {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+            Date date = dateFormat.parse(startDate);
+            Date dateD = dateFormat.parse(endDate);
+
+            Long difference_In_Time = dateD.getTime() - date.getTime();
+
+            long difference_In_Days = ((difference_In_Time
+                    / (1000 * 60 * 60 * 24))
+                    % 365);
+
+            Timber.d("Date Difference Log :", difference_In_Days);
+            return difference_In_Days;
+        }
+
+    public static String getInputFormattedTime(String inputDate) {
+        Date date;
+        String newString = null;
+        try {
+            date = new SimpleDateFormat("yyy-MM-dd'T'HH:mm:ss").parse(inputDate);
+            newString = new SimpleDateFormat("hh:mm aa").format(date); // eg 12:00 pm
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return newString;
+    }
 }

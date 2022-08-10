@@ -54,7 +54,10 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(RewardsSignedInViewModel.class);
         viewModel.navigateToDiscovery.observe(this, event -> {
             if (event.getContentIfNotHandled() != null) {
-                Navigation.findNavController(requireView()).navigate(R.id.action_rewards_signedin_tab_to_rewardsDiscoveryFragment);
+                NavDestination navDestination = Navigation.findNavController(requireView()).getCurrentDestination();
+                if (navDestination != null && navDestination.getId() == R.id.rewards_signedin_tab) {
+                    Navigation.findNavController(requireView()).navigate(R.id.action_rewards_signedin_tab_to_rewardsDiscoveryFragment);
+                }
             }
         });
     }
@@ -247,7 +250,10 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
                 }
             } else {
                 RewardsSignedInFragmentDirections.ActionRewardsSignedinTabToMerchantDetailsFragment action = RewardsSignedInFragmentDirections.actionRewardsSignedinTabToMerchantDetailsFragment(genericEGiftCard);
-                Navigation.findNavController(requireView()).navigate(action);
+                NavDestination navDestination = Navigation.findNavController(requireView()).getCurrentDestination();
+                if (navDestination != null && navDestination.getId() == R.id.rewards_signedin_tab) {
+                    Navigation.findNavController(requireView()).navigate(action);
+                }
             }
         } else {
             RewardsSignedInFragmentDirections.ActionRewardsSignedinTabToRewardsDetailsFragment action = RewardsSignedInFragmentDirections.actionRewardsSignedinTabToRewardsDetailsFragment(genericEGiftCard);

@@ -1,8 +1,10 @@
 package suncor.com.android.ui.main.rewards;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,7 @@ import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -20,12 +23,15 @@ import suncor.com.android.R;
 import suncor.com.android.analytics.giftcard.RewardsGuestAnalytics;
 import suncor.com.android.databinding.FragmentRewardsBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
+import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.ui.common.webview.ObservableWebView;
 import suncor.com.android.ui.enrollment.EnrollmentActivity;
 import suncor.com.android.ui.enrollment.form.SecurityQuestionViewModel;
 import suncor.com.android.ui.main.BottomNavigationFragment;
+import suncor.com.android.utilities.CommonUtils;
 import suncor.com.android.utilities.ConnectionUtil;
 import suncor.com.android.utilities.Constants;
+import suncor.com.android.utilities.UserLocalSettings;
 
 import static suncor.com.android.analytics.AnalyticsConstants.SCROLL_DEPTH_25;
 import static suncor.com.android.analytics.AnalyticsConstants.SCROLL_DEPTH_5;
@@ -48,6 +54,9 @@ public class RewardsGuestFragment extends BottomNavigationFragment {
 
     @Inject
     ViewModelFactory viewModelFactory;
+
+    @Inject
+    SessionManager sessionManager;
 
     private boolean scroll5 = false, scroll25 = false, scroll50 = false, scroll75 = false, scroll95 = false;
 
@@ -75,7 +84,6 @@ public class RewardsGuestFragment extends BottomNavigationFragment {
         binding.joinButton.setOnClickListener(v -> {
            checkForApiResponse();
         });
-
         return binding.getRoot();
     }
 
@@ -123,6 +131,17 @@ public class RewardsGuestFragment extends BottomNavigationFragment {
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 binding.webview.postDelayed(() -> isWebViewLoading.set(false), 50);
+                int enrollmentBonus = sessionManager.getUserLocalSettings().getInt(UserLocalSettings.ENROLLMENT_BONUS, 1);
+                String formattedValue = CommonUtils.getFormattedPoints(enrollmentBonus);
+                String rewardsGuestDescription = getResources().getString(R.string.rewards_guest_description, formattedValue);
+                StringBuilder functionBuilder = new StringBuilder("changeEnrollmentBonus");
+                functionBuilder.append("(");
+                functionBuilder.append("\"");
+                functionBuilder.append(rewardsGuestDescription);
+                functionBuilder.append("\"");
+                functionBuilder.append(")");
+                String function = functionBuilder.toString();
+                binding.webview.evaluateJavascript(function, null);
             }
 
             @Override
@@ -207,6 +226,4 @@ public class RewardsGuestFragment extends BottomNavigationFragment {
                 });
         return builder.create();
     }
-
-
 }
