@@ -10,6 +10,7 @@ import com.worklight.wlclient.api.WLResponse;
 import com.worklight.wlclient.api.WLResponseListener;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.model.Resource;
