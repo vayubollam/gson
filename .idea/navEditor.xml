@@ -507,6 +507,11 @@
                                 <LayoutPositions />
                               </value>
                             </entry>
+                            <entry key="action_cardsDetailsFragment_to_vacuumBarcodeFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                           </map>
                         </option>
                       </LayoutPositions>
@@ -1076,6 +1081,18 @@
                         <option name="myPosition">
                           <Point>
                             <option name="x" value="684" />
+                            <option name="y" value="12" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="vacuumBarcodeFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="12" />
                             <option name="y" value="12" />
                           </Point>
                         </option>

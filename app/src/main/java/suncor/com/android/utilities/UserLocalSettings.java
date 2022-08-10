@@ -12,6 +12,7 @@ import suncor.com.android.SuncorApplication;
 public class UserLocalSettings {
     public static final String RECENTLY_SEARCHED = "recentlySearched";
     public static final String LAST_SUCCESSFUL_PAP_DATE = "com.ibm.suncor.last_pap.date";
+    public static final String ENROLLMENT_BONUS = "enrollmentBonus";
     private SharedPreferences preferences;
 
 
@@ -24,7 +25,17 @@ public class UserLocalSettings {
         return preferences.getBoolean(key, defValue);
     }
 
+    public Boolean getBool(String key, Boolean defValue) {
+        return preferences.getBoolean(key, defValue);
+    }
+
     public void setBool(String key, boolean value) {
+        preferences.edit()
+                .putBoolean(key, value)
+                .apply();
+    }
+
+    public void setBool(String key, Boolean value) {
         preferences.edit()
                 .putBoolean(key, value)
                 .apply();

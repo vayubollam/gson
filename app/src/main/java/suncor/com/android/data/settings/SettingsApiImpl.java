@@ -10,23 +10,28 @@ import com.worklight.wlclient.api.WLResponse;
 import com.worklight.wlclient.api.WLResponseListener;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.SettingsResponse;
+import suncor.com.android.utilities.SharedPrefsHelper;
 import suncor.com.android.utilities.Timber;
 
 public class SettingsApiImpl implements SettingsApi {
     private static final String GET_SETTINGS_ADAPTER_PATH = "/adapters/suncor/v9/rfmp-secure/settings";
     private Gson gson;
+    private SharedPrefsHelper sharedPrefsHelper;
 
-    public SettingsApiImpl(Gson gson) {
+    public SettingsApiImpl(Gson gson, SharedPrefsHelper sharedPrefsHelper) {
         this.gson = gson;
+        this.sharedPrefsHelper = sharedPrefsHelper;
     }
 
     @Override
     public LiveData<Resource<SettingsResponse>> retrieveSettings() {
         Timber.d("Retrieving MFP settings");
+
         MutableLiveData<Resource<SettingsResponse>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
@@ -38,6 +43,9 @@ public class SettingsApiImpl implements SettingsApi {
                     String jsonText = wlResponse.getResponseText();
                     Timber.d("Settings API response:\n" + jsonText);
                     SettingsResponse settingsResponse = gson.fromJson(jsonText, SettingsResponse.class);
+                    if (settingsResponse != null && settingsResponse.getSettings() != null && settingsResponse.getSettings().toggleFeature != null) {
+                        sharedPrefsHelper.put(SharedPrefsHelper.SETTING_VACUUM_TOGGLE, settingsResponse.getSettings().toggleFeature.isVacuumScanBarcode());
+                    }
                     result.postValue(Resource.success(settingsResponse));
                 }
 

@@ -1,5 +1,8 @@
 package suncor.com.android.di.modules;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import com.worklight.wlclient.api.WLAuthorizationManager;
 import com.worklight.wlclient.api.WLClient;
 
@@ -24,6 +27,11 @@ public class APPModule {
     @Singleton
     WLAuthorizationManager providesAuthorizationManager() {
         return WLAuthorizationManager.getInstance();
+    }
+
+    @Provides
+    SharedPreferences providesSharedPref(SuncorApplication application) {
+        return application.getSharedPreferences("suncoreapp", Context.MODE_PRIVATE);
     }
 
 }

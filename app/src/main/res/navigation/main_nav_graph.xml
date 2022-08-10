@@ -1042,6 +1042,10 @@
             android:defaultValue="null"
             app:nullable="false"
             app:argType="string" />
+        <argument
+            android:name="cardIndex"
+            android:defaultValue="0"
+            app:argType="integer" />
     </keep_state_fragment>
 
 

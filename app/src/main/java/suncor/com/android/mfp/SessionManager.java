@@ -35,6 +35,7 @@ import suncor.com.android.ui.main.MainActivity;
 import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.ConnectionUtil;
 import suncor.com.android.utilities.Consumer;
+import suncor.com.android.utilities.SharedPrefsHelper;
 import suncor.com.android.utilities.Timber;
 import suncor.com.android.utilities.UserLocalSettings;
 
@@ -75,15 +76,19 @@ public class SessionManager implements SessionChangeListener {
     private Gson gson;
 
     private int rewardedPoints = -1;
+    private SharedPrefsHelper mSharedPrefsHelper;
+
 
     @Inject
     public SessionManager(UserLoginChallengeHandler challengeHandler, WLAuthorizationManager authorizationManager,
-                          UserLocalSettings userLocationSettings, SuncorApplication application, Gson gson) {
+                          UserLocalSettings userLocationSettings, SuncorApplication application, Gson gson,
+                          SharedPrefsHelper sharedPrefsHelper) {
         this.challengeHandler = challengeHandler;
         challengeHandler.setSessionChangeListener(this);
         this.authorizationManager = authorizationManager;
         this.userLocalSettings = userLocationSettings;
         this.application = application;
+        this.mSharedPrefsHelper = sharedPrefsHelper;
         this.gson = gson;
     }
 
@@ -94,6 +99,8 @@ public class SessionManager implements SessionChangeListener {
             @Override
             public void onSuccess() {
                 userLocalSettings.setString(UserLocalSettings.RECENTLY_SEARCHED, null);
+                mSharedPrefsHelper.deleteSavedData(SharedPrefsHelper.USER_VACUUM_TOGGLE);
+                mSharedPrefsHelper.deleteSavedData(SharedPrefsHelper.SETTING_VACUUM_TOGGLE);
                 setProfile(null);
                 accountState = null;
                 loginState.postValue(LoginState.LOGGED_OUT);
@@ -113,6 +120,7 @@ public class SessionManager implements SessionChangeListener {
         if (challengeHandler == null) {
             throw new IllegalStateException("Security Challenge Handler not initialized, did you forget to call setChallengeHandler()");
         }
+        name = name.replaceAll("\\s", "");
         loginObservable = new MutableLiveData<>();
         loginOngoing = true;
         JSONObject credentials = new JSONObject();
@@ -198,6 +206,10 @@ public class SessionManager implements SessionChangeListener {
                 public void onSuccess(WLResponse wlResponse) {
                     Timber.d("Profile received, response: " + wlResponse.getResponseText());
                     Profile profile = gson.fromJson(wlResponse.getResponseText(), Profile.class);
+                    Boolean userVacuumToggle = (profile != null && profile.toggleFeature != null) ? profile.toggleFeature.isVacuumScanBarcode() : null;
+                    if (userVacuumToggle != null) {
+                        mSharedPrefsHelper.put(SharedPrefsHelper.USER_VACUUM_TOGGLE, userVacuumToggle);
+                    }
                     onSuccess.accept(profile);
                 }
 
@@ -292,6 +304,7 @@ public class SessionManager implements SessionChangeListener {
 
         userLocalSettings.setString(UserLocalSettings.RECENTLY_SEARCHED, null);
 
+
         isRetrievingProfile.set(true);
 
         retrieveProfile((profile) -> {
@@ -348,6 +361,23 @@ public class SessionManager implements SessionChangeListener {
         cancelLogin();
     }
 
+    public Boolean getVacuumToggle() {
+        Boolean settingsVacuumToggle = null;
+        if (mSharedPrefsHelper.checkHasKey(SharedPrefsHelper.SETTING_VACUUM_TOGGLE)) {
+            settingsVacuumToggle = mSharedPrefsHelper.get(SharedPrefsHelper.SETTING_VACUUM_TOGGLE, false);
+        }
+        Boolean userVacuumToggle = mSharedPrefsHelper.get(SharedPrefsHelper.USER_VACUUM_TOGGLE, false);
+        if (settingsVacuumToggle != null) {
+            if (settingsVacuumToggle) {
+                return true;
+            } else {
+                return userVacuumToggle;
+            }
+        } else {
+            return null;
+        }
+    }
+
     public void setRewardedPoints(int rewardedPoints) {
         this.rewardedPoints = rewardedPoints;
     }
@@ -379,5 +409,9 @@ public class SessionManager implements SessionChangeListener {
 
     public UserLocalSettings getUserLocalSettings() {
         return userLocalSettings;
+    }
+
+    public SharedPrefsHelper getSharedPrefsHelper(){
+        return mSharedPrefsHelper;
     }
 }

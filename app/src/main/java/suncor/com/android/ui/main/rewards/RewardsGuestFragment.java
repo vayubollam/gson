@@ -1,12 +1,14 @@
 package suncor.com.android.ui.main.rewards;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.ValueCallback;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -16,17 +18,28 @@ import androidx.databinding.ObservableBoolean;
 
 import java.util.Locale;
 
+import javax.inject.Inject;
+
+import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentRewardsBinding;
+import suncor.com.android.mfp.SessionManager;
+import suncor.com.android.model.SettingsResponse;
 import suncor.com.android.ui.common.webview.ObservableWebView;
 import suncor.com.android.ui.enrollment.EnrollmentActivity;
 import suncor.com.android.ui.main.BottomNavigationFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
+import suncor.com.android.utilities.CommonUtils;
+import suncor.com.android.utilities.Timber;
+import suncor.com.android.utilities.UserLocalSettings;
 
 public class RewardsGuestFragment extends BottomNavigationFragment {
 
     private FragmentRewardsBinding binding;
     private ObservableBoolean isWebViewLoading = new ObservableBoolean();
     private ObservableWebView webView;
+
+    @Inject
+    SessionManager sessionManager;
 
     private boolean scroll20 = false, scroll40 = false, scroll60 = false, scroll80 = false, scroll100 = false;
 
@@ -46,7 +59,6 @@ public class RewardsGuestFragment extends BottomNavigationFragment {
             Intent intent = new Intent(getActivity(), EnrollmentActivity.class);
             getActivity().startActivity(intent);
         });
-
         return binding.getRoot();
     }
 
@@ -91,6 +103,17 @@ public class RewardsGuestFragment extends BottomNavigationFragment {
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 binding.webview.postDelayed(() -> isWebViewLoading.set(false), 50);
+                int enrollmentBonus = sessionManager.getUserLocalSettings().getInt(UserLocalSettings.ENROLLMENT_BONUS, 1);
+                String formattedValue = CommonUtils.getFormattedPoints(enrollmentBonus);
+                String rewardsGuestDescription = getResources().getString(R.string.rewards_guest_description, formattedValue);
+                StringBuilder functionBuilder = new StringBuilder("changeEnrollmentBonus");
+                functionBuilder.append("(");
+                functionBuilder.append("\"");
+                functionBuilder.append(rewardsGuestDescription);
+                functionBuilder.append("\"");
+                functionBuilder.append(")");
+                String function = functionBuilder.toString();
+                binding.webview.evaluateJavascript(function, null);
             }
         });
         webView = binding.webview;
