@@ -6,16 +6,15 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import suncor.com.android.databinding.ItemMoreEGiftCardSubCategoryBinding
 import suncor.com.android.model.redeem.response.Program
-import suncor.com.android.model.thirdpartycard.ThirdPartyGiftCardSubCategory
-import suncor.com.android.utilities.Consumer
 
 class DonateProgramsAdapter(
     private val context: Context,
     private var programs: List<Program>
-) : RecyclerView.Adapter<DonateProgramsAdapter.DonateProgramsViewHolder>(){
+) : RecyclerView.Adapter<DonateProgramsAdapter.DonateProgramsViewHolder>() {
 
     class DonateProgramsViewHolder(var binding: ItemMoreEGiftCardSubCategoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
         fun setDataInView(cont: Context, programs: Program) {
             binding.textView.text = programs.info.title
         }
@@ -35,6 +34,6 @@ class DonateProgramsAdapter(
     }
 
     override fun getItemCount(): Int {
-     return programs.size
+        return programs.size
     }
 }
