@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -71,15 +70,6 @@ public class RewardsGuestFragment extends BottomNavigationFragment {
         binding.webview.loadUrl("file:///android_asset/rewards/index-guest-" + language + ".html");
         isWebViewLoading.set(true);
         AnalyticsUtils.setCurrentScreenName(this.getActivity(), "discover-petro-points-loading");
-        binding.webview.evaluateJavascript(
-                "(function() { return ('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>'); })();",
-                new ValueCallback<String>() {
-                    @Override
-                    public void onReceiveValue(String html) {
-                        Log.d("HTML", html);
-                        // code here
-                    }
-                });
         binding.webview.setOnScrollChangedCallback(new ObservableWebView.OnScrollChangedCallback(){
             public void onScroll(int l, int t, int oldl, int oldt){
                 if(t> oldt){
