@@ -6,10 +6,25 @@ import androidx.databinding.ObservableInt
 import androidx.lifecycle.ViewModel
 import suncor.com.android.mfp.SessionManager
 import suncor.com.android.ui.common.cards.CardFormatUtils
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
+import java.text.NumberFormat
+import java.util.*
 import javax.inject.Inject
 
 class DonatePetroPointsViewModel @Inject constructor(val sessionManager: SessionManager) :
     ViewModel() {
+    val formatter: DecimalFormat =
+        NumberFormat.getCurrencyInstance(Locale.getDefault()) as DecimalFormat
+
+    init {
+        val symbol = DecimalFormatSymbols(Locale.getDefault())
+        symbol.currencySymbol = "$"
+
+        formatter.minimumFractionDigits = 0
+        formatter.isParseIntegerOnly = true
+        formatter.decimalFormatSymbols = symbol
+    }
 
     val enableDeduction: ObservableBoolean = ObservableBoolean(false)
     val enableIncrement: ObservableBoolean = ObservableBoolean(true)
@@ -18,6 +33,10 @@ class DonatePetroPointsViewModel @Inject constructor(val sessionManager: Session
     val donateAmount: ObservableInt = ObservableInt(0)
     val formattedDonationPoints: ObservableField<String> =
         ObservableField(getFormattedDonatePoints())
+    val isFrench = ((Locale.getDefault() == Locale.CANADA_FRENCH))
+
+    val formattedDonationAmount: ObservableField<String> =
+        ObservableField(getFormattedDonateAmount())
 
 
     fun incrementAmount() {
@@ -32,19 +51,33 @@ class DonatePetroPointsViewModel @Inject constructor(val sessionManager: Session
         updateData()
     }
 
-    private fun updateData() {
+    fun updateData(updateFromKeyboard: Boolean = false) {
         donationPoints.set(getPointsFromDollar())
         formattedDonationPoints.set(getFormattedDonatePoints())
-        if(donateAmount.get()>0){
+        if (donateAmount.get() > 0) {
             enableDonation.set(true)
             enableDeduction.set(true)
-        }else{
+        } else {
             enableDonation.set(false)
             enableDeduction.set(false)
         }
+
+        if(donateAmount.get() >= getDonationLimit()) {
+            enableIncrement.set(false)
+        }else{
+            enableIncrement.set(true)
+        }
+
+        if(!updateFromKeyboard)
+        formattedDonationAmount.set(getFormattedDonateAmount())
     }
 
+    private fun getFormattedDonateAmount(): String {
+        return if(donateAmount.get()>0) donateAmount.get().toString()
+        else ""
 
+//        return formatter.format(donateAmount.get())
+    }
 
 
     private fun getPointsFromDollar(): Int {

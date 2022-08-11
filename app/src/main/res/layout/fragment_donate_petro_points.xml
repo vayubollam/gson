@@ -148,17 +148,17 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/gibson_semibold"
+                                android:maxLines="1"
                                 android:text="@string/i_am_donating_x_points"
                                 android:textColor="@color/grey_8d8d"
-                                android:maxLines="1"
                                 android:textSize="20sp" />
 
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/gibson_semibold"
-                                android:text="@{@string/x_points(vm.formattedDonationPoints)}"
                                 android:maxLines="1"
+                                android:text="@{@string/x_points(vm.formattedDonationPoints)}"
                                 android:textColor="#eb1d2e"
                                 android:textSize="20sp" />
                         </androidx.appcompat.widget.LinearLayoutCompat>
@@ -170,33 +170,66 @@
                             android:layout_height="32dp"
                             android:layout_marginStart="36dp"
                             android:background="@android:color/transparent"
+                            android:clickable="true"
+                            android:focusable="true"
                             android:src="@{vm.enableDeduction ? @drawable/ic_donate_minus_active : @drawable/ic_donate_minus_disabled}"
-                            app:layout_constraintBottom_toBottomOf="@+id/input_field"
+                            app:layout_constraintBottom_toBottomOf="@+id/input_layout"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="@+id/input_field" />
+                            app:layout_constraintTop_toTopOf="@+id/input_layout" />
 
-
-                        <androidx.appcompat.widget.AppCompatEditText
-                            android:id="@+id/input_field"
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:id="@+id/input_layout"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="24dp"
                             android:layout_marginEnd="8dp"
-                            android:background="@null"
-                            android:fontFamily="@font/gibson_regular"
                             android:gravity="center"
-                            android:inputType="numberDecimal"
-                            android:maxLines="1"
-                            android:singleLine="true"
-                            android:text="$0"
-                            android:textColor="@color/grey_8d8d"
-                            android:textSize="60sp"
-                            app:autoSizeTextType="uniform"
                             app:layout_constraintEnd_toStartOf="@+id/image_button_increment"
                             app:layout_constraintStart_toEndOf="@+id/image_button_decrement"
-                            app:layout_constraintTop_toBottomOf="@+id/redeem_title"
-                            tools:text="$0" />
+                            app:layout_constraintTop_toBottomOf="@+id/redeem_title">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/prefix_currency"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/gibson_regular"
+                                android:text="@string/currency_dollar"
+                                android:textColor="@color/grey_8d8d"
+                                android:textSize="60sp"
+                                app:autoSizeTextType="uniform"
+                                app:visibleGone="@{!vm.isFrench}" />
+
+                            <androidx.appcompat.widget.AppCompatEditText
+                                android:id="@+id/input_field"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@null"
+                                android:fontFamily="@font/gibson_regular"
+                                android:gravity="center"
+                                android:hint="@string/hint_0"
+                                android:inputType="number"
+                                android:maxLines="1"
+                                android:singleLine="true"
+                                android:text="@{vm.formattedDonationAmount}"
+                                android:textColor="@color/grey_8d8d"
+                                android:selection="@{vm.formattedDonationAmount.length()}"
+                                android:textSize="60sp"
+                                app:autoSizeTextType="uniform"
+                                tools:text="0" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/postfix_currency"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/gibson_regular"
+                                android:text="@string/currency_dollar"
+                                tools:visibility="gone"
+                                android:textColor="@color/grey_8d8d"
+                                android:textSize="60sp"
+                                app:autoSizeTextType="uniform"
+                                app:visibleGone="@{vm.isFrench}" />
+                        </androidx.appcompat.widget.LinearLayoutCompat>
 
                         <ImageButton
                             android:id="@+id/image_button_increment"
@@ -204,10 +237,12 @@
                             android:layout_height="32dp"
                             android:layout_marginEnd="36dp"
                             android:background="@android:color/transparent"
+                            android:clickable="true"
+                            android:focusable="true"
                             android:src="@{vm.enableIncrement ? @drawable/ic_donate_plus_active : @drawable/ic_donate_plus_disabled}"
-                            app:layout_constraintBottom_toBottomOf="@+id/input_field"
+                            app:layout_constraintBottom_toBottomOf="@+id/input_layout"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="@+id/input_field" />
+                            app:layout_constraintTop_toTopOf="@+id/input_layout" />
 
 
                         <View
@@ -216,7 +251,7 @@
                             android:layout_height="1dp"
                             android:layout_marginTop="@dimen/expanded_card_balance_margin"
                             android:background="@drawable/horizontal_divider"
-                            app:layout_constraintTop_toBottomOf="@+id/input_field" />
+                            app:layout_constraintTop_toBottomOf="@+id/input_layout" />
 
 
                         <suncor.com.android.ui.common.LinkableTextView
