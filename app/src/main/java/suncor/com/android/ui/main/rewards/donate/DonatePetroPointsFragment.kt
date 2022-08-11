@@ -3,13 +3,10 @@ package suncor.com.android.ui.main.rewards.donate
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.WindowManager
-import android.widget.Toast
+import android.view.*
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import com.google.firebase.crashlytics.internal.common.CommonUtils.hideKeyboard
 import suncor.com.android.databinding.FragmentDonatePetroPointsBinding
 import suncor.com.android.di.viewmodel.ViewModelFactory
 import suncor.com.android.extensions.getSoftInputMode
@@ -80,35 +77,26 @@ class DonatePetroPointsFragment : MainActivityFragment() {
 
             override fun beforeTextChanged(
                 s: CharSequence, start: Int,
-                count: Int, after: Int
-            ) {
-
-            }
+                count: Int, after: Int) {}
 
             override fun onTextChanged(
                 s: CharSequence, start: Int,
-                before: Int, count: Int
-            ) {
-                if (s.toString() != current) {
-//                    binding.inputField.removeTextChangedListener(this)
-//                    val cleanString: String = s.replace("""[$,.]""".toRegex(), "")
-//
-//                    var amount = 0
-//                    if (s.isNotEmpty()) amount = cleanString.trim().toInt()
-//
-//                    viewModel.donateAmount.set(amount)
-//                    viewModel.updateData()
-//                    val formatted = viewModel.formatter.format((amount))
-//                    current = formatted
-//                    if (isFrench)
-//                        binding.inputField.setSelection(formatted.length-1)
-//                    else
-//                        binding.inputField.setSelection(formatted.length)
-//
-//                    binding.inputField.addTextChangedListener(this)
-                }
-            }
+                before: Int, count: Int) {}
         })
+
+        binding.inputField.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN) {
+                hideKeyboard(context,v)
+                viewModel.rectifyValuesOnKeyboardGone()
+                binding.inputField.setText(viewModel.formattedDonationAmount.get())
+                binding.inputField.setSelection(viewModel.formattedDonationAmount.get()?.length ?: 0 )
+                    return@OnKeyListener true
+            }
+           return@OnKeyListener false
+        })
+
+
+
         binding.vm = viewModel
 
         return binding.root

@@ -14,22 +14,11 @@ import javax.inject.Inject
 
 class DonatePetroPointsViewModel @Inject constructor(val sessionManager: SessionManager) :
     ViewModel() {
-    val formatter: DecimalFormat =
-        NumberFormat.getCurrencyInstance(Locale.getDefault()) as DecimalFormat
-
-    init {
-        val symbol = DecimalFormatSymbols(Locale.getDefault())
-        symbol.currencySymbol = "$"
-
-        formatter.minimumFractionDigits = 0
-        formatter.isParseIntegerOnly = true
-        formatter.decimalFormatSymbols = symbol
-    }
 
     val enableDeduction: ObservableBoolean = ObservableBoolean(false)
     val enableIncrement: ObservableBoolean = ObservableBoolean(true)
     val enableDonation: ObservableBoolean = ObservableBoolean(false)
-    val donationPoints: ObservableInt = ObservableInt(0)
+    private val donationPoints: ObservableInt = ObservableInt(0)
     val donateAmount: ObservableInt = ObservableInt(0)
     val formattedDonationPoints: ObservableField<String> =
         ObservableField(getFormattedDonatePoints())
@@ -40,7 +29,7 @@ class DonatePetroPointsViewModel @Inject constructor(val sessionManager: Session
 
 
     fun incrementAmount() {
-        if (donateAmount.get() == getDonationLimit()) return
+        if (donateAmount.get() >= getDonationLimit()) return
         donateAmount.set(donateAmount.get() + 1)
         updateData()
     }
@@ -62,18 +51,18 @@ class DonatePetroPointsViewModel @Inject constructor(val sessionManager: Session
             enableDeduction.set(false)
         }
 
-        if(donateAmount.get() >= getDonationLimit()) {
+        if (donateAmount.get() >= getDonationLimit()) {
             enableIncrement.set(false)
-        }else{
+        } else {
             enableIncrement.set(true)
         }
 
-        if(!updateFromKeyboard)
-        formattedDonationAmount.set(getFormattedDonateAmount())
+        if (!updateFromKeyboard)
+            formattedDonationAmount.set(getFormattedDonateAmount())
     }
 
     private fun getFormattedDonateAmount(): String {
-        return if(donateAmount.get()>0) donateAmount.get().toString()
+        return if (donateAmount.get() > 0) donateAmount.get().toString()
         else ""
 
 //        return formatter.format(donateAmount.get())
@@ -103,6 +92,12 @@ class DonatePetroPointsViewModel @Inject constructor(val sessionManager: Session
 
     private fun getFormattedDonatePoints(): String {
         return CardFormatUtils.formatBalance(donationPoints.get());
+    }
+
+    fun rectifyValuesOnKeyboardGone() {
+        if (donateAmount.get() < 0) donateAmount.set(0)
+        if (donateAmount.get() > getDonationLimit()) donateAmount.set(getDonationLimit())
+        updateData()
     }
 
 }
