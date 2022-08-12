@@ -6,17 +6,34 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import suncor.com.android.databinding.ItemMoreEGiftCardSubCategoryBinding
 import suncor.com.android.model.redeem.response.Program
+import suncor.com.android.model.thirdpartycard.ThirdPartyGiftCardSubCategory
+import suncor.com.android.utilities.Consumer
+
+interface OnCardClickListener {
+    fun onCardClicked(program: Program)
+}
 
 class DonateProgramsAdapter(
     private val context: Context,
-    private var programs: List<Program>
+    private var programs: List<Program>,
+    private val listener: OnCardClickListener
 ) : RecyclerView.Adapter<DonateProgramsAdapter.DonateProgramsViewHolder>() {
 
     class DonateProgramsViewHolder(var binding: ItemMoreEGiftCardSubCategoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun setDataInView(cont: Context, programs: Program) {
+        fun setDataInView(cont: Context, programs: Program, listener: OnCardClickListener) {
             binding.textView.text = programs.info.title
+            val imageId = cont.resources.getIdentifier(
+                programs.smallImage.toString(),
+                "drawable",
+                cont.packageName
+            )
+            binding.image = cont.getDrawable(imageId)
+
+            binding.cardView.setOnClickListener {
+              listener.onCardClicked(programs)
+            }
         }
     }
 
@@ -30,7 +47,7 @@ class DonateProgramsAdapter(
     }
 
     override fun onBindViewHolder(holder: DonateProgramsViewHolder, position: Int) {
-        holder.setDataInView(context, programs.get(position))
+        holder.setDataInView(context, programs[position], listener)
     }
 
     override fun getItemCount(): Int {

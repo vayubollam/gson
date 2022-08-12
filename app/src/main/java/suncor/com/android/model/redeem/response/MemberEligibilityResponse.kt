@@ -22,6 +22,8 @@ data class CategoryInfo(
 
 data class Program(
     val programId: Long,
+    var smallImage:Int,
+    var largeImage: Int,
     private val en: ProgramInfo?,
     private val fr: ProgramInfo?,
 ){
