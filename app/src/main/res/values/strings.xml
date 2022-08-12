@@ -627,7 +627,7 @@
     <string name="single_ticket_barcode_trouble_message">Having trouble scanning?  \nTry typing your ticket number into the car wash screen.</string>
 
     <string name="zero_balance_alert_title">Your card is empty</string>
-    <string name="zero_balance_alert_message">Looks like your card is running on empty. Reload on <a href="https://www.petro-canada.ca/en/personal"><u>petro-canada.ca</u></a> a or get a car wash ticket in store.</string>
+    <string name="zero_balance_alert_message">Looks like your card is running on empty. Reload on <a href="https://www.petro-canada.ca/en/personal"><u>petro-canada.ca</u></a> or get a car wash ticket in store.</string>
     <string name="zero_balance_alert_close">Close</string>
     <string name="zero_balance_alert_buy">Buy a wash</string>
     <string name="zero_balance_alert_view">View card details</string>
