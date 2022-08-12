@@ -5,7 +5,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.text.SpannableString;
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
 import android.util.Pair;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 
@@ -40,7 +44,10 @@ public class CardsUtil {
         AnalyticsUtils.logEvent(context, AnalyticsUtils.Event._ALERT,
                 new Pair<>(AnalyticsUtils.Param.alertTitle, analyticName)
         );
+        final SpannableString s = new SpannableString(context.getResources().getString(R.string.zero_balance_alert_message));
+        Linkify.addLinks(s, Linkify.ALL);
         if (negListener == null) {
+
             dialog = new AlertDialog.Builder(context)
                     .setTitle(R.string.zero_balance_alert_title)
                     .setMessage(R.string.zero_balance_alert_message)
@@ -50,6 +57,8 @@ public class CardsUtil {
                                 new Pair<>(AnalyticsUtils.Param.alertSelection, context.getString(R.string.cancel))
                         );
                     })
+
+
                     .setCancelable(false)
                     .create();
         } else {
@@ -68,6 +77,8 @@ public class CardsUtil {
         }
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
+        ((TextView)dialog.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
+
     }
 
     public static void showOtherCardAvailableAlert(Context context) {

@@ -606,7 +606,7 @@
     <string name="single_ticket_barcode_trouble_message">Vous n\'arrivez pas à scanner?  \nEssayez d\'entrer votre numéro de billet à l\'écran du lave-auto.</string>
 
     <string name="zero_balance_alert_title">Votre carte est vide</string>
-    <string name="zero_balance_alert_message">Votre carte semble vide. Rechargez-la sur le site petro-canada.ca ou obtenez une carte de lavage au dépanneur.</string>
+    <string name="zero_balance_alert_message">Votre carte semble vide. Rechargez-la sur le site <a href="https://www.petro-canada.ca/fr/personnel">petro-canada.ca</a> ou obtenez une carte de lavage au dépanneur.</string>
     <string name="zero_balance_alert_close">Fermer</string>
     <string name="zero_balance_alert_buy">Acheter un lavage</string>
     <string name="zero_balance_alert_view">Voir les détails</string>

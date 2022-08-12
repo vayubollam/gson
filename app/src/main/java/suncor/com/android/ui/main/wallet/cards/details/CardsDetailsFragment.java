@@ -448,7 +448,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
                  if (cardDetail.isSuspendedCard()) {
                     CardsUtil.ShowSuspendedCardAlertForActivateWash(getContext(), Constants.TYPE_WASH);
                 } else if (cardDetail.isExpiredCard()||cardDetail.getBalance() <= 0) {
-                    CardsUtil.showOtherCardAvailableAlert(getContext());
+                     CardsUtil.showZeroBalanceAlert(getActivity(), buySingleTicketListener, null);
                 } else if (viewModel.getIsCarWashBalanceZero().getValue() != null &&
                         viewModel.getIsCarWashBalanceZero().getValue()) {
                     CardsUtil.showZeroBalanceAlert(getActivity(), buySingleTicketListener, null);
