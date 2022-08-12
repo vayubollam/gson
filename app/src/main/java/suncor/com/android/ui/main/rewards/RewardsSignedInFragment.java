@@ -99,7 +99,7 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
                 }
 
                 eGiftCardsList.add(3, getGIftCardAt(3));
-                if(!viewModel.isDonateEnabled()){
+                if(viewModel.isDonateEnabled()){
                     eGiftCardsList.add(0, getGIftCardAt(0));
                 }
             }
