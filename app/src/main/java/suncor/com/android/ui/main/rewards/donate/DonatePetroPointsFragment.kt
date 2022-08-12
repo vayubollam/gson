@@ -57,7 +57,6 @@ class DonatePetroPointsFragment : MainActivityFragment(), OnKeyboardVisibilityLi
 
         binding.imageButtonIncrement.setOnClickListener {
             viewModel.incrementAmount()
-            binding.executePendingBindings()
         }
 
         binding.imageButtonDecrement.setOnClickListener {
