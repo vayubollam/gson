@@ -209,6 +209,7 @@
                                 android:gravity="center"
                                 android:hint="@string/hint_0"
                                 android:inputType="number"
+                                android:enabled="@{(vm.getPetroPoints()>=1000) ? true : false}"
                                 android:maxLines="1"
                                 android:singleLine="true"
                                 android:text="@{vm.formattedDonationAmount}"

@@ -16,7 +16,7 @@ class DonatePetroPointsViewModel @Inject constructor(val sessionManager: Session
     ViewModel() {
 
     val enableDeduction: ObservableBoolean = ObservableBoolean(false)
-    val enableIncrement: ObservableBoolean = ObservableBoolean(true)
+    val enableIncrement: ObservableBoolean = ObservableBoolean(getPetroPoints()>=1000)
     val enableDonation: ObservableBoolean = ObservableBoolean(false)
     private val donationPoints: ObservableInt = ObservableInt(0)
     val donateAmount: ObservableInt = ObservableInt(0)

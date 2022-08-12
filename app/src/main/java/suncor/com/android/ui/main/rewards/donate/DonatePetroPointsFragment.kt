@@ -44,8 +44,7 @@ class DonatePetroPointsFragment : MainActivityFragment(), OnKeyboardVisibilityLi
         isFrench = Locale.getDefault() == Locale.CANADA_FRENCH
     }
 
-    // TODO: 1. Try exoression for edittext text and then try a custom layout as jugaad
-    //  2. make a custom layout for edittext with $ sign
+    // TODO: 1. Set Max digits logic
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
