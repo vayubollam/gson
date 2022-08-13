@@ -44,7 +44,6 @@ class DonatePetroPointsFragment : MainActivityFragment(), OnKeyboardVisibilityLi
         isFrench = Locale.getDefault() == Locale.CANADA_FRENCH
     }
 
-    // TODO: 1. Set Max digits logic
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

@@ -6,9 +6,6 @@ import androidx.databinding.ObservableInt
 import androidx.lifecycle.ViewModel
 import suncor.com.android.mfp.SessionManager
 import suncor.com.android.ui.common.cards.CardFormatUtils
-import java.text.DecimalFormat
-import java.text.DecimalFormatSymbols
-import java.text.NumberFormat
 import java.util.*
 import javax.inject.Inject
 
@@ -64,8 +61,6 @@ class DonatePetroPointsViewModel @Inject constructor(val sessionManager: Session
     private fun getFormattedDonateAmount(): String {
         return if (donateAmount.get() > 0) donateAmount.get().toString()
         else ""
-
-//        return formatter.format(donateAmount.get())
     }
 
 
@@ -91,7 +86,7 @@ class DonatePetroPointsViewModel @Inject constructor(val sessionManager: Session
     }
 
     private fun getFormattedDonatePoints(): String {
-        return CardFormatUtils.formatBalance(donationPoints.get());
+        return CardFormatUtils.formatBalance(donationPoints.get())
     }
 
     fun rectifyValuesOnKeyboardGone() {

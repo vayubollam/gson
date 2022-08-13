@@ -218,8 +218,10 @@ class CardDetailViewModelTest {
             val gateway = GooglePassesApiGateway()
         Assert.assertEquals(loyalityData,
             cardDetailsViewModel.settings.value?.data?.settings?.let {
-                gateway.insertLoyalityCard(context,loyalityData,
-                    it?.googlePass)
+                gateway.insertLoyalityCard(
+                    context, loyalityData,
+                    it?.googlePass, error("")
+                )
             })
     }
 
