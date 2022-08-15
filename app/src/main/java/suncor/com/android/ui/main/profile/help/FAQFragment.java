@@ -18,6 +18,17 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
+
 import javax.inject.Inject;
 
 import suncor.com.android.R;
@@ -26,6 +37,7 @@ import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.account.Question;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
+import suncor.com.android.utilities.Timber;
 
 public class FAQFragment extends MainActivityFragment {
     private FragmentFaqBinding binding;
@@ -51,7 +63,7 @@ public class FAQFragment extends MainActivityFragment {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
         dividerItemDecoration.setDrawable(insetDivider);
         binding.questionsRecycler.addItemDecoration(dividerItemDecoration);
-        binding.questionsRecycler.setAdapter(new FAQAdapter(faqViewModel.getQuestions(), getContext(), (this::selectQuestion)));
+        binding.questionsRecycler.setAdapter(new FAQAdapter(getQuestions(), getContext(), (this::selectQuestion)));
         binding.appBar.setNavigationOnClickListener(v -> Navigation.findNavController(getView()).popBackStack());
         binding.callUsButton.setOnClickListener(v ->
         {
@@ -70,6 +82,24 @@ public class FAQFragment extends MainActivityFragment {
 
             AnalyticsUtils.logEvent(getContext(), "tap_to_email", new Pair<>("emailTapped", email));
         });
+        getQuestions();
+    }
+
+    private ArrayList<Question> getQuestions() {
+        InputStream jsonFile = getResources().openRawResource(R.raw.gethelp);
+        String jsonText = new Scanner(jsonFile).useDelimiter(("\\A")).next();
+        ArrayList<Question> questions = new ArrayList<>();
+        try {
+            JSONArray jsonArray = new JSONArray(jsonText);
+            JSONObject jsonObject = jsonArray.getJSONObject(0);
+            JSONArray jsonElements = jsonObject.getJSONArray("questions");
+            Question[] questionsArray = new Gson().fromJson(jsonElements.toString(), Question[].class);
+            questions = new ArrayList<>(Arrays.asList(questionsArray));
+            Timber.d("get help :" + questions.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return questions;
     }
 
     @Override
