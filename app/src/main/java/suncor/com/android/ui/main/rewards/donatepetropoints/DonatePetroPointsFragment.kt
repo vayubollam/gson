@@ -71,8 +71,8 @@ class DonatePetroPointsFragment: MainActivityFragment(), OnBackPressedListener {
     }
 
     private fun handleClick(program: Program){
-        val message = program.info.title
-        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+       /* val message = program.info.title
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show()*/
     }
 
     override fun onBackPressed() {
