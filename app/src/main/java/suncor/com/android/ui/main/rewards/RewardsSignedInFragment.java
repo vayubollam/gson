@@ -1,12 +1,10 @@
 package suncor.com.android.ui.main.rewards;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
@@ -17,14 +15,10 @@ import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.google.gson.Gson;
-
 import java.util.ArrayList;
 import java.util.Arrays;
-
 import javax.inject.Inject;
-
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentRewardsSignedinBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
@@ -66,7 +60,6 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
                 }
             }
         });
-
     }
 
     @Override
@@ -78,29 +71,28 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
                 for (Merchant m : merchants) {
                     MerchantItem merchantItem = new MerchantItem(m, getContext());
                     if ((merchantItem.getLocalizedMerchantName().equals(requireContext().getResources().getString(R.string.merchant_petrocanada_card)))) {
-                        GenericEGiftCard eGiftCard = new GenericEGiftCard();
-                        eGiftCard.setSmallImage(merchantItem.getMerchantSmallImage());
-                        eGiftCard.setLargeImage(merchantItem.getMerchantLargeImage());
-                        eGiftCard.setTitle(merchantItem.getLocalizedMerchantName());
-                        eGiftCard.setPoints(merchantItem.getPointsMerchantName());
-                        eGiftCard.setSubtitle(merchantItem.getSubtitleMerchantName());
-                        eGiftCard.setHowToRedeem(merchantItem.getRedeemingDescription());
-                        eGiftCard.setHowToUse(getContext().getString(R.string.how_to_use_petrocanada));
-                        eGiftCard.setDataDynamic(true);
-                        eGiftCard.setMoreGIftCard(false);
-                        eGiftCard.setGroup(Constants.GROUP_MERCHANTS);
-                        eGiftCard.seteGifts(m.geteGifts());
-                        eGiftCard.setScreenName(merchantItem.getMerchantScreenName());
-                        eGiftCard.setShortName(merchantItem.getMerchantShortName());
+                        if (getContext() != null) {
+                            GenericEGiftCard eGiftCard = new GenericEGiftCard();
+                            eGiftCard.setSmallImage(merchantItem.getMerchantSmallImage());
+                            eGiftCard.setLargeImage(merchantItem.getMerchantLargeImage());
+                            eGiftCard.setTitle(merchantItem.getLocalizedMerchantName());
+                            eGiftCard.setPoints(merchantItem.getPointsMerchantName());
+                            eGiftCard.setSubtitle(merchantItem.getSubtitleMerchantName());
+                            eGiftCard.setHowToRedeem(merchantItem.getRedeemingDescription());
+                            eGiftCard.setHowToUse(getContext().getString(R.string.how_to_use_petrocanada));
+                            eGiftCard.setDataDynamic(true);
+                            eGiftCard.setMoreGIftCard(false);
+                            eGiftCard.setGroup(Constants.GROUP_MERCHANTS);
+                            eGiftCard.seteGifts(m.geteGifts());
+                            eGiftCard.setScreenName(merchantItem.getMerchantScreenName());
+                            eGiftCard.setShortName(merchantItem.getMerchantShortName());
 
-                        eGiftCardsList.add(2, eGiftCard);
+                            eGiftCardsList.add(2, eGiftCard);
+                        }
                     }
                 }
 
                 eGiftCardsList.add(3, getGIftCardAt(3));
-                if(viewModel.isDonateEnabled()){
-                    eGiftCardsList.add(0, getGIftCardAt(0));
-                }
             }
         });
 
@@ -112,25 +104,25 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
                 case SUCCESS:
                     MemberEligibilityResponse data = response.data;
                     if (data != null) {
-                        Timber.d("API Test"+ data.getCategories().get(0).getInfo().getTitle());
-                        Timber.d("API Test Category Id"+ data.getCategories().get(0).getCategoryId());
-                        Timber.d("API Test"+ data.getCategories().get(0).getPrograms().get(0).getInfo().getTitle());
-                        Timber.d("API Test Program ID"+ data.getCategories().get(0).getPrograms().get(0).getProgramId());
-                        Timber.d("API Test Program ID"+ data.getCategories().get(0).getPrograms().get(0).getInfo().getUrl());
                         isRedeemable = data.getEligible();
                         viewModel.updatePetroPoints(data.getPointsBalance());
                         petroPointsBalance.set(data.getPointsBalance());
                         adapter.isEligible = isRedeemable;
+
+                        // Handling the visibility of donate card as per the available element of categories.
+                        if (viewModel.isDonateEnabled() && data.getCategories().size() > 0)
+                            eGiftCardsList.add(0, getGIftCardAt(0));
+
                         adapter.notifyDataSetChanged();
                     }
                     return;
+
                 case ERROR:
                     adapter.isEligible = false;
                     petroPointsBalance.set(viewModel.getPetroPointsBalance());
                     adapter.notifyDataSetChanged();
             }
         });
-
     }
 
     @Nullable
@@ -223,7 +215,9 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
     public void onStart() {
         super.onStart();
         if (!isHeaderVisible) {
-            getView().post(this::disableLightStatusBar);
+            if (getView() != null) {
+                getView().post(this::disableLightStatusBar);
+            }
         }
     }
 
@@ -239,11 +233,11 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
     }
 
     private void enableLightStatusBar() {
-        int flags = getActivity().getWindow().getDecorView().getSystemUiVisibility();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (getActivity() != null) {
+            int flags = getActivity().getWindow().getDecorView().getSystemUiVisibility();
             flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            getActivity().getWindow().getDecorView().setSystemUiVisibility(flags);
         }
-        getActivity().getWindow().getDecorView().setSystemUiVisibility(flags);
     }
 
     @Override
@@ -252,11 +246,11 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
     }
 
     private void disableLightStatusBar() {
-        int flags = getActivity().getWindow().getDecorView().getSystemUiVisibility();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (getActivity() != null) {
+            int flags = getActivity().getWindow().getDecorView().getSystemUiVisibility();
             flags &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            getActivity().getWindow().getDecorView().setSystemUiVisibility(flags);
         }
-        getActivity().getWindow().getDecorView().setSystemUiVisibility(flags);
     }
 
     private void eCardClicked(GenericEGiftCard genericEGiftCard) {
@@ -345,9 +339,6 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
 
                 eGiftCardsList.add(giftCard);
             }
-
         }
-
     }
-
 }
