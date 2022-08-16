@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import com.google.gson.Gson
@@ -16,7 +15,7 @@ import suncor.com.android.ui.common.OnBackPressedListener
 import suncor.com.android.ui.main.common.MainActivityFragment
 import javax.inject.Inject
 
-class DonatePetroPointsFragment: MainActivityFragment(), OnBackPressedListener {
+class DonateCategoriesFragment: MainActivityFragment(), OnBackPressedListener {
 
 
     @Inject
@@ -25,14 +24,14 @@ class DonatePetroPointsFragment: MainActivityFragment(), OnBackPressedListener {
     @Inject
     lateinit var gson: Gson
 
-    private var viewModel: DonatePetroPointsViewModel? = null
+    private var viewModel: DonateCategoriesViewModel? = null
     private lateinit var  binding: FragmentDonatePetroPointsBinding
     private lateinit var memberEligibilityResponse: MemberEligibilityResponse
     private var categoryString: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-         viewModel = ViewModelProviders.of(this, factory)[DonatePetroPointsViewModel::class.java]
+         viewModel = ViewModelProviders.of(this, factory)[DonateCategoriesViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -43,7 +42,7 @@ class DonatePetroPointsFragment: MainActivityFragment(), OnBackPressedListener {
         binding = FragmentDonatePetroPointsBinding.inflate(inflater, container, false)
         arguments.let {
             if(it != null){
-                categoryString = DonatePetroPointsFragmentArgs.fromBundle(it).categoriesList
+                categoryString = DonateCategoriesFragmentArgs.fromBundle(it).categoriesList
             }
         }
 

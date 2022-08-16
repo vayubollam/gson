@@ -5,7 +5,7 @@ import suncor.com.android.mfp.SessionManager
 import suncor.com.android.ui.common.cards.CardFormatUtils
 import javax.inject.Inject
 
-class DonatePetroPointsViewModel @Inject constructor(
+class DonateCategoriesViewModel @Inject constructor(
    private val  sessionManager: SessionManager
 ) : ViewModel(){
 
