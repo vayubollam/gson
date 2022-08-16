@@ -1,6 +1,5 @@
 package suncor.com.android.ui.main.rewards.donate
 
-import android.R
 import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
@@ -12,9 +11,12 @@ import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.google.firebase.crashlytics.internal.common.CommonUtils.hideKeyboard
+import com.google.gson.Gson
+import suncor.com.android.R
 import suncor.com.android.databinding.FragmentDonatePetroPointsBinding
 import suncor.com.android.di.viewmodel.ViewModelFactory
 import suncor.com.android.extensions.getSoftInputMode
+import suncor.com.android.model.redeem.response.Program
 import suncor.com.android.ui.main.common.MainActivityFragment
 import suncor.com.android.utilities.Timber
 import java.util.*
@@ -23,14 +25,17 @@ import javax.inject.Inject
 
 class DonatePetroPointsFragment : MainActivityFragment(), OnKeyboardVisibilityListener {
 
-    private var isFrench: Boolean = false
 
     @Inject
+    lateinit var gson: Gson
+    @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
     private lateinit var viewModel: DonatePetroPointsViewModel
     private lateinit var binding: FragmentDonatePetroPointsBinding
     private var originalMode: Int? = null
-    private var current: String = ""
+    private var programString: String = ""
+    private var isFrench: Boolean = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,16 +55,24 @@ class DonatePetroPointsFragment : MainActivityFragment(), OnKeyboardVisibilityLi
     ): View {
         binding = FragmentDonatePetroPointsBinding.inflate(inflater, container, false)
 
+        arguments.let {
+            if (it != null) {
+                programString = DonatePetroPointsFragmentArgs.fromBundle(it).program
+            }
+        }
+
+        programString.let {
+            viewModel.program = gson.fromJson(it, Program::class.java)
+            val imageId = context?.resources?.getIdentifier(
+                viewModel.program.largeImage.toString(),
+                "drawable",
+                context?.packageName
+            )
+           binding.image = context?.getDrawable(imageId?:0)
+        }
+
         binding.closeButton.setOnClickListener {
             Navigation.findNavController(requireView()).navigateUp()
-        }
-
-        binding.imageButtonIncrement.setOnClickListener {
-            viewModel.incrementAmount()
-        }
-
-        binding.imageButtonDecrement.setOnClickListener {
-            viewModel.decrementAmount()
         }
 
         binding.inputField.addTextChangedListener(object : TextWatcher {
@@ -121,7 +134,7 @@ class DonatePetroPointsFragment : MainActivityFragment(), OnKeyboardVisibilityLi
                 }
             })
         } else {
-            setKeyboardVisibilityListener(this);
+            setKeyboardVisibilityListener(this)
         }
     }
 
@@ -146,7 +159,7 @@ class DonatePetroPointsFragment : MainActivityFragment(), OnKeyboardVisibilityLi
             private var alreadyOpen = false
             private val defaultKeyboardHeightDP = 100
             private val EstimatedKeyboardDP =
-                defaultKeyboardHeightDP + if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) 48 else 0
+                defaultKeyboardHeightDP + 48
             private val rect: Rect = Rect()
             override fun onGlobalLayout() {
                 val estimatedKeyboardHeight = TypedValue.applyDimension(

@@ -5,6 +5,7 @@ import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.ViewModel
 import suncor.com.android.mfp.SessionManager
+import suncor.com.android.model.redeem.response.Program
 import suncor.com.android.ui.common.cards.CardFormatUtils
 import java.util.*
 import javax.inject.Inject
@@ -12,6 +13,7 @@ import javax.inject.Inject
 class DonatePetroPointsViewModel @Inject constructor(val sessionManager: SessionManager) :
     ViewModel() {
 
+    lateinit var program: Program
     val enableDeduction: ObservableBoolean = ObservableBoolean(false)
     val enableIncrement: ObservableBoolean = ObservableBoolean(getPetroPoints()>=1000)
     val enableDonation: ObservableBoolean = ObservableBoolean(false)

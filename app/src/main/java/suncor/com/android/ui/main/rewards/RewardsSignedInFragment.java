@@ -270,7 +270,7 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
                     }
                 } else if (genericEGiftCard.getGroup().equalsIgnoreCase(Constants.GROUP_DONATE)) {
                     String categoriesList = gson.toJson(data!= null ? data : null);
-                    RewardsSignedInFragmentDirections.ActionRewardsSignedinTabToDonatePetroPointsFragment action = RewardsSignedInFragmentDirections.actionRewardsSignedinTabToDonatePetroPointsFragment();
+                    RewardsSignedInFragmentDirections.ActionRewardsSignedinTabToDonateCategoriesFragment action = RewardsSignedInFragmentDirections.actionRewardsSignedinTabToDonateCategoriesFragment();
                     action.setCategoriesList(categoriesList);
                     NavDestination navDestination = Navigation.findNavController(requireView()).getCurrentDestination();
                     if (navDestination != null && navDestination.getId() == R.id.rewards_signedin_tab) {
