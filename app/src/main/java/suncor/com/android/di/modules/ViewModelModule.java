@@ -260,6 +260,7 @@ public abstract class ViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(DonateCategoriesViewModel.class)
-    protected abstract ViewModel donatePetroPointsViewModel(DonateCategoriesViewModel donateCategoriesViewModel);
+    protected abstract ViewModel donateCategoriesViewModel(DonateCategoriesViewModel donateCategoriesViewModel);
+
 
 }
