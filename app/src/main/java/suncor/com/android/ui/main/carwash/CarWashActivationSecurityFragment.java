@@ -42,6 +42,7 @@ import suncor.com.android.model.carwash.ActivateCarwashResponse;
 import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.common.SuncorButton;
 import suncor.com.android.utilities.AnalyticsUtils;
+import suncor.com.android.utilities.Constants;
 
 public class CarWashActivationSecurityFragment extends CarwashLocation implements OnBackPressedListener {
 
@@ -51,6 +52,7 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
     private CarWashSharedViewModel viewModel;
     private SuncorButton confirmButton;
     private View progressBar;
+    int clickedCardIndex;
 
     @Inject
     SettingsApi settingsApi;
@@ -91,7 +93,7 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
         super.onCreateView(inflater, container, savedInstanceState);
 
         if (getArguments() != null) {
-            int clickedCardIndex = CarWashActivationSecurityFragmentArgs.fromBundle(getArguments()).getCardIndex();
+            clickedCardIndex = CarWashActivationSecurityFragmentArgs.fromBundle(getArguments()).getCardIndex();
             String cardNumber = CarWashActivationSecurityFragmentArgs.fromBundle(getArguments()).getCardNumber();
             String cardType = CarWashActivationSecurityFragmentArgs.fromBundle(getArguments()).getCardType();
             viewModel.setClickedCardIndex(clickedCardIndex);
@@ -313,6 +315,7 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
         if (view != null) {
             inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         }
+        Navigation.findNavController(getView()).getPreviousBackStackEntry().getSavedStateHandle().set(Constants.CLICKED_CARD_INDEX,clickedCardIndex);
         Navigation.findNavController(getView()).popBackStack();
     }
 

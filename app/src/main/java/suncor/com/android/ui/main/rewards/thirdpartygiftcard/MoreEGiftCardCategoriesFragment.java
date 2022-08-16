@@ -4,21 +4,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
-
 import com.google.gson.Gson;
-
 import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.inject.Inject;
-
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentMoreEGiftCardCategoriesBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
@@ -41,7 +35,6 @@ public class MoreEGiftCardCategoriesFragment extends MainActivityFragment implem
     private FragmentMoreEGiftCardCategoriesBinding binding;
     private final List<ThirdPartyGiftCardCategory> newCategoryList = new ArrayList<>();
     private String merchantList;
-    private Merchant[] merchantArray;
     private final List<Merchant> merchantArrayList = new ArrayList<>();
 
 

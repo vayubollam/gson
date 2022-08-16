@@ -20,6 +20,7 @@ import suncor.com.android.ui.main.pap.fuelup.FuelUpViewModel;
 import suncor.com.android.ui.main.pap.receipt.ReceiptViewModel;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpViewModel;
 import suncor.com.android.ui.main.profile.account.AccountDeleteViewModel;
+import suncor.com.android.ui.main.rewards.donatepetropoints.DonateCategoriesViewModel;
 import suncor.com.android.ui.main.rewards.donate.DonatePetroPointsViewModel;
 import suncor.com.android.ui.main.rewards.thirdpartygiftcard.MoreEGiftCardCategoriesViewModel;
 import suncor.com.android.ui.main.wallet.cards.add.AddCardViewModel;
@@ -255,5 +256,11 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(AccountDeleteViewModel.class)
     protected abstract ViewModel accountDeleteViewModel(AccountDeleteViewModel accountDeleteViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(DonateCategoriesViewModel.class)
+    protected abstract ViewModel donateCategoriesViewModel(DonateCategoriesViewModel donateCategoriesViewModel);
+
 
 }
