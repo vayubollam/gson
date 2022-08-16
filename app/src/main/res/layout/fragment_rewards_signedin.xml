@@ -13,6 +13,7 @@
             name="petroPoints"
             type="androidx.databinding.ObservableInt" />
 
+
         <variable
             name="vm"
             type="suncor.com.android.ui.main.rewards.RewardsSignedInViewModel" />

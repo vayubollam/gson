@@ -115,5 +115,4 @@ public class RewardsSignedInViewModel extends ViewModel {
         if (donateToggle != null) return donateToggle;
         else return false;
     }
-
 }

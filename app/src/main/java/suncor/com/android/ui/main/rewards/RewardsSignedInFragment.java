@@ -49,10 +49,11 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
     public ObservableInt petroPointsBalance = new ObservableInt();
     private GenericGiftCardsAdapter adapter;
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(RewardsSignedInViewModel.class);
+        viewModel = new ViewModelProvider(this, viewModelFactory).get(RewardsSignedInViewModel.class);
         viewModel.navigateToDiscovery.observe(this, event -> {
             if (event.getContentIfNotHandled() != null) {
                 NavDestination navDestination = Navigation.findNavController(requireView()).getCurrentDestination();
@@ -66,6 +67,7 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
 
         viewModel.merchantsLiveData.observe(getViewLifecycleOwner(), merchants -> {
             if (merchants != null) {
@@ -292,6 +294,44 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
         GenericEGiftCard eGiftCard = new GenericEGiftCard();
 
         switch (index) {
+            case 0:
+                eGiftCard.setSmallImage(Constants.DONATE_IMAGE_SMALL);
+                eGiftCard.setLargeImage(Constants.DONATE_IMAGE_LARGE);
+                eGiftCard.setMoreGIftCard(false);
+                eGiftCard.setTitle(getResources().getString(R.string.donate_petro_points_card));
+                eGiftCard.setPoints(getResources().getString(R.string.donate_petro_points_starting_points));
+                eGiftCard.setSubtitle(getResources().getString(R.string.donate_petro_points_subtitle));
+                eGiftCard.setHowToUse(getResources().getString(R.string.rewards_signedin_redeeming_your_rewards_desc_dining_card));
+                eGiftCard.setDataDynamic(true);
+                eGiftCard.seteGifts(null);
+                eGiftCard.setGroup(Constants.GROUP_DONATE);
+                eGiftCard.setScreenName(Constants.DONATE_SCREEN_NAME);
+                eGiftCard.setShortName(Constants.DONATE_SHORT_NAME);
+                break;
+
+            case 3:
+                eGiftCard.setSmallImage(Constants.MORE_GIFT_CARD_IMAGE_SMALL);
+                eGiftCard.setLargeImage(Constants.MORE_GIFT_CARD_IMAGE_LARGE);
+                eGiftCard.setMoreGIftCard(true);
+                eGiftCard.setTitle(getResources().getString(R.string.merchant_more_egift_card));
+                eGiftCard.setPoints(getResources().getString(R.string.rewards_e_gift_card_starting_points));
+                eGiftCard.setSubtitle(getResources().getString(R.string.rewards_egift_card_subtitle));
+                eGiftCard.setHowToUse(getResources().getString(R.string.rewards_signedin_redeeming_your_rewards_desc_dining_card));
+                eGiftCard.setDataDynamic(true);
+                eGiftCard.seteGifts(null);
+                eGiftCard.setGroup(Constants.GROUP_MORE);
+                eGiftCard.setScreenName(Constants.MORE_GIFT_CARD_SCREEN_NAME);
+                eGiftCard.setShortName(Constants.MORE_GIFT_CARD_SHORT_NAME);
+                break;
+        }
+
+        return eGiftCard;
+    }
+
+    public GenericEGiftCard getGIftCardAt(int index){
+        GenericEGiftCard eGiftCard = new GenericEGiftCard();
+
+        switch (index){
             case 0:
                 eGiftCard.setSmallImage(Constants.DONATE_IMAGE_SMALL);
                 eGiftCard.setLargeImage(Constants.DONATE_IMAGE_LARGE);

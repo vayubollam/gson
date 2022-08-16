@@ -504,6 +504,7 @@
     <string name="donate_petro_points_starting_points">From 1,000 points</string>
     <string name="rewards_egift_card_subtitle">eGift card</string>
     <string name="donate_points_header">Donate Petro-Points</string>
+
     <string name="donate_petro_points_subtitle">Our Petro‑Points members have donated over 220 million Petro‑Points!</string>
     <string name="merchant_winners">WINNERS, Marshalls and HomeSense</string>
     <string name="merchant_dining_card">The Ultimate Dining</string>
@@ -902,4 +903,13 @@
 
     <!-- Gift cards -->
     <string name="redemption_unavailable_text">Redemption is unavailable at this time</string>
+  
+    <!--  Donate petro points default screen  -->
+    <string name="donate_points_remaining">You have %s points</string>
+    <string name="donate_cate_title_caremakers_foundation">Petro-Canada CareMakers Foundation</string>
+    <string name="donate_subtitle_caremakers">By donating Petro-Points , you are helping organizations across Canada that support family caregivers.</string>
+    <string name="i_am_donating_x_points">I am donating\u0020</string>
+    <string name="x_points">%s points</string>
+    <string name="donation_tax_notice">Donation of Petro-Points is not eligible for tax receipts.</string>
+    <string name="donate_points">DONATE POINTS</string>
 </resources>

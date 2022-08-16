@@ -868,4 +868,13 @@
     <!-- Gift cards -->
     <string name="redemption_unavailable_text">Les échanges ne sont pas disponibles pour le moment</string>
 
+
+    <!--  Donate petro points default screen  -->
+    <string name="donate_points_remaining">Vous avez %s points</string>
+    <string name="donate_cate_title_caremakers_foundation">Fondation proches aimants Petro-Canada</string>
+    <string name="donate_subtitle_caremakers">En faisant don de vos Petro-Points, vous aidez des organismes partout au Canada qui soutiennent les proches aidants.</string>
+    <string name="i_am_donating_x_points">Je fais don de\u0020</string>
+    <string name="x_points">%s points</string>
+    <string name="donation_tax_notice">Le don de Petro-Points n\'est pas admissible à un reçu d\'impôt.</string>
+    <string name="donate_points">FAIRE DON DE POINTS</string>
 </resources>
