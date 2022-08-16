@@ -453,6 +453,18 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="donatePetroPointsFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-8" />
+                            <option name="y" value="450" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="favouritesFragment">
                     <value>
                       <LayoutPositions>

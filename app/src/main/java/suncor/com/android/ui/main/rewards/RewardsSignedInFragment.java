@@ -45,6 +45,7 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
     private final ArrayList<GenericEGiftCard> eGiftCardsList = new ArrayList<>();
     private boolean systemMarginsAlreadyApplied;
     private boolean isRedeemable;
+    private MemberEligibilityResponse data;
     public ObservableInt petroPointsBalance = new ObservableInt();
     private GenericGiftCardsAdapter adapter;
 
@@ -102,7 +103,7 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
         viewModel.getMemberEligibility().observe(getViewLifecycleOwner(), response -> {
             switch (response.status) {
                 case SUCCESS:
-                    MemberEligibilityResponse data = response.data;
+                     data = response.data;
                     if (data != null) {
                         isRedeemable = data.getEligible();
                         viewModel.updatePetroPoints(data.getPointsBalance());
@@ -265,7 +266,13 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
                         Navigation.findNavController(requireView()).navigate(action);
                     }
                 } else if (genericEGiftCard.getGroup().equalsIgnoreCase(Constants.GROUP_DONATE)) {
-                    // Handling for donate gift card
+                    String categoriesList = gson.toJson(data!= null ? data : null);
+                    RewardsSignedInFragmentDirections.ActionRewardsSignedinTabToDonatePetroPointsFragment action = RewardsSignedInFragmentDirections.actionRewardsSignedinTabToDonatePetroPointsFragment();
+                    action.setCategoriesList(categoriesList);
+                    NavDestination navDestination = Navigation.findNavController(requireView()).getCurrentDestination();
+                    if (navDestination != null && navDestination.getId() == R.id.rewards_signedin_tab) {
+                        Navigation.findNavController(requireView()).navigate(action);
+                    }
                 } else {
                     RewardsSignedInFragmentDirections.ActionRewardsSignedinTabToMerchantDetailsFragment action = RewardsSignedInFragmentDirections.actionRewardsSignedinTabToMerchantDetailsFragment(genericEGiftCard);
                     Navigation.findNavController(requireView()).navigate(action);
