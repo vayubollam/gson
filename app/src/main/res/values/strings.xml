@@ -896,4 +896,6 @@
     <string name="account_deletion_phone_field_required">This field is required!</string>
     <string name="account_deletion_submitted">Submitting</string>
     <string name="different_reason">A different reason:</string>
+
+    <string name="get_help_call">Call</string>
 </resources>

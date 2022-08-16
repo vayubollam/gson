@@ -863,4 +863,6 @@
     <string name="account_deletion_submitted">Soumettre</string>
     <string name="different_reason">Une autre raison : </string>
 
+    <string name="get_help_call">Appel</string>
+
 </resources>
