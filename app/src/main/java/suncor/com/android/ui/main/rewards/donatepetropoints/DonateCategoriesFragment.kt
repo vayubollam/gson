@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import com.google.gson.Gson
-import suncor.com.android.databinding.FragmentDonatePetroPointsBinding
+import suncor.com.android.databinding.FragmentDonateCategoriesBinding
 import suncor.com.android.di.viewmodel.ViewModelFactory
 import suncor.com.android.model.redeem.response.MemberEligibilityResponse
 import suncor.com.android.model.redeem.response.Program
@@ -25,7 +25,7 @@ class DonateCategoriesFragment: MainActivityFragment(), OnBackPressedListener {
     lateinit var gson: Gson
 
     private var viewModel: DonateCategoriesViewModel? = null
-    private lateinit var  binding: FragmentDonatePetroPointsBinding
+    private lateinit var  binding: FragmentDonateCategoriesBinding
     private lateinit var memberEligibilityResponse: MemberEligibilityResponse
     private var categoryString: String = ""
 
@@ -39,7 +39,7 @@ class DonateCategoriesFragment: MainActivityFragment(), OnBackPressedListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentDonatePetroPointsBinding.inflate(inflater, container, false)
+        binding = FragmentDonateCategoriesBinding.inflate(inflater, container, false)
         arguments.let {
             if(it != null){
                 categoryString = DonateCategoriesFragmentArgs.fromBundle(it).categoriesList
