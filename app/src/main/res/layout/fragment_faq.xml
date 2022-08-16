@@ -87,7 +87,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="16dp"
                         android:layout_weight="1"
-                        android:text="@string/profile_get_help_call" />
+                        android:text="@string/get_help_call" />
 
                     <suncor.com.android.ui.common.SuncorButton
                         android:id="@+id/email_button"
