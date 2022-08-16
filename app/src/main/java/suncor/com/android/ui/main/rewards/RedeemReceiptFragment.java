@@ -1,7 +1,6 @@
 package suncor.com.android.ui.main.rewards;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,6 +48,7 @@ public class RedeemReceiptFragment extends MainActivityFragment implements OnBac
     @Override
     public void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
+        if(getActivity() != null)
         mainViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(MainViewModel.class);
     }
 
@@ -93,7 +93,8 @@ public class RedeemReceiptFragment extends MainActivityFragment implements OnBac
             binding.emailSentToValue.setText(sessionManager.getProfile().getEmail());
             binding.dateValue.setText(DateUtils.getFormattedDate(Calendar.getInstance().getTime()));
         }
-        AnalyticsUtils.setCurrentScreenName(this.getActivity(), "my-petro-points-redeem-info-"+MerchantsUtil.getMerchantScreenName(orderResponse.getShoppingCart().geteGift().getMerchantId())+"-success");
+        if(getActivity() != null)
+        AnalyticsUtils.setCurrentScreenName(getActivity(), "my-petro-points-redeem-info-"+MerchantsUtil.getMerchantScreenName(orderResponse.getShoppingCart().geteGift().getMerchantId())+"-success");
         AnalyticsUtils.logEvent(this.getContext(),"form_complete",
                 new Pair<>("formName", "Redeem for "+MerchantsUtil.getMerchantShortName(orderResponse.getShoppingCart().geteGift().getMerchantId())+" eGift card"),
                 new Pair<>("formSelection","$"+orderResponse.getShoppingCart().eGift.getValue()+" gift card")
@@ -114,6 +115,7 @@ public class RedeemReceiptFragment extends MainActivityFragment implements OnBac
             mainViewModel.setLinkedToAccount(true);
             mainViewModel.setSingleTicketNumber(Sets.newHashSet(orderResponse.getProductsDelivered()));
         }
+        if(getView() != null)
         Navigation.findNavController(getView()).popBackStack();
     }
 

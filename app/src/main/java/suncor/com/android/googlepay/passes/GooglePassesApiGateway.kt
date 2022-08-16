@@ -46,8 +46,18 @@ class GooglePassesApiGateway {
             // get class, object definitions, insert class and object (check class in Merchant center GUI: https://pay.google.com/gp/m/issuer/list)
             when (verticalType) {
                 VerticalType.LOYALTY -> {
-                    objectResourcePayload = resourceDefinitions.makeLoyaltyObjectResource(passesConfig.googlePassesClassId, objectId, loyalityData)
-                    objectResponse = restMethods.insertLoyaltyObject(objectResourcePayload as LoyaltyObject?, context)
+                    objectResourcePayload = resourceDefinitions.makeLoyaltyObjectResource(
+                        passesConfig.googlePassesClassId,
+                        objectId,
+                        loyalityData
+                    )
+                    objectResponse = restMethods.insertLoyaltyObject(
+                        objectResourcePayload as LoyaltyObject?,
+                        context
+                    )
+                }
+                else -> {
+                    // exhaustive branch
                 }
             }
             if (objectResponse?.get("code")?.equals("409") == true) {
@@ -64,10 +74,16 @@ class GooglePassesApiGateway {
                     jwtPayload.addProperty("id", objectId)
                     googlePassJwt.addLoyaltyObject(jwtPayload)
                 }
+                else -> {
+                    // exhaustive branch
+                }
             }
             Timber.e("GOOGLE PASSES: Add loyality Object")
             // sign JSON to make signed JWT
-            signedJwt = googlePassJwt.generateSignedJwt(context, passesConfig.googlePassesAccountEmailAddress)
+            signedJwt = googlePassJwt.generateSignedJwt(
+                context,
+                passesConfig.googlePassesAccountEmailAddress
+            )
         } catch (e: Exception) {
             errorHandler.invoke(e)
             e?.let {
@@ -88,7 +104,14 @@ class GooglePassesApiGateway {
     ): String? {
         Timber.d("Generates a signed")
         val skinnyJwt =
-            makeSkinnyJwt(context, VerticalType.LOYALTY, passesConfig, objectId, loyalityData,errorHandler)
+            makeSkinnyJwt(
+                context,
+                VerticalType.LOYALTY,
+                passesConfig,
+                objectId,
+                loyalityData,
+                errorHandler
+            )
         if (skinnyJwt != null) {
             return GooglePassesConfig.SAVE_LINK + skinnyJwt
         }

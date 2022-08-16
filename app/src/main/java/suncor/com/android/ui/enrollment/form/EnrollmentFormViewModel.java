@@ -35,8 +35,10 @@ import suncor.com.android.ui.common.input.PasswordInputField;
 import suncor.com.android.ui.common.input.PhoneInputField;
 import suncor.com.android.ui.common.input.PostalCodeField;
 import suncor.com.android.ui.common.input.StreetAddressInputField;
+import suncor.com.android.utilities.CommonUtils;
 import suncor.com.android.utilities.FingerprintManager;
 import suncor.com.android.utilities.Timber;
+import suncor.com.android.utilities.UserLocalSettings;
 
 public class EnrollmentFormViewModel extends ViewModel {
 
@@ -76,6 +78,7 @@ public class EnrollmentFormViewModel extends ViewModel {
     private FingerprintManager fingerPrintManager;
     private MutableLiveData<Event<Boolean>> _showBiometricAlert = new MutableLiveData<>();
     public LiveData<Event<Boolean>> showBiometricAlert = _showBiometricAlert;
+    private SessionManager sessionManager;
 
     @Inject
     public EnrollmentFormViewModel(EnrollmentsApi enrollmentsApi, SessionManager sessionManager, CanadaPostAutocompleteProvider canadaPostAutocompleteProvider, FingerprintManager fingerPrintManager) {
@@ -90,6 +93,7 @@ public class EnrollmentFormViewModel extends ViewModel {
         requiredFields.add(securityQuestionField);
         requiredFields.add(securityAnswerField);
         this.fingerPrintManager = fingerPrintManager;
+        this.sessionManager = sessionManager;
 
         LiveData<Resource<EnrollmentPointsAndHours>> joinApiData = Transformations.switchMap(join, (event) -> {
             if (event.getContentIfNotHandled() != null) {
@@ -120,7 +124,7 @@ public class EnrollmentFormViewModel extends ViewModel {
         joinLiveData = Transformations.map(joinApiData, (result) -> {
             if (result.status == Resource.Status.SUCCESS) {
                 isUserCameToValidationScreen = true;
-                enrollmentPointsObserver.postValue(getFormattedPoints(result.data.getEnrollmentsPoints()));
+                enrollmentPointsObserver.postValue(CommonUtils.getFormattedPoints(result.data.getEnrollmentsPoints()));
                 if (Locale.getDefault().getLanguage().equalsIgnoreCase("en")){
                     validationHourObserver.postValue("within" + " " + result.data.getValidationHours() + " " + "hours");
                 }else {
@@ -143,11 +147,6 @@ public class EnrollmentFormViewModel extends ViewModel {
         });
 
         initAutoComplete(canadaPostAutocompleteProvider);
-    }
-
-    private String getFormattedPoints(int enrollmentsPoints){
-        DecimalFormat formatter = new DecimalFormat("#,###,###");
-        return formatter.format(enrollmentsPoints);
     }
 
     private void initAutoComplete(CanadaPostAutocompleteProvider provider) {
@@ -204,6 +203,10 @@ public class EnrollmentFormViewModel extends ViewModel {
                 showAutocompleteLayout.setValue(false);
             }
         });
+    }
+
+    public String getEnrollmentBonusPoints() {
+        return CommonUtils.getFormattedPoints(sessionManager.getUserLocalSettings().getInt(UserLocalSettings.ENROLLMENT_BONUS, 0));
     }
 
     public boolean isUserCameToValidationScreen(){

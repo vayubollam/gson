@@ -26,10 +26,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.Objects;
 
 import javax.inject.Inject;
-
-
-import javax.inject.Inject;
-
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentGiftCardValueConfirmationBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;

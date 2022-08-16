@@ -1,0 +1,118 @@
+"{\n" +
+"      \"lastWashDt\": \"2022-07-07T15:16:45.787\",\n" +
+"      \"lastWashStoreId\": \"f3q44R/Jfog/u6o6ck5TUA==\",\n" +
+"      \"cardNumberEncrypted\": \"cTQX2jTzrqSfLF+olV1HoV09gN4RAIKdzD2l2QOk8Xk=\",\n" +
+"      \"unitsRemaining\": 17,\n" +
+"      \"cardType\": \"WAG\",\n" +
+"      \"vacuumInProgress\": true,\n" +
+"      \"canWash\": true,\n" +
+"      \"canVacuum\": true,\n" +
+"      \"washInProgress\": false,\n" +
+"      \"cardNumber\": \"706981007005445432\",\n" +
+"      \"status\": \"Used\",\n" +
+"      \"vacuumRemaining\": 31\n" +
+"    }"
+
+val responseStoreDetails="Response Content : {\n" +
+"\n" +
+"  \"amenities\": [\n" +
+"\n" +
+"    \"lottery\",\n" +
+"\n" +
+"    \"ultra94\",\n" +
+"\n" +
+"    \"bankMachine\",\n" +
+"\n" +
+"    \"open24Hours\",\n" +
+"\n" +
+"    \"convenienceStore\",\n" +
+"\n" +
+"    \"carWashBrushTypeSoftcloth\"\n" +
+"\n" +
+"  ],\n" +
+"\n" +
+"  \"hours\": [\n" +
+"\n" +
+"    {\n" +
+"\n" +
+"      \"close\": \"2400\",\n" +
+"\n" +
+"      \"open\": \"0000\"\n" +
+"\n" +
+"    },\n" +
+"\n" +
+"    {\n" +
+"\n" +
+"      \"close\": \"2400\",\n" +
+"\n" +
+"      \"open\": \"0000\"\n" +
+"\n" +
+"    },\n" +
+"\n" +
+"    {\n" +
+"\n" +
+"      \"close\": \"2400\",\n" +
+"\n" +
+"      \"open\": \"0000\"\n" +
+"\n" +
+"    },\n" +
+"\n" +
+"    {\n" +
+"\n" +
+"      \"close\": \"2400\",\n" +
+"\n" +
+"      \"open\": \"0000\"\n" +
+"\n" +
+"    },\n" +
+"\n" +
+"    {\n" +
+"\n" +
+"      \"close\": \"2400\",\n" +
+"\n" +
+"      \"open\": \"0000\"\n" +
+"\n" +
+"    },\n" +
+"\n" +
+"    {\n" +
+"\n" +
+"      \"close\": \"2400\",\n" +
+"\n" +
+"      \"open\": \"0000\"\n" +
+"\n" +
+"    },\n" +
+"\n" +
+"    {\n" +
+"\n" +
+"      \"close\": \"2400\",\n" +
+"\n" +
+"      \"open\": \"0000\"\n" +
+"\n" +
+"    }\n" +
+"\n" +
+"  ],\n" +
+"\n" +
+"  \"address\": {\n" +
+"\n" +
+"    \"subdivision\": \"Ontario\",\n" +
+"\n" +
+"    \"phone\": \"(000) 000-0000\",\n" +
+"\n" +
+"    \"countryRegion\": \"Canada\",\n" +
+"\n" +
+"    \"postalCode\": \"L3R1M8\",\n" +
+"\n" +
+"    \"latitude\": 43.863183221307,\n" +
+"\n" +
+"    \"addressLine\": \"4780 Hwy. #7 East\",\n" +
+"\n" +
+"    \"crossStreet\": \"NEW KENNEDY\",\n" +
+"\n" +
+"    \"primaryCity\": \"Unionville\",\n" +
+"\n" +
+"    \"longitude\": -79.3032763914017\n" +
+"\n" +
+"  },\n" +
+"\n" +
+"  \"id\": \"f3q44R/Jfog/u6o6ck5TUA==\"\n" +
+"\n" +
+"}"
