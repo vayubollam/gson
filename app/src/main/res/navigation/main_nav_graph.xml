@@ -954,7 +954,7 @@
     </keep_state_fragment>
     <keep_state_fragment
         android:id="@+id/donatePetroPointsFragment"
-        android:name="suncor.com.android.ui.main.rewards.donatepetropoints.DonatePetroPointsFragment"
+        android:name="suncor.com.android.ui.main.rewards.donatepetropoints.DonateCategoriesFragment"
         android:label="DonatePetroPointsFragment" >
 
         <argument
