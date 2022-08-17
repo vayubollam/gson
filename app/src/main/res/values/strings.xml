@@ -409,7 +409,7 @@
     <string name="leaving_app_alert_button">Open</string>
     <string name="rbc_url">https://www.rbcroyalbank.com/petro-canada/index.html?suncor&amp;utm_source=suncor&amp;utm_medium=3pb&amp;utm_campaign=petrocanada_3cpl&amp;utm_content=pc_app_link</string>
     <string name="petro_points_contest_url">https://www.petro-canada.ca/en/personal/discover-petro-points/pump-up-the-points-contest-2022?utm_source=pc_app&amp;utm_medium=app_banner&amp;utm_campaign=putp</string>
-    <string name="chat_option_url">https://www.petro-canada.ca/en/personal/contact-customer-service?modalUrl=%2Fen%2Fpersonal%2Fcontact-customer-service%2Fsend-us-a-message</string>
+    <string name="chat_option_url">https://www.petro-canada.ca/en/personal/contact-customer-service#start-chat-button</string>
     <string name="transaction_type_ppt">Transfer</string>
     <string name="transaction_type_bonus">Bonus</string>
     <string name="transaction_type_pp">Petro Points</string>
