@@ -130,6 +130,12 @@ object Constants {
     const val TYPE_VACUUM="vacuum";
     const val CLICKED_CARD_INDEX="clickedCardIndex";
 
+    const val ACTIVATE_VACUUM_SUCCESS="activate_vacuum_success"
+    const val CARDTYPE_WAG="Wash & Go"
+    const val CARDTYPE_SP="Season Pass"
+    const val SCREEN_ACTIVE_TIME="screenActiveTime"
+
+
     //Paths
     const val GET_LOCATIONS_ADAPTER__PATH = "/adapters/suncor/v3/rfmp-secure/locations"
 

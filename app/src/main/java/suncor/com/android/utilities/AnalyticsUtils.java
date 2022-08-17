@@ -44,7 +44,9 @@ public class AnalyticsUtils {
         activateCarWashClick(ACTIVATE_CAR_WASH_CLICK),
         ADDPPTSTOWALLET(ADD_PPTS_TO_WALLET),
         ADDPPTSTOWALLETERROR(ADD_PPTS_TO_WALLET_ERROR),
-        APPRATINGPROMPT(APP_RATING_PROMPT);
+        APPRATINGPROMPT(APP_RATING_PROMPT),
+        ACTIVATEVACUUMSUCCESS(ACTIVATE_VACUUM_SUCCESS);
+
 
 
         private final String name;
@@ -83,7 +85,8 @@ public class AnalyticsUtils {
         infoText(INFO_TEXT),
         menuSelection(MENU_SELECTION),
         carWashCardType(CAR_WASH_CARD_TYPE),
-        WALLETTYPE(WALLET_TYPE);
+        WALLETTYPE(WALLET_TYPE),
+        SCREENACTIVETIME(SCREEN_ACTIVE_TIME);
 
 
         private final String name;
