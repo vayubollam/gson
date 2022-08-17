@@ -458,7 +458,6 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-
                             <option name="x" value="2854" />
                             <option name="y" value="2946" />
                           </Point>
@@ -973,7 +972,6 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-
                             <option name="x" value="3372" />
                             <option name="y" value="2115" />
                           </Point>
@@ -1013,6 +1011,49 @@
                               </value>
                             </entry>
                             <entry key="action_payments_tab_to_paymentsDetailsFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </LayoutPositions>
+          </value>
+        </entry>
+        <entry key="reset_password_nagivation.xml">
+          <value>
+            <LayoutPositions>
+              <option name="myPositions">
+                <map>
+                  <entry key="resetPasswordFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="256" />
+                            <option name="y" value="12" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="resetPasswordSecurityQuestionValidationFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="12" />
+                            <option name="y" value="12" />
+                          </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_resetPasswordSecurityQuestionValidationFragment_to_resetPasswordFragment">
                               <value>
                                 <LayoutPositions />
                               </value>

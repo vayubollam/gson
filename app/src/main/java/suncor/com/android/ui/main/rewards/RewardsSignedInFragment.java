@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.databinding.ObservableInt;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
@@ -269,7 +270,7 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
                     }
                 } else if (genericEGiftCard.getGroup().equalsIgnoreCase(Constants.GROUP_DONATE)) {
                     String categoriesList = gson.toJson(data!= null ? data : null);
-                    RewardsSignedInFragmentDirections.ActionRewardsSignedinTabToDonatePetroPointsFragment action = RewardsSignedInFragmentDirections.actionRewardsSignedinTabToDonatePetroPointsFragment();
+                    RewardsSignedInFragmentDirections.ActionRewardsSignedinTabToDonateCategoriesFragment action = RewardsSignedInFragmentDirections.actionRewardsSignedinTabToDonateCategoriesFragment();
                     action.setCategoriesList(categoriesList);
                     NavDestination navDestination = Navigation.findNavController(requireView()).getCurrentDestination();
                     if (navDestination != null && navDestination.getId() == R.id.rewards_signedin_tab) {
@@ -282,7 +283,6 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
             } else {
                 RewardsSignedInFragmentDirections.ActionRewardsSignedinTabToRewardsDetailsFragment action = RewardsSignedInFragmentDirections.actionRewardsSignedinTabToRewardsDetailsFragment(genericEGiftCard);
                 Navigation.findNavController(requireView()).navigate(action);
-
             }
         } catch (Exception e) {
             Timber.d(e);
@@ -328,43 +328,6 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
         return eGiftCard;
     }
 
-    public GenericEGiftCard getGIftCardAt(int index){
-        GenericEGiftCard eGiftCard = new GenericEGiftCard();
-
-        switch (index){
-            case 0:
-                eGiftCard.setSmallImage(Constants.DONATE_IMAGE_SMALL);
-                eGiftCard.setLargeImage(Constants.DONATE_IMAGE_LARGE);
-                eGiftCard.setMoreGIftCard(false);
-                eGiftCard.setTitle(getResources().getString(R.string.donate_petro_points_card));
-                eGiftCard.setPoints(getResources().getString(R.string.donate_petro_points_starting_points));
-                eGiftCard.setSubtitle(getResources().getString(R.string.donate_petro_points_subtitle));
-                eGiftCard.setHowToUse(getResources().getString(R.string.rewards_signedin_redeeming_your_rewards_desc_dining_card));
-                eGiftCard.setDataDynamic(true);
-                eGiftCard.seteGifts(null);
-                eGiftCard.setGroup(Constants.GROUP_DONATE);
-                eGiftCard.setScreenName(Constants.DONATE_SCREEN_NAME);
-                eGiftCard.setShortName(Constants.DONATE_SHORT_NAME);
-                break;
-
-            case 3:
-                eGiftCard.setSmallImage(Constants.MORE_GIFT_CARD_IMAGE_SMALL);
-                eGiftCard.setLargeImage(Constants.MORE_GIFT_CARD_IMAGE_LARGE);
-                eGiftCard.setMoreGIftCard(true);
-                eGiftCard.setTitle(getResources().getString(R.string.merchant_more_egift_card));
-                eGiftCard.setPoints(getResources().getString(R.string.rewards_e_gift_card_starting_points));
-                eGiftCard.setSubtitle(getResources().getString(R.string.rewards_egift_card_subtitle));
-                eGiftCard.setHowToUse(getResources().getString(R.string.rewards_signedin_redeeming_your_rewards_desc_dining_card));
-                eGiftCard.setDataDynamic(true);
-                eGiftCard.seteGifts(null);
-                eGiftCard.setGroup(Constants.GROUP_MORE);
-                eGiftCard.setScreenName(Constants.MORE_GIFT_CARD_SCREEN_NAME);
-                eGiftCard.setShortName(Constants.MORE_GIFT_CARD_SHORT_NAME);
-                break;
-        }
-
-        return eGiftCard;
-    }
 
     private void mapRewardsListIntoGeneric(ArrayList<Reward> rewardsList) {
 

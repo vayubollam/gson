@@ -204,7 +204,7 @@ abstract class MainActivityFragmentsModule {
     abstract AccountDeleteNotesFragment contributeAccountDeleteNotesFragment();
 
     @ContributesAndroidInjector
-    abstract DonateCategoriesFragment contributeDonatePetroPointsFragment();
+    abstract DonateCategoriesFragment contributeDonateCategoriesFragment();
 
     @ContributesAndroidInjector
     abstract DonatePetroPointsFragment contributeDonatePetroPointsFragment();
