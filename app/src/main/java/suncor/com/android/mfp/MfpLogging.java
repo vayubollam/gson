@@ -43,7 +43,7 @@ public class MfpLogging {
         String[] certificates;
 
         if (BuildConfig.APPLICATION_ID == "com.suncor.android.SuncorApplicationOpsQA") {
-            certificates = new String[]{"opsqa_rfmp-mfp_com_p1.der", "opsqa_rfmp-mfp_com_b1.der"};
+            certificates = new String[]{"opsqa_rfmp-mfp_com_2022.der"};
         } else if (BuildConfig.APPLICATION_ID == "com.petrocanada.my_petro_canada" && !BuildConfig.FLAVOR.equals("UATTestflight")) {
             certificates = new String[]{"P2_2022_mfp_petro-canada_ca.der","B2_2022_mfp_petro-canada_ca.der","P1_2021_mfp_petro-canada_ca.der", "B1_2021_mfp_petro-canada_ca.der"};
         } else
