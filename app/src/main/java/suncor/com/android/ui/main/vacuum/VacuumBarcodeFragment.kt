@@ -5,6 +5,8 @@ import android.graphics.Color
 import android.graphics.Point
 import android.os.Bundle
 import android.os.Handler
+import android.os.SystemClock
+import android.util.Pair
 import android.util.TypedValue
 import android.view.Display
 import android.view.LayoutInflater
@@ -16,27 +18,43 @@ import com.google.zxing.MultiFormatWriter
 import com.google.zxing.WriterException
 import suncor.com.android.R
 import suncor.com.android.databinding.FragmentVacuumBarcodeBinding
+import suncor.com.android.model.cards.CardType
 import suncor.com.android.ui.common.OnBackPressedListener
 import suncor.com.android.ui.main.common.MainActivityFragment
+import suncor.com.android.utilities.AnalyticsUtils
 import suncor.com.android.utilities.Constants
 import suncor.com.android.utilities.Timber
+import java.util.concurrent.TimeUnit
+
 
 class VacuumBarcodeFragment : MainActivityFragment(), OnBackPressedListener {
 
     private lateinit var binding: FragmentVacuumBarcodeBinding
     private lateinit var cardNumber: String
-    private  var clickedCardIndex:Int=0
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    private var clickedCardIndex: Int = 0
+    var elapsedMillis: Long = 0
+    var startTime:Long=0
+    var endTime:Long=0
+    private lateinit var cardType: String
+    private lateinit var analyticsCardType: String
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentVacuumBarcodeBinding.inflate(inflater, container, false)
         binding.buttonClose.setOnClickListener(closeListener)
         cardNumber = VacuumBarcodeFragmentArgs.fromBundle(requireArguments()).cardNumber
-        clickedCardIndex=VacuumBarcodeFragmentArgs.fromBundle(requireArguments()).cardIndex
-        Timber.d("vacuumindex : "+clickedCardIndex)
+        clickedCardIndex = VacuumBarcodeFragmentArgs.fromBundle(requireArguments()).cardIndex
+        cardType = VacuumBarcodeFragmentArgs.fromBundle(requireArguments()).cardType
+
+        when (cardType) {
+            CardType.WAG.name -> {
+                analyticsCardType = Constants.CARDTYPE_WAG
+            }
+            CardType.SP.name -> {
+                analyticsCardType = Constants.CARDTYPE_SP
+            }
+        }
+
+        Timber.d("vacuumindex : " + clickedCardIndex + cardType)
         return binding.root
     }
 
@@ -47,6 +65,7 @@ class VacuumBarcodeFragment : MainActivityFragment(), OnBackPressedListener {
             showBarcode()
         }
         updateHandler.postDelayed(runnable, 500)
+        startTime=System.currentTimeMillis()
     }
 
     private fun showBarcode(){
@@ -87,6 +106,21 @@ class VacuumBarcodeFragment : MainActivityFragment(), OnBackPressedListener {
 
     private val closeListener =
         View.OnClickListener { view: View? ->
+            endTime=System.currentTimeMillis()
+            elapsedMillis = endTime-startTime;
+            var seconds = TimeUnit.MILLISECONDS.toSeconds(elapsedMillis)
+            AnalyticsUtils.logEvent(
+                context, AnalyticsUtils.Event.ACTIVATEVACUUMSUCCESS,
+                Pair(
+                    AnalyticsUtils.Param.carWashCardType,
+                    analyticsCardType
+                ),
+                Pair(
+                    AnalyticsUtils.Param.SCREENACTIVETIME,
+                    seconds.toString()+"s"
+                )
+            )
+            Timber.d("screen-stop-seconds:${seconds}s")
             Navigation.findNavController(requireView()).popBackStack()
         }
 

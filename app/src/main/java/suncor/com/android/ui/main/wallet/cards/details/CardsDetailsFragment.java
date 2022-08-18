@@ -520,6 +520,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
                     action = CardsDetailsFragmentDirections.actionCardsDetailsFragmentToVacuumBarcodeFragment();
             action.setCardNumber(cardItem.getCardNumber());
             action.setCardIndex(clickedCardIndex.getValue());
+            action.setCardType(cardItem.getCardType().name());
             Navigation.findNavController(getView()).navigate(action);
         }
     };
