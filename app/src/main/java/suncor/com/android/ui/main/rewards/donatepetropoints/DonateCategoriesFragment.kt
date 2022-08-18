@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import com.google.gson.Gson
+import suncor.com.android.R
 import suncor.com.android.databinding.FragmentDonateCategoriesBinding
 import suncor.com.android.di.viewmodel.ViewModelFactory
 import suncor.com.android.model.redeem.response.MemberEligibilityResponse
@@ -15,7 +16,7 @@ import suncor.com.android.ui.common.OnBackPressedListener
 import suncor.com.android.ui.main.common.MainActivityFragment
 import javax.inject.Inject
 
-class DonateCategoriesFragment: MainActivityFragment(), OnBackPressedListener {
+class DonateCategoriesFragment : MainActivityFragment(), OnBackPressedListener {
 
 
     @Inject
@@ -25,13 +26,13 @@ class DonateCategoriesFragment: MainActivityFragment(), OnBackPressedListener {
     lateinit var gson: Gson
 
     private var viewModel: DonateCategoriesViewModel? = null
-    private lateinit var  binding: FragmentDonateCategoriesBinding
+    private lateinit var binding: FragmentDonateCategoriesBinding
     private lateinit var memberEligibilityResponse: MemberEligibilityResponse
     private var categoryString: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-         viewModel = ViewModelProviders.of(this, factory)[DonateCategoriesViewModel::class.java]
+        viewModel = ViewModelProviders.of(this, factory)[DonateCategoriesViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -41,7 +42,7 @@ class DonateCategoriesFragment: MainActivityFragment(), OnBackPressedListener {
     ): View {
         binding = FragmentDonateCategoriesBinding.inflate(inflater, container, false)
         arguments.let {
-            if(it != null){
+            if (it != null) {
                 categoryString = DonateCategoriesFragmentArgs.fromBundle(it).categoriesList
             }
         }
@@ -60,7 +61,13 @@ class DonateCategoriesFragment: MainActivityFragment(), OnBackPressedListener {
             ).popBackStack()
         }
 
-        val adapter = context?.let { DonateCategoryAdapter(it, memberEligibilityResponse.categories, this :: handleClick) }
+        val adapter = context?.let {
+            DonateCategoryAdapter(
+                it,
+                memberEligibilityResponse.categories,
+                this::handleClick
+            )
+        }
 
         binding.apply {
             categoriesRecyclerView.adapter = adapter
@@ -69,9 +76,15 @@ class DonateCategoriesFragment: MainActivityFragment(), OnBackPressedListener {
         return binding.root
     }
 
-    private fun handleClick(program: Program){
-       /* val message = program.info.title
-        Toast.makeText(context, message, Toast.LENGTH_LONG).show()*/
+    private fun handleClick(program: Program) {
+        val programString = gson.toJson(program)
+        val action =
+            DonateCategoriesFragmentDirections.actionDonateCategoriesToDonatePetroPointsFragment()
+        action.program = programString
+        val navDestination = Navigation.findNavController(requireView()).currentDestination
+        if (navDestination != null && navDestination.id == R.id.donateCategoriesFragment) {
+            Navigation.findNavController(requireView()).navigate(action)
+        }
     }
 
     override fun onBackPressed() {

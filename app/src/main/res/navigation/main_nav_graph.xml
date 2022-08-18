@@ -109,8 +109,8 @@
             app:exitAnim="@anim/dummy"
             app:popExitAnim="@anim/slide_down" />
         <action
-            android:id="@+id/action_rewards_signedin_tab_to_donatePetroPointsFragment"
-            app:destination="@id/donatePetroPointsFragment"
+            android:id="@+id/action_rewards_signedin_tab_to_donateCategoriesFragment"
+            app:destination="@id/donateCategoriesFragment"
             app:enterAnim="@anim/slide_up"
             app:exitAnim="@anim/dummy"
             app:popExitAnim="@anim/slide_down" />
@@ -954,9 +954,15 @@
             app:argType="integer" />
     </keep_state_fragment>
     <keep_state_fragment
-        android:id="@+id/donatePetroPointsFragment"
+        android:id="@+id/donateCategoriesFragment"
         android:name="suncor.com.android.ui.main.rewards.donatepetropoints.DonateCategoriesFragment"
-        android:label="DonatePetroPointsFragment" >
+        android:label="DonateCategoriesFragment" >
+        <action
+            android:id="@+id/action_donate_categories_to_donatePetroPointsFragment"
+            app:destination="@id/donatePetroPointsFragment"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_down" />
 
         <argument
             android:name="categoriesList"
@@ -964,12 +970,17 @@
             app:argType="string" />
 
 
+    </keep_state_fragment>
+
     <keep_state_fragment
         android:id="@+id/donatePetroPointsFragment"
         android:name="suncor.com.android.ui.main.rewards.donate.DonatePetroPointsFragment"
-        android:label="DonatePetroPointsFragment" />
-
+        android:label="DonatePetroPointsFragment" >
+        <argument
+            android:name="program"
+            android:defaultValue="null"
+            app:argType="string"
+            />
     </keep_state_fragment>
-
 
 </navigation>
