@@ -1,6 +1,5 @@
 package suncor.com.android.analytics
 
-// TODO: Move Detail Messages to other file
 object Errors {
     const val SOMETHING_WRONG = "Something went wrong on our side"
     const val INVALID_PASSWORD =
