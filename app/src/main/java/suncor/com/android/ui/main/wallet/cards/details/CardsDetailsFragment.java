@@ -522,6 +522,10 @@ public class CardsDetailsFragment extends MainActivityFragment {
             action.setCardIndex(clickedCardIndex.getValue());
             action.setCardType(cardItem.getCardType().name());
             Navigation.findNavController(getView()).navigate(action);
+            String param_cardType = viewModel.cards.getValue().get(clickedCardIndex.getValue()).getLongName();
+            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.ACTIVATEVACUUMCLICK,
+                    new Pair<>(AnalyticsUtils.Param.carWashCardType, param_cardType)
+            );
         }
     };
 
