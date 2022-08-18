@@ -170,6 +170,8 @@
     <string name="msg_sl007">Station not removed</string>
     <string name="msg_sl003">Address suggestions are not available at the moment.</string>
     <string name="enrollment_cardform_invalid_card_dialog_title">Invalid Card</string>
+    <string name="enrollment_cardform_max_register_block_card_dialog_message">You have reached the maximum number of Petro-Canada cards registered</string>
+    <string name="enrollment_cardform_max_attempts_block_card_dialog_message">You have reached the maximum number of attempts, try again in 12 hours</string>
     <string name="enrollment_cardform_invalid_card_dialog_message">The Petro-Points card number, the postal code, or name are incorrect.</string>
     <string name="enrollment_cardform_invalid_card_dialog_try_again">Try again</string>
     <string name="enrollment_cardform_invalid_card_dialog_callus">Call us</string>
