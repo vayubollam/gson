@@ -503,6 +503,9 @@ public class CardsDetailsFragment extends MainActivityFragment {
         boolean hasInternetConnection = ConnectionUtil.haveNetworkConnection(getContext());
         CardDetail cardDetail = cardsDetailsAdapter.getCardItems().get(clickedCardIndex.getValue()).getCardDetail();
         ExpandedCardItem cardItem = new ExpandedCardItem(getContext(), cardDetail);
+        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.ACTIVATEVACUUMCLICK,
+                new Pair<>(AnalyticsUtils.Param.carWashCardType, cardDetail.getCardName())
+        );
         if (cardDetail.getVacuumInProgress()) {
             CardsUtil.showVacuumInprogressAlert(getContext());
         } else if (!cardDetail.getCanVacuum() && cardDetail.getCardType() == CardType.SP) {
