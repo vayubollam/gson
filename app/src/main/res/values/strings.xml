@@ -628,11 +628,15 @@
     <string name="single_ticket_barcode_trouble_message">Having trouble scanning?  \nTry typing your ticket number into the car wash screen.</string>
 
     <string name="zero_balance_alert_title">Your card is empty</string>
-    <string name="zero_balance_alert_message">Looks like your card is running on empty. Reload on petro-canada.ca or get a car wash ticket in store.</string>
+    <string name="zero_balance_alert_message">Looks like your card is running on empty. Reload on <a href="https://www.petro-canada.ca/en/personal"><u>petro-canada.ca</u></a> or get a car wash ticket in store.</string>
     <string name="zero_balance_alert_close">Close</string>
     <string name="zero_balance_alert_buy">Buy a wash</string>
     <string name="zero_balance_alert_view">View card details</string>
     <string name="zero_balance_other_available_message">Looks like your card is running on empty. Don\'t worry – you have other options in your account.</string>
+
+     <!-- zero vacuum balance string-->
+    <string name="zero_balance_vacuum_alert_title">You’re out of vacuums</string>
+    <string name="zero_balance_vacuum_alert_message">Looks like you’ve used up all your free vacuums.\nNo worries - You can visit the website to add more washes and get more vacuums.</string>
 
     <string name="account_page_header">Account</string>
 
@@ -775,6 +779,8 @@
     <string name="reload_card_alert_visit_web">Visit web</string>
     <string name="petro_canada_reload_url">https://www.petro-canada.ca/en/personal/my-petro-points?modalUrl=%2Fen%2Fpersonal%2Fmy-petro-points%2Freload%2Freload-card</string>
 
+    <!--vacuum reload -->
+    <string name="petro_vacuum_canada_reload_url">https://www.petro-canada.ca/en/personal/my-petro-points#mycards</string>
 
     <string name="select_value">Value</string>
     <string name="authorization_petropoints_balance">You\'re starting at %s points</string>
@@ -800,6 +806,8 @@
     <string name="carwash_security_code">car-wash-security-code</string>
     <string name="carwash_cards">Carwash Cards</string>
     <string name="car_wash_card_list">car-wash-card-list</string>
+
+    <string name="carwash_zero_vacuum_error_alert_title">Can\’t activate vacuum</string>
 
     <string name="carwash_daily_vacuum_used_alert">Daily vacuum used</string>
     <string name="carwash_daily_vacuum_used_message">Your vacuum for the day was used at %s at %s.</string>
