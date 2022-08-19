@@ -207,6 +207,7 @@
     <string name="customer_support_email">customerservice@petro-canada.ca</string>
     <string name="profile_get_help_call">Call</string>
     <string name="profile_get_help_email">Email</string>
+    <string name="profile_get_help_chat">Chat</string>
     <string name="navigation_cards_tab">Wallet</string>
     <string name="cards_fragment_title">Wallet</string>
     <string name="cards_fragment_petrocanada_cards_header">Petro-Canada</string>
@@ -403,12 +404,12 @@
     <string name="offers_banner_4_button">Find a car wash</string>
     <string name="offers_banner_5_text">Save 3¢/litre on every fill-up with an RBC linked card.</string>
     <string name="offers_banner_5_button">Get started</string>
-    <string name="offers_leaving_app_alert_title">You are leaving our App.</string>
-    <string name="offers_leaving_app_alert_message">We will open your browser.</string>
-    <string name="offers_leaving_app_alert_button">Open</string>
+    <string name="leaving_app_alert_title">You are leaving our App.</string>
+    <string name="leaving_app_alert_message">We will open your browser.</string>
+    <string name="leaving_app_alert_button">Open</string>
     <string name="rbc_url">https://www.rbcroyalbank.com/petro-canada/index.html?suncor&amp;utm_source=suncor&amp;utm_medium=3pb&amp;utm_campaign=petrocanada_3cpl&amp;utm_content=pc_app_link</string>
     <string name="petro_points_contest_url">https://www.petro-canada.ca/en/personal/discover-petro-points/pump-up-the-points-contest-2022?utm_source=pc_app&amp;utm_medium=app_banner&amp;utm_campaign=putp</string>
-
+    <string name="chat_option_url">https://www.petro-canada.ca/en/personal/contact-customer-service#start-chat-button</string>
     <string name="transaction_type_ppt">Transfer</string>
     <string name="transaction_type_bonus">Bonus</string>
     <string name="transaction_type_pp">Petro Points</string>
@@ -895,4 +896,6 @@
     <string name="account_deletion_phone_field_required">This field is required!</string>
     <string name="account_deletion_submitted">Submitting</string>
     <string name="different_reason">A different reason:</string>
+
+    <string name="get_help_call">Call</string>
 </resources>

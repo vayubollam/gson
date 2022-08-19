@@ -9,7 +9,6 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
@@ -17,15 +16,14 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import javax.inject.Inject;
-
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentFaqBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.account.Question;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
+import suncor.com.android.utilities.NavigationConsentAlerts;
 
 public class FAQFragment extends MainActivityFragment {
     private FragmentFaqBinding binding;
@@ -70,6 +68,25 @@ public class FAQFragment extends MainActivityFragment {
 
             AnalyticsUtils.logEvent(getContext(), "tap_to_email", new Pair<>("emailTapped", email));
         });
+
+        binding.chatButton.setOnClickListener(view1 -> {
+
+            if(getActivity() != null){
+                NavigationConsentAlerts.createAlert(getActivity(),
+                        getString(R.string.leaving_app_alert_title),
+                        getString(R.string.leaving_app_alert_message),
+                        getString(R.string.leaving_app_alert_button),
+                        getString(R.string.cancel),
+                        getString(R.string.chat_option_url),
+                        FAQFragment.this :: redirectToUrl);
+            }
+        });
+    }
+
+    private void redirectToUrl(String url){
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(url));
+        startActivity(intent);
     }
 
     @Override

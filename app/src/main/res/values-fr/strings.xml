@@ -227,6 +227,7 @@
     <string name="customer_support_email">servicealaclientele@petro-canada.ca</string>
     <string name="profile_get_help_call">Appeler</string>
     <string name="profile_get_help_email">Courriel</string>
+    <string name="profile_get_help_chat">Clavardez</string>
     <string name="enrollment_phone_field_invalid_format">Veuillez entrer un numéro de téléphone valide (p. ex., 514-123-4567)</string>
     <string name="cards_fsr_description">Notre carte Économie sur l\'essence en prime vous permet d\'économiser %d ¢ le litre sur 200 litres d\'essence.\n\u2014\nRechargez votre carte à petro-points.com.</string>
     <string name="cards_wag_description">À utiliser aux établissements avec lave-auto GlideWash ou SuperDoux participants.</string>
@@ -421,10 +422,11 @@
     <string name="offers_banner_4_button">Trouver un lave-auto</string>
     <string name="offers_banner_5_text">Économisez 3 ¢ le litre à chaque plein avec une carte RBC liée.</string>
     <string name="offers_banner_5_button">Pour commencer</string>
-    <string name="offers_leaving_app_alert_title">Vous quittez notre application.</string>
-    <string name="offers_leaving_app_alert_message">Nous ouvrons votre navigateur web.</string>
-    <string name="offers_leaving_app_alert_button">Continuer</string>
+    <string name="leaving_app_alert_title">Vous quittez notre application.</string>
+    <string name="leaving_app_alert_message">Nous ouvrons votre navigateur web.</string>
+    <string name="leaving_app_alert_button">Continuer</string>
     <string name="rbc_url">https://www.rbcbanqueroyale.com/petro-canada/index.html?suncor&amp;utm_source=suncor&amp;utm_medium=3pb&amp;utm_campaign=petrocanada_3cpl&amp;utm_content=pc_app_link</string>
+    <string name="chat_option_url">https://www.petro-canada.ca/fr/personnel/communiquer-avec-le-service-a-la-clientele#demarrer-le-chat</string>
     <string name="transaction_type_pp">Petro Points</string>
     <string name="rewards_guest_join_button">Inscrivez-vous pour économiser</string>
     <string name="navigation_rewards_tab">Petro-Points</string>
@@ -860,5 +862,7 @@
     <string name="account_deletion_phone_field_required">Ce champ est requis!</string>
     <string name="account_deletion_submitted">Soumettre</string>
     <string name="different_reason">Une autre raison : </string>
+
+    <string name="get_help_call">Appel</string>
 
 </resources>
