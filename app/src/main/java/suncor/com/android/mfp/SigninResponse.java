@@ -61,6 +61,10 @@ public class SigninResponse {
         return new SigninResponse(Status.OTHER_FAILURE, -1);
     }
 
+    public static SigninResponse serverFailure() {
+        return new SigninResponse(Status.SERVER_FAILURE, -1);
+    }
+
     public String getAdditionalData() {
         return additionalData;
     }
@@ -78,6 +82,6 @@ public class SigninResponse {
     }
 
     public enum Status {
-        SUCCESS, WRONG_CREDENTIALS, SOFT_LOCKED, HARD_LOCKED, PASSWORD_RESET, OTHER_FAILURE, UNEXPECTED_FAILURE
+        SUCCESS, WRONG_CREDENTIALS, SOFT_LOCKED, HARD_LOCKED, PASSWORD_RESET, OTHER_FAILURE, UNEXPECTED_FAILURE, SERVER_FAILURE
     }
 }
