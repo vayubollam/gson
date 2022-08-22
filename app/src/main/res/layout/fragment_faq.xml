@@ -87,7 +87,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="16dp"
                         android:layout_weight="1"
-                        android:text="@string/profile_get_help_call" />
+                        android:text="@string/get_help_call" />
 
                     <suncor.com.android.ui.common.SuncorButton
                         android:id="@+id/email_button"
@@ -98,6 +98,17 @@
                         android:layout_weight="1"
                         android:text="@string/profile_get_help_email" />
                 </LinearLayout>
+
+                <suncor.com.android.ui.common.SuncorButton
+                    android:id="@+id/chat_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/OutlinedButtonRed.M"
+                    android:text="@string/profile_get_help_chat"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp"/>
+
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
