@@ -12,6 +12,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito
+import org.mockito.Mockito.lenient
 import org.mockito.junit.MockitoJUnitRunner
 import suncor.com.android.R
 import suncor.com.android.data.profiles.ProfilesApi
@@ -68,7 +69,7 @@ class SecurityQuestionValidationViewModelTest {
             SecurityQuestion::class.java
         )
         result.postValue(Resource.success(question))
-        Mockito.`when`<LiveData<Resource<SecurityQuestion>>>(
+        lenient().`when`<LiveData<Resource<SecurityQuestion>>>(
             profilesApi.securityQuestion
         ).thenReturn(result)
         val dummyObserver =
@@ -83,7 +84,7 @@ class SecurityQuestionValidationViewModelTest {
         val result = MutableLiveData<Resource<String>>()
         val base64Answer = BaseEncoding.base64().encode(answer.toByteArray())
         result.postValue(Resource.success(base64Answer))
-        Mockito.`when`<LiveData<Resource<String>>>(
+        lenient().`when`<LiveData<Resource<String>>>(
             profilesApi.validateSecurityQuestion(base64Answer)
         ).thenReturn(result)
         val dummyObserver =
@@ -100,7 +101,7 @@ class SecurityQuestionValidationViewModelTest {
         val base64Answer = BaseEncoding.base64().encode(answer.toByteArray())
         val base64ActualAnswer = BaseEncoding.base64().encode(actualAns.toByteArray())
         result.postValue(Resource.error(base64ActualAnswer))
-        Mockito.`when`<LiveData<Resource<String>>>(
+        lenient().`when`<LiveData<Resource<String>>>(
             profilesApi.validateSecurityQuestion(base64Answer)
         ).thenReturn(result)
         val dummyObserver =

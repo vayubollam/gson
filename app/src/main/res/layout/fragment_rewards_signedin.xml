@@ -3,6 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <import type="suncor.com.android.model.Resource.Status" />
+
+        <import type="suncor.com.android.ui.common.cards.CardFormatUtils" />
+
+        <variable
+            name="petroPoints"
+            type="androidx.databinding.ObservableInt" />
+
+        <variable
+            name="vm"
+            type="suncor.com.android.ui.main.rewards.RewardsSignedInViewModel" />
+    </data>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -58,7 +73,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:fontFamily="@font/gibson_semibold"
-                android:text="@{@string/rewards_signedin_header_balance(vm.petroPoints)}"
+                android:text="@{@string/rewards_signedin_header_balance(CardFormatUtils.formatBalance(petroPoints))}"
                 android:textAppearance="@style/Caption1.Red"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -128,7 +143,7 @@
                     android:shadowDx="2"
                     android:shadowDy="1"
                     android:shadowRadius="8"
-                    android:text="@{@string/rewards_signedin_petropoints_value(vm.petroPointsValue)}"
+                    android:text="@{@string/rewards_signedin_petropoints_value(petroPoints/1000)}"
                     android:textAppearance="@style/Body"
                     android:textColor="@color/white"
                     app:layout_constraintTop_toBottomOf="@id/balance_petropoints"
@@ -146,7 +161,7 @@
                     android:shadowDx="2"
                     android:shadowDy="1"
                     android:shadowRadius="8"
-                    android:text="@{@string/rewards_signedin_petropoints_balance(vm.petroPoints)}"
+                    android:text="@{@string/rewards_signedin_petropoints_balance(CardFormatUtils.formatBalance(petroPoints))}"
                     android:textAppearance="@style/Headline2"
                     android:textColor="@color/white"
                     app:layout_constraintTop_toTopOf="parent"
@@ -174,15 +189,37 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
+
+        <RelativeLayout
+            android:id="@+id/loading_progress_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:elevation="4dp"
+            android:clickable="true"
+            app:visibleGone="@{vm.memberEligibilityResponse.status==Status.LOADING}"
+            tools:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/load_questions_PB"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="32dp"
+                android:lineHeight="32dp"
+                android:text="@string/enrollment_loading_question_title"
+                android:textAppearance="@style/Title1" />
+
+            <ProgressBar
+                android:id="@+id/load_questions_PB"
+                android:layout_width="84dp"
+                android:layout_height="84dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true" />
+
+        </RelativeLayout>
+
     </FrameLayout>
 
-    <data>
-
-        <import type="suncor.com.android.model.Resource.Status" />
-
-        <variable
-            name="vm"
-            type="suncor.com.android.ui.main.rewards.RewardsSignedInViewModel" />
-    </data>
 
 </layout>

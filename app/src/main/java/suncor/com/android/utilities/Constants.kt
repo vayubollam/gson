@@ -156,4 +156,12 @@ object Constants {
 
     const val GPAY_ANALYTICS = "GPay"
 
+    const val MORE_GIFT_CARD_IMAGE_SMALL = "more_e_gift_card_small"
+    const val MORE_GIFT_CARD_IMAGE_LARGE = "more_e_gift_card_large"
+    const val MORE_GIFT_CARD_SCREEN_NAME = "more_e_gift_card"
+    const val MORE_GIFT_CARD_SHORT_NAME = "MGC"
+
+    const val E_GIFT_CARD= "egift-cards"
+
+
 }
