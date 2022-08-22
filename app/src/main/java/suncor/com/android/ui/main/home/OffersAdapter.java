@@ -1,5 +1,10 @@
 package suncor.com.android.ui.main.home;
 
+
+import static suncor.com.android.utilities.Constants.ALERT;
+import static suncor.com.android.utilities.Constants.ALERT_SELECTION;
+import static suncor.com.android.utilities.Constants.ALERT_TITLE;
+
 import static suncor.com.android.utilities.Constants.ALERT;
 import static suncor.com.android.utilities.Constants.ALERT_INTERACTION;
 import static suncor.com.android.utilities.Constants.ALERT_SELECTION;
@@ -14,6 +19,7 @@ import static suncor.com.android.utilities.Constants.SIGN_IN_BANNER;
 import android.content.Intent;
 import android.graphics.Matrix;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -26,9 +32,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import suncor.com.android.BuildConfig;
 import suncor.com.android.HomeNavigationDirections;
 import suncor.com.android.R;
 import suncor.com.android.databinding.OffersCardItemBinding;
+import suncor.com.android.ui.SplashActivity;
 import suncor.com.android.ui.YoutubePlayerActivity;
 import suncor.com.android.ui.enrollment.EnrollmentActivity;
 import suncor.com.android.ui.login.LoginActivity;
@@ -36,6 +44,9 @@ import suncor.com.android.ui.main.MainActivity;
 import suncor.com.android.ui.main.stationlocator.FiltersFragment;
 import suncor.com.android.ui.main.wallet.cards.CardsLoadType;
 import suncor.com.android.utilities.AnalyticsUtils;
+import suncor.com.android.utilities.Constants;
+
+import static suncor.com.android.utilities.Constants.*;
 
 
 public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersViewHolder> {
@@ -61,7 +72,7 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                                 activity.getString(R.string.offers_banner_1_text),
                                 "1"
                         );
-                        activity.startActivity(new Intent(activity, EnrollmentActivity.class));
+                        activity.startActivity(new Intent(activity, EnrollmentActivity.class).putExtra(IS_COME_FROM_REWARDS_GUEST_SCREEN, false));
                     }),
                     new OfferCard.OfferButton(activity.getString(R.string.sign_in), () -> {
                         AnalyticsUtils.logPromotionEvent(activity, AnalyticsUtils.Event.SELECTCONTENT,

@@ -2,13 +2,13 @@ package suncor.com.android.model.station;
 
 import android.content.Context;
 
+import androidx.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-
-import androidx.annotation.Nullable;
 
 import suncor.com.android.R;
 
@@ -18,6 +18,9 @@ public class Station {
     public static HashMap<String, String> SERVICE_AMENITIES = new LinkedHashMap<>();
     public static HashMap<String, String> WASH_AMENITIES = new LinkedHashMap<>();
     public static HashMap<String, String> FUEL_AMENITIES = new LinkedHashMap<>();
+    public static HashMap<String, String> ANALYTICS_ABBREVIATIONS_MAP = new LinkedHashMap<>();
+
+
 
     private String id;
     private ArrayList<Hour> hours;
@@ -42,18 +45,27 @@ public class Station {
         ArrayList<String> fuelAmenitiesValues = new ArrayList<>(Arrays.asList(Context.getResources().getStringArray(R.array.station_fuel_values)));
         ArrayList<String> washAmenitiesValues = new ArrayList<>(Arrays.asList(Context.getResources().getStringArray(R.array.station_wash_values)));
 
+        ArrayList<String> serviceAbbreviations = new ArrayList<>(Arrays.asList(Context.getResources().getStringArray(R.array.services_abbreviation)));
+        ArrayList<String> fuelAbbreviations = new ArrayList<>(Arrays.asList(Context.getResources().getStringArray(R.array.fuel_abbreviations)));
+        ArrayList<String> washAbbreviations = new ArrayList<>(Arrays.asList(Context.getResources().getStringArray(R.array.wash_abbreviations)));
+
         for (int i = 0; i < serviceAmenitiesEnum.size(); i++) {
             SERVICE_AMENITIES.put(serviceAmenitiesEnum.get(i), serviceAmenitiesValues.get(i));
             FULL_AMENITIES.put(serviceAmenitiesEnum.get(i), serviceAmenitiesValues.get(i));
+            ANALYTICS_ABBREVIATIONS_MAP.put(serviceAmenitiesEnum.get(i),serviceAbbreviations.get(i));
         }
         for (int i = 0; i < fuelAmenitiesEnum.size(); i++) {
             FUEL_AMENITIES.put(fuelAmenitiesEnum.get(i), fuelAmenitiesValues.get(i));
             FULL_AMENITIES.put(fuelAmenitiesEnum.get(i), fuelAmenitiesValues.get(i));
+            ANALYTICS_ABBREVIATIONS_MAP.put(fuelAmenitiesEnum.get(i),fuelAbbreviations.get(i));
         }
         for (int i = 0; i < washAmenitiesEnum.size(); i++) {
             WASH_AMENITIES.put(washAmenitiesEnum.get(i), washAmenitiesValues.get(i));
             FULL_AMENITIES.put(washAmenitiesEnum.get(i), washAmenitiesValues.get(i));
+            ANALYTICS_ABBREVIATIONS_MAP.put(washAmenitiesEnum.get(i),washAbbreviations.get(i));
         }
+
+        ANALYTICS_ABBREVIATIONS_MAP.put("carWashAllWashes","AW");
     }
 
     public String getId() {

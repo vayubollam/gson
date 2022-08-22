@@ -3,7 +3,6 @@ package suncor.com.android.ui.enrollment;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,27 +18,32 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
+import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
 
 import suncor.com.android.R;
+import suncor.com.android.analytics.enrollment.CardQuestionsAnalytics;
 import suncor.com.android.databinding.FragmentCardQuestionBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.BaseFragment;
 import suncor.com.android.ui.enrollment.form.SecurityQuestionViewModel;
 import suncor.com.android.uicomponents.SuncorAppBarLayout;
-import suncor.com.android.utilities.AnalyticsUtils;
+import suncor.com.android.utilities.Constants;
+
 
 public class CardQuestionFragment extends BaseFragment {
 
+    private static final String SCREE_CLASS_NAME = "CardQuestionFragment";
     private AppCompatImageView cardImg, cardShadow;
-    private int cardAnimationDuration = 400;
     private SecurityQuestionViewModel securityQuestionViewModel;
     private FragmentCardQuestionBinding binding;
+    private final ObservableBoolean isLoading = new ObservableBoolean(false);
 
     @Inject
     ViewModelFactory viewModelFactory;
@@ -51,26 +55,32 @@ public class CardQuestionFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        securityQuestionViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(SecurityQuestionViewModel.class);
-        securityQuestionViewModel.fetchQuestion();
+        securityQuestionViewModel = ViewModelProviders.of(requireActivity(), viewModelFactory).get(SecurityQuestionViewModel.class);
+
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentCardQuestionBinding.inflate(inflater, container, false);
         binding.setVm(securityQuestionViewModel);
+        binding.setIsLoading(isLoading);
         binding.setLifecycleOwner(this);
+
         return binding.getRoot();
-    }
+    };
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
-        cardImg = getView().findViewById(R.id.cardImage);
-        cardShadow = getView().findViewById(R.id.cardShadow);
+        requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
+        cardImg = requireView().findViewById(R.id.cardImage);
+        cardShadow = requireView().findViewById(R.id.cardShadow);
 
+        assert getArguments() != null;
+        boolean isNavigatedFromRewardsGuestScreen = getArguments().getBoolean(Constants.RESULTANT_VALUE, false);
+        if(!isNavigatedFromRewardsGuestScreen) securityQuestionViewModel.fetchQuestion();
+        isLoading.set(true);
         cardImg.post(() -> {
             float cardRatio = (float) cardImg.getDrawable().getIntrinsicHeight() / cardImg.getDrawable().getIntrinsicWidth();
             float shadowRatio = (float) cardShadow.getDrawable().getIntrinsicHeight() / cardShadow.getDrawable().getIntrinsicWidth();
@@ -84,46 +94,53 @@ public class CardQuestionFragment extends BaseFragment {
             cardShadow.requestLayout();
         });
 
-        SuncorAppBarLayout appBarLayout = getView().findViewById(R.id.app_bar);
-        appBarLayout.setNavigationOnClickListener(v -> getActivity().onBackPressed());
+        SuncorAppBarLayout appBarLayout = requireView().findViewById(R.id.app_bar);
+        appBarLayout.setNavigationOnClickListener(v -> requireActivity().onBackPressed());
 
-        getView().findViewById(R.id.no_card_button).setOnClickListener(v -> {
+        requireView().findViewById(R.id.no_card_button).setOnClickListener(v -> {
 
             //bus logic
             Navigation.findNavController(v).navigate(R.id.action_cardQuestion_to_enrollmentFormFragment);
         });
 
-        getView().findViewById(R.id.with_card_button).setOnClickListener((v) -> {
+        requireView().findViewById(R.id.with_card_button).setOnClickListener((v) -> {
             Navigation.findNavController(v).navigate(R.id.action_card_question_to_card_form_fragment);
         });
 
-        securityQuestionViewModel.securityQuestions.observe(this, arrayListResource -> {
-            switch (arrayListResource.status) {
-                case SUCCESS:
-                    animateCard();
-                    break;
-                case ERROR:
-                    AnalyticsUtils.logEvent(this.getContext(), AnalyticsUtils.Event.FORMERROR,
-                            new Pair<>(AnalyticsUtils.Param.errorMessage, "Something Went Wrong"),
-                            new Pair<>(AnalyticsUtils.Param.FORMNAME, "Petro Points Sign Up Activate"));
-                    Dialog dialog = Alerts.prepareGeneralErrorDialog(getContext(), "Petro Points Sign Up Activate");
-                    dialog.setCanceledOnTouchOutside(false);
-                    dialog.setOnDismissListener((listener) -> getActivity().finish());
-                    dialog.show();
-
-            }
-        });
+        if(isNavigatedFromRewardsGuestScreen){
+            isLoading.set(false);
+            animateCard();
+        }else{
+            securityQuestionViewModel.securityQuestions.observe(getViewLifecycleOwner(), arrayListResource -> {
+                switch (arrayListResource.status) {
+                    case LOADING:
+                        isLoading.set(true);
+                        break;
+                    case SUCCESS:
+                        isLoading.set(false);
+                        animateCard();
+                        break;
+                    case ERROR:
+                        isLoading.set(false);
+                        Dialog dialog = Alerts.prepareGeneralErrorDialog(getContext(), "Petro Points Sign Up Activate");
+                        dialog.setCanceledOnTouchOutside(false);
+                        dialog.setOnDismissListener((listener) -> requireActivity().finish());
+                        dialog.show();
+                }
+            });
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        AnalyticsUtils.setCurrentScreenName(getActivity(), "petro-points-sign-up-activate");
+        CardQuestionsAnalytics.logScreenNameClass(requireActivity(), CardQuestionsAnalytics.SCREEN_NAME_SIGNUP_ACTIVATE, SCREE_CLASS_NAME);
     }
 
     private void animateCard() {
         AnimationSet set = new AnimationSet(true);
         Animation trAnimation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, -0.5f, Animation.RELATIVE_TO_SELF, 0f);
+        int cardAnimationDuration = 400;
         trAnimation.setDuration(cardAnimationDuration);
         set.addAnimation(trAnimation);
         Animation alphaAnim = new AlphaAnimation(0.0f, 1.0f);
@@ -143,7 +160,7 @@ public class CardQuestionFragment extends BaseFragment {
             @Override
             public void onAnimationEnd(Animation animation) {
                 cardImg.animate()
-                        .translationY(-pxFromDp(getContext(), 8))
+                        .translationY(-pxFromDp(requireContext(), 8))
                         .setDuration(150)
                         .setInterpolator(new DecelerateInterpolator())
                         .start();

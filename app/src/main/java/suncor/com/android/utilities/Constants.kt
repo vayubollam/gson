@@ -24,8 +24,6 @@ object Constants {
     const val ALERT_SELECTION = "alertSelection"
     const val FORM_SELECTION = "formSelection"
     const val ALERT_INTERACTION = "alert_interaction"
-    const val ACTIVATE_PETRO_POINTS_CARD = "Activate Petro-Points Card"
-    const val ACTIVATE_PETRO_POINTS_SIGN_UP = "Petro Points Sign Up Activate"
     const val ACTIVE_SESSION = "Active Session"
     const val ACTIVATE_SUCCESS = "activate-success"
     const val SIGNUP_SUCCESS = "sign-up-success"
@@ -81,10 +79,7 @@ object Constants {
     const val VIDEO_THRESHOLD_50 = "video_threshold_50"
     const val VIDEO_THRESHOLD_75 = "video_threshold_75"
     const val VIDEO_COMPLETE = "video_complete"
-    const val FORM_COMPLETE ="form_complete"
-    const val FORM_ERROR ="form_error"
-    const val NAVIGATION = "navigation"
-    const val BUTTON_TAP = "button_tap"
+    const val FORM_COMPLETE = "form_complete"
     const val PAYMENT_PREAUTHORIZE = "payment_preauthorize"
     const val PAYMENT_COMPLETE = "payment_complete"
     const val INTERSITE = "intersite"
@@ -133,6 +128,8 @@ object Constants {
     //Paths
     const val GET_LOCATIONS_ADAPTER__PATH = "/adapters/suncor/v3/rfmp-secure/locations"
 
+
+
     //Image expiry time
     const val IMAGE_EXPIRY_DATE = "2022/05/23 23:59:00"
 
@@ -152,6 +149,11 @@ object Constants {
     const val DELETE_ACCOUNT_NOTES = "Delete Account Notes"
     const val MY_PETRO_POINTS_ACCOUNT_NAVIGATION_LIST = "My petro points Account Navigation List"
     const val ANSWER_SECURITY_QUESTION= "Answer security question"
+
+    //navigation constants
+    const val IS_COME_FROM_REWARDS_GUEST_SCREEN = "is_come_from_rewards_guest_screen"
+    const val RESULTANT_VALUE = "resultant_value"
+
     const val GPAY_ANALYTICS = "GPay"
 
     const val MORE_GIFT_CARD_IMAGE_SMALL = "more_e_gift_card_small"

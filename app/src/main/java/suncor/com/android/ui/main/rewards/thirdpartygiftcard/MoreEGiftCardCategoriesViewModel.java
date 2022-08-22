@@ -36,7 +36,6 @@ public class MoreEGiftCardCategoriesViewModel extends ViewModel {
         this.rewardsReader = rewardsReader;
         this.profile = sessionManager.getProfile();
         this.merchantsRepository = merchantsRepository;
-
     }
 
     public void getMerchantsData(){

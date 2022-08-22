@@ -1,5 +1,7 @@
 package suncor.com.android.ui.main.profile.securityquestion;
 
+import static androidx.navigation.Navigation.findNavController;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Pair;
@@ -8,15 +10,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
-import java.util.Objects;
-
-import javax.inject.Inject;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
+
+import java.util.Objects;
+
+import javax.inject.Inject;
+
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentSecurityQuestionValidationBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
@@ -28,13 +31,10 @@ import suncor.com.android.ui.common.GenericErrorView;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.profile.ProfileSharedViewModel;
 import suncor.com.android.ui.main.profile.account.AccountDeleteFragment;
-import suncor.com.android.ui.main.profile.account.AccountDeleteNotesFragment;
 import suncor.com.android.ui.main.profile.address.AddressFragment;
 import suncor.com.android.ui.main.profile.info.PersonalInfoFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.Constants;
-
-import static androidx.navigation.Navigation.findNavController;
 
 public class SecurityQuestionValidationFragment extends MainActivityFragment {
 
@@ -113,6 +113,7 @@ public class SecurityQuestionValidationFragment extends MainActivityFragment {
                         }), "Security Question Validation").show();
                     } else {
                         Alerts.prepareGeneralErrorDialogWithTryAgain(getContext(), (dialog, which) -> {
+                            // TODO: 2022-05-04 log alert_interaction
                             mViewModel.validateAndContinue();
                             dialog.dismiss();
                         }, "Security Question Validation").show();

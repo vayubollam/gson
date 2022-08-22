@@ -6,6 +6,10 @@
         <variable
             name="isWebviewLoading"
             type="androidx.databinding.ObservableBoolean" />
+
+        <variable
+            name="isButtonVisible"
+            type="androidx.databinding.ObservableBoolean" />
     </data>
 
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -33,6 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_margin="16dp"
+            app:visibleGone="@{isButtonVisible}"
             android:text="@string/rewards_guest_join_button" />
     </FrameLayout>
 </layout>

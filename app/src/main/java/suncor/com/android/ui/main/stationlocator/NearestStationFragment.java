@@ -27,6 +27,7 @@ import javax.inject.Inject;
 import suncor.com.android.HomeNavigationDirections;
 import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
+import suncor.com.android.analytics.stationlocator.NearestStationAnalytics;
 import suncor.com.android.databinding.FragmentNearestStationBinding;
 import suncor.com.android.databinding.HomeNearestCardBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
@@ -37,7 +38,6 @@ import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.home.HomeViewModel;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpFragmentDirections;
 import suncor.com.android.uicomponents.swiperefreshlayout.SwipeRefreshLayout;
-import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.LocationUtils;
 import suncor.com.android.utilities.NavigationAppsHelper;
 import suncor.com.android.utilities.PermissionManager;
@@ -49,6 +49,7 @@ public class NearestStationFragment extends MainActivityFragment implements OnBa
 
     private static final int REQUEST_CHECK_SETTINGS = 100;
     private static final int PERMISSION_REQUEST_CODE = 1;
+    private static final String SCREEN_CLASS_NAME = "NearestStationFragment";
     private FragmentNearestStationBinding binding;
     private ObservableBoolean isLoading = new ObservableBoolean(true);
 
@@ -109,7 +110,7 @@ public class NearestStationFragment extends MainActivityFragment implements OnBa
 
         isLoading.set(true);
         binding.setIsLoading(isLoading);
-        AnalyticsUtils.setCurrentScreenName(getActivity(), "offsite-nearest-station-loading");
+        NearestStationAnalytics.logScreenNameClass(requireContext(),NearestStationAnalytics.SCREEN_NAME_NEAREST_STATION_LOADING,SCREEN_CLASS_NAME);
 
         //Setup nearest card click listeners
         nearestCard.getRoot().setOnClickListener(showCardDetail);
@@ -148,7 +149,7 @@ public class NearestStationFragment extends MainActivityFragment implements OnBa
             nearestCard.imgMobilePayment.setImageResource(value.data != null && value.data.papAvailable() ? R.drawable.ic_check : R.drawable.ic_close);
 
             if (value.data != null && value.data.fuelUpAvailable()) {
-                    HomeNavigationDirections.ActionToSelectPumpFragment action = SelectPumpFragmentDirections.actionToSelectPumpFragment(
+                    HomeNavigationDirections.ActionToSelectPumpFragment action = HomeNavigationDirections.actionToSelectPumpFragment(
                             value.data.nearestStation.data.getStation().getId(),
                             getString(R.string.action_location, value.data.nearestStation.data.getStation().getAddress().getAddressLine()));
                     Navigation.findNavController(getActivity(), R.id.nav_host_fragment).popBackStack();
@@ -189,24 +190,27 @@ public class NearestStationFragment extends MainActivityFragment implements OnBa
 
     private void showRequestLocationDialog(boolean previouselyDeniedWithNeverASk) {
         AlertDialog.Builder adb = new AlertDialog.Builder(getContext());
-        AnalyticsUtils.logEvent(getActivity().getApplicationContext(), AnalyticsUtils.Event._ALERT,
-                new Pair<>(AnalyticsUtils.Param.alertTitle, getString(R.string.enable_location_dialog_title)+"("+getString(R.string.enable_location_dialog_message)+")"),
-                new Pair<>(AnalyticsUtils.Param.FORMNAME, "Nearest Station"));
+
+        NearestStationAnalytics.logAlertShown(requireContext(),
+                getString(R.string.enable_location_dialog_title)+"("+getString(R.string.enable_location_dialog_message)+")"
+        );
+
         adb.setTitle(R.string.enable_location_dialog_title);
         adb.setMessage(R.string.enable_location_dialog_message);
         adb.setNegativeButton(R.string.cancel, (dialog, which) -> {
-            AnalyticsUtils.logEvent(getActivity().getApplicationContext(), AnalyticsUtils.Event.alertInteraction,
-                    new Pair<>(AnalyticsUtils.Param.alertTitle, getString(R.string.enable_location_dialog_title)+"("+getString(R.string.enable_location_dialog_message)+")"),
-                    new Pair<>(AnalyticsUtils.Param.alertSelection, getString(R.string.cancel)),
-                    new Pair<>(AnalyticsUtils.Param.FORMNAME, "Nearest Station")
-            );
+            NearestStationAnalytics.logAlertInteraction(requireContext(),
+                    getString(R.string.enable_location_dialog_title)+"("+getString(R.string.enable_location_dialog_message)+")",
+                    getString(R.string.cancel)
+                    );
         });
+
         adb.setPositiveButton(R.string.ok, (dialog, which) -> {
-            AnalyticsUtils.logEvent(getActivity().getApplicationContext(), AnalyticsUtils.Event.alertInteraction,
-                    new Pair<>(AnalyticsUtils.Param.alertTitle, getString(R.string.enable_location_dialog_title)+"("+getString(R.string.enable_location_dialog_message)+")"),
-                    new Pair<>(AnalyticsUtils.Param.alertSelection, getString(R.string.ok)),
-                    new Pair<>(AnalyticsUtils.Param.FORMNAME, "Nearest Station")
+            NearestStationAnalytics.logAlertInteraction(requireContext(),
+                    getString(R.string.enable_location_dialog_title)+"("+getString(R.string.enable_location_dialog_message)+")",
+                    getString(R.string.ok)
             );
+
+
             if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PERMISSION_GRANTED && !LocationUtils.isLocationEnabled(getContext())) {
                 LocationUtils.openLocationSettings(this, REQUEST_CHECK_SETTINGS);
                 return;
@@ -326,7 +330,7 @@ public class NearestStationFragment extends MainActivityFragment implements OnBa
     @Override
     public void onResume() {
         super.onResume();
-        AnalyticsUtils.setCurrentScreenName(getActivity(), "offsite-nearest-station");
+        NearestStationAnalytics.logScreenNameClass(requireContext(),NearestStationAnalytics.SCREEN_NAME_NEAREST_STATION,SCREEN_CLASS_NAME);
     }
 
     @Override

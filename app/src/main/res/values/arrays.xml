@@ -71,6 +71,37 @@
         <item>Yukon;YT;Y</item>
     </string-array>
 
+
+    // Abbreviation arrays for analytics required to tackle the 100 char limit
+    <string-array name="services_abbreviation">
+        <item>AFS</item>
+        <item>ATM</item>
+        <item>A&amp;W</item>
+        <item>24H</item>
+        <item>B&amp;W</item>
+        <item>CS</item>
+        <item>FS</item>
+        <item>Lotto</item>
+        <item>Res</item>
+        <item>PTE</item>
+    </string-array>
+
+    <string-array name="fuel_abbreviations">
+        <item>Dsl</item>
+        <item>ECS</item>
+        <item>SC94</item>
+        <item>U94</item>
+    </string-array>
+
+    <string-array name="wash_abbreviations">
+        <item>TO</item>
+        <item>AW</item>
+        <item>AW</item>
+        <item>AW</item>
+        <item>AW</item>
+        <item>AW</item>
+    </string-array>
+
     <string-array name="acknowledgment_list">
         <item>I acknowledge that I will forfeit all unused points if I do not redeem them prior to deletion.</item>
         <item>I acknowledge that this action will remove me from the PetroPointsTM program and I will no longer have the ability to earn points.</item>
