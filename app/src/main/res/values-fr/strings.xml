@@ -875,6 +875,7 @@
     <string name="different_reason">Une autre raison : </string>
     <string name="redemption_unavailable_text">Les échanges ne sont pas disponibles pour le moment</string>
     <string name="get_help_call">Appel</string>
-
+    <string name="suncor039_error_title">Ce n’est pas vous, c’est nous</string>
+    <string name="suncor039_error_message">Quelque chose a mal tourné, mais nous travaillons à trouver une solution. Veuillez réessayer plus tard.</string>
 
 </resources>

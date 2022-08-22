@@ -908,4 +908,6 @@
     <string name="different_reason">A different reason:</string>
     <string name="redemption_unavailable_text">Redemption is unavailable at this time</string>
     <string name="get_help_call">Call</string>
+    <string name="suncor039_error_title">It\'s not you, it\'s us</string>
+    <string name="suncor039_error_message">Something went wrong but we\'re working on a solution. Please try again later.</string>
 </resources>
