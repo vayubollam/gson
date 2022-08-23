@@ -3,6 +3,31 @@
     "title": "Top Questions",
     "questions": [
       {
+        "id": "I have a Season Pass car wash card, how many vacuums do I get per day?",
+        "question": "I have a Season Pass car wash card, how many vacuums do I get per day?",
+        "response": "Just as it applies to car wash, Season Pass card holders get only 1 vacuum a day."
+      },
+      {
+        "id": "I scanned my barcode, but the vacuum didn’t start, what should I do?",
+        "question": "I scanned my barcode, but the vacuum didn’t start, what should I do?",
+        "response": "Wait for 2 mins, then try scanning the barcode again."
+      },
+      {
+        "id": "Is there an expiry on vacuums?",
+        "question": "Is there an expiry on vacuums?",
+        "response": "Yes, for Wash & Go cards, your vacuum expires 7 days after the connected car wash is used.<br/><br/>For example, if you have 15 car washes and 15 vacuums and you use a car wash, then you will have 14 car washes left and 15 vacuums. The 15th vacuum will expire after 7 days.<br/><br/>For Season Pass cards, you get 1 car wash and 1 vacuum per day. If you do not use a car wash or a vacuum that day, it goes away and does not carry over."
+      },
+      {
+        "id": "Is there an expiry on car washes?",
+        "question": "Is there an expiry on car washes?",
+        "response": "No, for Wash & Go cards, your car washes do not expire.<br/><br/>For Season Pass cards, you get 1 car wash and 1 vacuum per day. If you do not use a car wash or a vacuum that day, it goes away and does not carry over."
+      },
+      {
+        "id": "How do I get more vacuums?",
+        "question": "How do I get more vacuums?",
+        "response": "Reload or purchase more car washes to receive more free vacuums."
+      },
+      {
         "id": "i-accidentally-authorized-the-wrong-pump-what-happens",
         "question": "I accidentally authorized the wrong pump. What happens?",
         "response": "The authorization times out if you don't start fuelling at the authorized pump within 30 seconds. You will not be charged."
