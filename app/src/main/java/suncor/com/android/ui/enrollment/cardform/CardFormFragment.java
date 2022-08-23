@@ -130,11 +130,7 @@ public class CardFormFragment extends BaseFragment {
                     ModalDialog dialog = new ModalDialog();
                     dialog.setCancelable(false);
                     dialog.setMessage(getString(R.string.enrollment_cardform_max_attempts_block_card_dialog_message))
-                            .setRightButton(getString(R.string.verify_your_email_address_call_us), (v) -> {
-                                callCostumerSupport(getString(R.string.customer_support_number));
-                                dialog.dismiss();
-                            })
-                            .setCenterButton(getString(R.string.sign_enable_fb_negative_button), (v) -> {
+                            .setRightButton(getString(R.string.login_conflict_alert_positive_button), (v) -> {
                                 dialog.dismiss();
                             })
                             .show(getFragmentManager(), ModalDialog.TAG);
@@ -143,11 +139,7 @@ public class CardFormFragment extends BaseFragment {
                     ModalDialog dialog = new ModalDialog();
                     dialog.setCancelable(false);
                     dialog.setMessage(getString(R.string.enrollment_cardform_max_register_block_card_dialog_message))
-                            .setRightButton(getString(R.string.verify_your_email_address_call_us), (v) -> {
-                                callCostumerSupport(getString(R.string.customer_support_number));
-                                dialog.dismiss();
-                            })
-                            .setCenterButton(getString(R.string.sign_enable_fb_negative_button), (v) -> {
+                            .setRightButton(getString(R.string.login_conflict_alert_positive_button), (v) -> {
                                 dialog.dismiss();
                             })
                             .show(getFragmentManager(), ModalDialog.TAG);
