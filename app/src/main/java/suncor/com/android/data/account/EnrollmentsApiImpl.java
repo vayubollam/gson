@@ -33,7 +33,7 @@ import static suncor.com.android.utilities.Constants.ACCEPT_LANGUAGE;
 public class EnrollmentsApiImpl implements EnrollmentsApi {
     private final static String ENROLLMENT_ADAPTER_PATH = "/adapters/suncor/v6/rfmp-secure/enrollments";
     private final static String GET_SECURITY_QUESTIONS_FOR_ENROLLMENT_ADAPTER_PATH = "/adapters/suncor/v4/rfmp-secure/enrollments/security-questions";
-    private final static String GET_CARD_STATUS_ADAPTER_PATH = "/adapters/suncor/v5/rfmp-secure/enrollments/card-status";
+    private final static String GET_CARD_STATUS_ADAPTER_PATH = "/adapters/suncor/v6/rfmp-secure/enrollments/card-status";
     public final int ENROLLMENT_TIMEOUT = 60_000;
     private Gson gson;
 

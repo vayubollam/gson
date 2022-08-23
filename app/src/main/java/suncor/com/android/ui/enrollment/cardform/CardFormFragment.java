@@ -172,6 +172,54 @@ public class CardFormFragment extends BaseFragment {
                                 dialog.dismiss();
                             })
                             .show(getFragmentManager(), ModalDialog.TAG);
+                } else if (cardStatusResource.message.equalsIgnoreCase(ErrorCodes.ERR_MAX_ATTEMPT_BLOCK_CARD_ERROR_CODE)) {
+
+                        ModalDialog dialog = new ModalDialog();
+                        dialog.setCancelable(false);
+                        dialog.setMessage(getString(R.string.enrollment_cardform_max_attempts_block_card_dialog_message))
+                                .setFormName(FORM_NAME_ACTIVATE_PETRO_POINTS_CARD)
+                                .setRightButton(getString(R.string.verify_your_email_address_call_us), (v) -> {
+                                    CardFormAnalytics.logAlertDialogInteraction(requireContext()
+                                            , dialog.getAnalyticsTitle()
+                                            , getString(R.string.enrollment_cardform_max_attempts_block_card_dialog_message)
+                                            , FORM_NAME_ACTIVATE_PETRO_POINTS_CARD
+                                    );
+                                    callCostumerSupport(getString(R.string.customer_support_number));
+                                    dialog.dismiss();
+                                })
+                                .setCenterButton(getString(R.string.sign_enable_fb_negative_button), (v) -> {
+                                    CardFormAnalytics.logAlertDialogInteraction(requireContext()
+                                            , dialog.getAnalyticsTitle()
+                                            , getString(R.string.sign_enable_fb_negative_button)
+                                            , FORM_NAME_ACTIVATE_PETRO_POINTS_CARD
+                                    );
+                                    dialog.dismiss();
+                                })
+                                .show(getFragmentManager(), ModalDialog.TAG);
+                    } else if (cardStatusResource.message.equalsIgnoreCase(ErrorCodes.ERR_MAX_REGISTER_BLOCK_CARD_ERROR_CODE)) {
+
+                        ModalDialog dialog = new ModalDialog();
+                        dialog.setCancelable(false);
+                        dialog.setMessage(getString(R.string.enrollment_cardform_max_register_block_card_dialog_message))
+                                .setFormName(FORM_NAME_ACTIVATE_PETRO_POINTS_CARD)
+                                .setRightButton(getString(R.string.verify_your_email_address_call_us), (v) -> {
+                                    CardFormAnalytics.logAlertDialogInteraction(requireContext()
+                                            , dialog.getAnalyticsTitle()
+                                            , getString(R.string.verify_your_email_address_call_us)
+                                            , FORM_NAME_ACTIVATE_PETRO_POINTS_CARD
+                                    );
+                                    callCostumerSupport(getString(R.string.customer_support_number));
+                                    dialog.dismiss();
+                                })
+                                .setCenterButton(getString(R.string.sign_enable_fb_negative_button), (v) -> {
+                                    CardFormAnalytics.logAlertDialogInteraction(requireContext()
+                                            , dialog.getAnalyticsTitle()
+                                            , getString(R.string.sign_enable_fb_negative_button)
+                                            , FORM_NAME_ACTIVATE_PETRO_POINTS_CARD
+                                    );
+                                    dialog.dismiss();
+                                })
+                                .show(getFragmentManager(), ModalDialog.TAG);
                 } else {
                     Dialog dialog = Alerts.prepareGeneralErrorDialog(getContext(), FORM_NAME_ACTIVATE_PETRO_POINTS_CARD);
                     dialog.show();
