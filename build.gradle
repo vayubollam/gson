@@ -13,7 +13,7 @@ buildscript {
         navigationVersion = "2.3.5"
         archLifecycleVersion = "2.0.0"
         playServicesVersion = "18.0.0"
-        tagManagerVersion = "17.0.0"
+        tagManagerVersion = "18.0.1"
         legacyLibraryVersion = "1.0.0"
         materialLibraryVersion = "1.1.0-alpha07"
         googlePlacesVersion = "2.5.0"
@@ -21,15 +21,15 @@ buildscript {
         mfpVersion = "8.0.2021061706"
         workManagerVersion = '1.0.1'
         daggerVersion = "2.17"
-        firebaseVersion = '21.0.0'
-        crashlyticsVersion = '18.2.11'
+        firebaseVersion = '21.1.0'
+        crashlyticsVersion = '18.2.12'
         mockitoVersion = "2.25.1"
         junitVersion = "4.12"
         espressoVersion = "3.1.1"
         runnerVersion = '1.1.1'
         googleWalletVersion = '18.0.0'
-        firebaseAnalyticsVersion = '21.0.0'
-        playCoreVersion = '1.10.0'
+        firebaseAnalyticsVersion = '21.1.0'
+        playCoreVersion = '1.10.3'
         glideVersion = '4.12.0'
     }
 
