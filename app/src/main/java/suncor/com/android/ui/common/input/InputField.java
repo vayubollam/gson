@@ -3,7 +3,9 @@ package suncor.com.android.ui.common.input;
 import androidx.annotation.StringRes;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
+
 import suncor.com.android.BR;
+
 
 public class InputField extends BaseObservable {
     private String text;

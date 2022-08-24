@@ -37,15 +37,15 @@ public class Alerts {
 
     public static AlertDialog prepareGeneralErrorDialog(Context context, String formName , DialogInterface.OnClickListener listener) {
         boolean hasInternetConnection = ConnectionUtil.haveNetworkConnection(context);
-        AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.formError,
+        AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.FORMERROR,
                 new Pair<>(AnalyticsUtils.Param.errorMessage,hasInternetConnection ? context.getString( R.string.msg_e001_title) : context.getString( R.string.msg_e002_title))
-                ,new Pair<>(AnalyticsUtils.Param.formName, formName));
+                ,new Pair<>(AnalyticsUtils.Param.FORMNAME, formName));
 
         String analyticsName = context.getString(hasInternetConnection ? R.string.msg_e001_title : R.string.msg_e002_title)
                 + "(" + context.getString(hasInternetConnection ? R.string.msg_e001_message : R.string.msg_e002_message) + ")";
-        AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.alert,
+        AnalyticsUtils.logEvent(context, AnalyticsUtils.Event._ALERT,
                 new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsName),
-                new Pair<>(AnalyticsUtils.Param.formName, formName)
+                new Pair<>(AnalyticsUtils.Param.FORMNAME, formName)
         );
         AlertDialog.Builder builder = new AlertDialog.Builder(context)
                 .setTitle(hasInternetConnection ? R.string.msg_e001_title : R.string.msg_e002_title)
@@ -55,7 +55,7 @@ public class Alerts {
                     AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.alertInteraction,
                             new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsName),
                             new Pair<>(AnalyticsUtils.Param.alertSelection, context.getString(R.string.ok)),
-                            new Pair<>(AnalyticsUtils.Param.formName, formName)
+                            new Pair<>(AnalyticsUtils.Param.FORMNAME, formName)
                     );
                     listener.onClick(dialog, which);
                 });

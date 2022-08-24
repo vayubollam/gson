@@ -51,9 +51,9 @@ public class CardsDetailsAdapter extends RecyclerView.Adapter<CardsDetailsAdapte
         holder.binding.setIsVacuumEnable(isVacuumEnabled);
 
         holder.binding.moreButton.setOnClickListener(v -> callBack.accept(cardItems.get(position)));
-        if(holder.binding.cardReloadButton.isShown()) {
+        //if(holder.binding.cardReloadButton.isShown()) {
             holder.binding.cardReloadButton.setOnClickListener(cardReloadListener);
-        }
+        //}
         holder.binding.savetowallet.setOnClickListener(gpaySaveToWalletListener);
         holder.binding.vacuumButton.setOnClickListener(vacuumListener);
     }

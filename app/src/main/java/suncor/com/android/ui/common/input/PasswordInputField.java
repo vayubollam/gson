@@ -3,7 +3,9 @@ package suncor.com.android.ui.common.input;
 import java.util.regex.Pattern;
 
 import androidx.databinding.Bindable;
+
 import suncor.com.android.BR;
+
 
 public class PasswordInputField extends InputField {
 

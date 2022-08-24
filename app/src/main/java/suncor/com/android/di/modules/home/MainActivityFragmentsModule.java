@@ -4,6 +4,7 @@ import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
 import suncor.com.android.ui.main.actionmenu.ActionMenuFragment;
 //import suncor.com.android.ui.main.carwash.r.CarwashTransactionReceiptFragment;
+import suncor.com.android.ui.main.carwash.receipt.CarwashTransactionReceiptFragment;
 import suncor.com.android.ui.main.carwash.reload.CarwashTransactionFragment;
 import suncor.com.android.ui.main.carwash.activate.CarwashActivatedFragment;
 import suncor.com.android.ui.main.pap.fuelling.FuellingFragment;
@@ -203,8 +204,8 @@ abstract class MainActivityFragmentsModule {
     @ContributesAndroidInjector
     abstract AccountDeleteNotesFragment contributeAccountDeleteNotesFragment();
 
-//    @ContributesAndroidInjector
-//    abstract CarwashTransactionReceiptFragment contributeCarwashTransactionReceiptFragmentt();
+    @ContributesAndroidInjector
+    abstract CarwashTransactionReceiptFragment contributeCarwashTransactionReceiptFragment();
 
 
 }

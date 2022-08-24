@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -61,6 +62,7 @@ import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.SettingsResponse;
 import suncor.com.android.model.cards.CardDetail;
+import suncor.com.android.model.carwash.reload.TransactionProduct;
 import suncor.com.android.model.carwash.reload.TransactionReloadData;
 import suncor.com.android.model.pap.P97StoreDetailsResponse;
 import suncor.com.android.model.payments.PaymentDetail;
@@ -242,9 +244,9 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
     }
 
     private void initializeCardsValues(){
-        if(viewModel.getTransactionReloadData() != null){
-            setCardReloadAdapter();
-        } else {
+//        if(viewModel.getTransactionReloadData() != null){
+//            setCardReloadAdapter();
+//        } else {
             viewModel.getTransactionData(cardType).observe(getViewLifecycleOwner(), result -> {
                 if (result.status == Resource.Status.LOADING) {
                     //hideKeyBoard();
@@ -258,7 +260,7 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
                     setCardReloadAdapter();
                 }
             });
-        }
+        //}
 
     }
 
@@ -288,13 +290,19 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
         binding.totalAmount.setText(formatter.format(viewModel.getSelectedValuesAmount() + totalTax));
     }
     private void setCardReloadAdapter(){
-        CardReloadValuesDropDownAdapter adapter = new CardReloadValuesDropDownAdapter(
-                getContext(),
-                viewModel.getTransactionReloadData().getProducts(),
-                this, cardType, viewModel.getSelectedProduct().getUnits()
-        );
-        binding.valuesLayout.setDropDownData(adapter);
-        binding.loadingProgressBar.setVisibility(View.GONE);
+        try {
+            CardReloadValuesDropDownAdapter adapter = new CardReloadValuesDropDownAdapter(
+                    getContext(),
+                    viewModel.getTransactionReloadData().getProducts(),
+                    this, cardType, viewModel.getSelectedProduct().getUnits()
+            );
+            binding.valuesLayout.setDropDownData(adapter);
+            binding.loadingProgressBar.setVisibility(View.GONE);
+        }catch (Exception e){
+            binding.loadingProgressBar.setVisibility(View.GONE);
+            Alerts.prepareGeneralErrorDialog(getContext(), "carwash_transaction_form").show();
+            Timber.d("Exception");
+        }
 
     }
 
@@ -380,7 +388,7 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
     }
 
     private void handleConfirmAndAuthorizedClick(){
-        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.buttonTap, new Pair<>(AnalyticsUtils.Param.buttonText, getString(R.string.confirm_and_authorized).toLowerCase()));
+        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.BUTTONTAP, new Pair<>(AnalyticsUtils.Param.buttonText, getString(R.string.confirm_and_authorized).toLowerCase()));
         if(userPaymentId == null || Objects.isNull(viewModel.getTransactionReloadTax())) {
             // select payment type error
             return;
@@ -434,26 +442,26 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
     }
 
 
-    public void requestGooglePaymentTransaction() {
-        try {
-            //change value
-            double preAuthPrices = formatter.parse("1").doubleValue();
-            PaymentDataRequest request = viewModel.createGooglePayInitiationRequest(preAuthPrices,
-                    BuildConfig.GOOGLE_PAY_MERCHANT_GATEWAY, papData.getP97TenantID());
-
-            // Since loadPaymentData may show the UI asking the user to select a payment method, we use
-            // AutoResolveHelper to wait for the user interacting with it. Once completed,
-            // onActivityResult will be called with the result.
-            if (request != null) {
-                AutoResolveHelper.resolveTask(
-                        paymentsClient.loadPaymentData(request),
-                        requireActivity(), LOAD_PAYMENT_DATA_REQUEST_CODE);
-            }
-        }catch (ParseException ex){
-            Timber.e(ex.getMessage());
-        }
-
-    }
+//    public void requestGooglePaymentTransaction() {
+//        try {
+//            //change value
+//            double preAuthPrices = formatter.parse("1").doubleValue();
+//            PaymentDataRequest request = viewModel.createGooglePayInitiationRequest(preAuthPrices,
+//                    BuildConfig.GOOGLE_PAY_MERCHANT_GATEWAY, papData.getP97TenantID());
+//
+//            // Since loadPaymentData may show the UI asking the user to select a payment method, we use
+//            // AutoResolveHelper to wait for the user interacting with it. Once completed,
+//            // onActivityResult will be called with the result.
+//            if (request != null) {
+//                AutoResolveHelper.resolveTask(
+//                        paymentsClient.loadPaymentData(request),
+//                        requireActivity(), LOAD_PAYMENT_DATA_REQUEST_CODE);
+//            }
+//        }catch (ParseException ex){
+//            Timber.e(ex.getMessage());
+//        }
+//
+//    }
 
 
 
@@ -486,14 +494,14 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
             AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
                     new Pair<>(AnalyticsUtils.Param.errorMessage, "Something went wrong on our side"),
                     new Pair<>(AnalyticsUtils.Param.detailMessage, "Transaction fails, errorCode : " + errorCode),
-                    new Pair<>(AnalyticsUtils.Param.formName, "carwash_transaction_form"));
+                    new Pair<>(AnalyticsUtils.Param.FORMNAME, "carwash_transaction_form"));
 
             transactionFailsAlert(getContext()).show();
         } else {
             AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
                     new Pair<>(AnalyticsUtils.Param.errorMessage, "Something went wrong on our side"),
                     new Pair<>(AnalyticsUtils.Param.detailMessage, "Something went wrong on our side, errorCode : " + errorCode),
-                    new Pair<>(AnalyticsUtils.Param.formName, "carwash_transaction_form"));
+                    new Pair<>(AnalyticsUtils.Param.FORMNAME, "carwash_transaction_form"));
             Alerts.prepareGeneralErrorDialog(getContext(), "carwash_transaction_form").show();
         }
     }
@@ -502,9 +510,9 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
 
         String analyticsName = context.getString(R.string.payment_failed_title)
                 + "(" + context.getString(R.string.payment_failed_message) + ")";
-        AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.alert,
+        AnalyticsUtils.logEvent(context, AnalyticsUtils.Event._ALERT,
                 new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsName),
-                new Pair<>(AnalyticsUtils.Param.formName, "carwash_transaction_form")
+                new Pair<>(AnalyticsUtils.Param.FORMNAME, "carwash_transaction_form")
         );
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context)
@@ -514,7 +522,7 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
                     AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.alertInteraction,
                             new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsName),
                             new Pair<>(AnalyticsUtils.Param.alertSelection, context.getString(R.string.payment_failed_cancel)),
-                            new Pair<>(AnalyticsUtils.Param.formName, "carwash_transaction_form")
+                            new Pair<>(AnalyticsUtils.Param.FORMNAME, "carwash_transaction_form")
                     );
                     dialog.dismiss();
                 }))
@@ -524,7 +532,7 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
                     AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.alertInteraction,
                             new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsName),
                             new Pair<>(AnalyticsUtils.Param.alertSelection, context.getString(R.string.try_agian)),
-                            new Pair<>(AnalyticsUtils.Param.formName, "carwash_transaction_form"));
+                            new Pair<>(AnalyticsUtils.Param.FORMNAME,"carwash_transaction_form"));
                     dialog.dismiss();
                 });
         return builder.create();
@@ -636,4 +644,6 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
         viewModel.setSelectedValuesAmount(value);
         fetchTaxValues();
     }
+
+
 }

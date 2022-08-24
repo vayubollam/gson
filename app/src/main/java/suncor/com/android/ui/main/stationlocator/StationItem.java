@@ -11,6 +11,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 
+
 import suncor.com.android.BR;
 import suncor.com.android.data.favourite.FavouriteRepository;
 import suncor.com.android.data.pap.PapRepository;

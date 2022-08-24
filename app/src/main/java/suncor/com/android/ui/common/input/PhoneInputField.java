@@ -4,6 +4,7 @@ import java.util.regex.Pattern;
 
 import suncor.com.android.BR;
 
+
 public class PhoneInputField extends InputField {
     public PhoneInputField(int error) {
         super(error);

@@ -13,6 +13,7 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
+
 import suncor.com.android.BR;
 import suncor.com.android.R;
 import suncor.com.android.data.account.EnrollmentsApi;

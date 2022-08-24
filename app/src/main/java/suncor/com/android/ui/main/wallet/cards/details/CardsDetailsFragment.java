@@ -482,6 +482,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
     };
 
     private View.OnClickListener cardReloadListener = view -> {
+        Timber.d("RELOAD CLICKED:--"+clickedCardIndex.getValue());
         CardDetail cardDetail = viewModel.cards.getValue().get(clickedCardIndex.getValue());
         if (cardDetail.isSuspendedCard()) {
             CardsUtil.showSuspendedCardAlert(getContext());

@@ -4,6 +4,7 @@ import android.content.Context;
 
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
+
 import suncor.com.android.BR;
 import suncor.com.android.R;
 import suncor.com.android.utilities.ConnectionUtil;

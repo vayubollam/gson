@@ -130,6 +130,14 @@ public class CarwashTransactionViewModel extends ViewModel {
         return profile.getFirstName();
     }
 
+    public String getLastSelectedValue() {
+        return lastSelectedValue;
+    }
+
+    public void setLastSelectedValue(String lastSelectedValue) {
+        this.lastSelectedValue = lastSelectedValue;
+    }
+
     LiveData<Resource<TransactionReloadData>> getTransactionData(String cardType) {
         return carwashApi.reloadTransactionCarwash(cardType);
     }
@@ -220,7 +228,7 @@ public class CarwashTransactionViewModel extends ViewModel {
         return settingsApi.retrieveSettings();
     }
 
-    public LiveData<Resource<ArrayList<CardDetail>>> getCards(){
+    public LiveData<Resource<ArrayList<CardDetail>>> getcards(){
        return cardsRepository.getCards(false);
     }
 

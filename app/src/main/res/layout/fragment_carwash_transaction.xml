@@ -209,7 +209,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="12sp"
                 android:padding="16dp"
-                android:text="@string/carwash_payment_term_aggreement"
+                android:text="@string/carwash_payment_term_aggrement"
                 android:visibility="visible" />
 
             <View
