@@ -8,6 +8,8 @@
         "largeIcon": "pc_card_large",
         "howToRedeem": "Choisissez une valeur, confirmez l'échange, puis recevez la carte-cadeau électronique par la poste.",
         "howToUse": "Utilisez votre carte-cadeau Petro‑Canada à n’importe quel magasin Petro‑Canada.",
+        "screenName" : "petro-canada-egift-card",
+        "shortName" : "PCC",
         "merchantId": "4678",
         "eGifts": [
           {
@@ -65,6 +67,8 @@
         "largeIcon": "gap_large_new",
         "howToRedeem": "Choisissez une valeur, confirmez l'échange, puis recevez la carte-cadeau électronique par la poste.",
         "howToUse": "Utilisez votre carte-cadeau Gap dans les magasins Gap, Old Navy et Banana Republic du Canada et en ligne sur <a href=\"https://www.gapcanada.ca/?locale=fr_CA\">gapcanada.ca</a>, <a href=\"https://oldnavy.gapcanada.ca/?locale=fr_CA\">oldnavy.ca</a> et <a href=\"http://bananarepublic.gapcanada.ca/?locale=fr_CA\">bananarepublic.ca</a>.",
+        "screenName" :"gap_egift_card",
+        "shortName" : "Gap",
         "merchantId": "2105",
         "eGifts": [
           {
@@ -103,6 +107,8 @@
         "largeIcon": "hudson_bay_large",
         "howToRedeem": "Choisissez une valeur, confirmez l'échange, puis recevez la carte-cadeau électronique par la poste.",
         "howToUse": "Utilisez votre carte-cadeau HBC à La Baie d’Hudson et en ligne à <a href=\"https://www.labaie.com/?orgin=true\">labaie.com</a>.",
+        "screenName" : "hudsons-bay-egift-card",
+        "shortName" : "HBC",
         "merchantId": "2377",
         "eGifts": [
         {
@@ -155,6 +161,8 @@
         "largeIcon": "winners_large",
         "howToRedeem": "Choisissez une valeur, confirmez l'échange, puis recevez la carte-cadeau électronique par la poste.",
         "howToUse": "Utilisez-la à n’importe quel magasin WINNERS, HomeSense et Marshalls au Canada.",
+        "screenName" : "homesense-marshalls-winners-egift-card",
+        "shortName" : "TJX",
         "merchantId": "3267",
         "eGifts": [
           {
@@ -212,6 +220,8 @@
         "largeIcon": "tim_hortons_large_new",
         "howToRedeem": "Choisissez une valeur, confirmez l'échange, puis recevez la carte-cadeau électronique par la poste.",
         "howToUse": "Utilisez-la à n’importe quel magasin Tim Hortons.",
+        "screenName" : "tim-hortons_egift_card",
+        "shortName" : "THC",
         "merchantId": "2208",
         "eGifts": [
           {
@@ -264,6 +274,8 @@
         "largeIcon": "ultimate_dining_large",
         "howToRedeem": "Choisissez une valeur, confirmez l'échange, puis recevez la carte-cadeau électronique par la poste.",
         "howToUse": "Elle peut être utilisée à plus de 10 restaurants au Canada, incluant le Swiss Chalet, Montana’s, Kelseys, Harvey’s, Bier Market, East Side Mario’s, New York Fries, Fionn MacCools, D’Arcy McGee’s, Paddy Flaherty’s, Tir nan Og, Original Joe’s, Elephant & Castle, State & Main, The Landing Group of Restaurants et Pickle Barrel.",
+        "screenName" : "ultimate-dining-egift-card",
+        "shortName" : "Cara",
         "merchantId": "2337",
         "eGifts": [
           {
@@ -321,6 +333,8 @@
         "largeIcon": "best_buy_large",
         "howToRedeem": "Choisissez une valeur, confirmez l'échange, puis recevez la carte-cadeau électronique par la poste.",
         "howToUse": "Utilisez-la à n’importe quel magasin Best Buy au Canada ou en ligne à <a href=\"https://www.bestbuy.ca/fr-ca\">bestbuy.ca</a>.",
+        "screenName" : "best-buy_egift_card",
+        "shortName" : "BBC",
         "merchantId": "2376",
         "eGifts": [
           {
@@ -373,6 +387,8 @@
         "largeIcon": "cineplex_large",
         "howToRedeem": "Choisissez une valeur, confirmez l'échange, puis recevez la carte-cadeau électronique par la poste.",
         "howToUse": "Utilisez-la à n’importe quel cinéma Cineplex ou en ligne à <a href=\"https://www.cineplex.com/\">Cineplex.com</a>.",
+        "screenName" : "cineplex-egift-card",
+        "shortName" : "Cineplex",
         "merchantId": "3090",
         "eGifts": [
           {
@@ -423,6 +439,8 @@
         "largeIcon": "walmart_large",
         "howToRedeem": "Choisissez une valeur, confirmez l'échange, puis recevez la carte-cadeau électronique par la poste.",
         "howToUse": "Les cartes-cadeaux Walmart peuvent être échangées dans toutes les succursales Walmart du Canada, au <a href=\"https://www.walmart.ca/fr\">walmart.ca</a> et sur le site du marché électronique.",
+        "screenName" : "walmart-egift-card",
+        "shortName" : "Walmart",
         "merchantId": "4472",
         "eGifts": [
           {
@@ -475,6 +493,8 @@
         "largeIcon": "best_buy_large",
         "howToRedeem": "Choisissez une valeur, confirmez l'échange, puis recevez la carte-cadeau électronique par la poste.",
         "howToUse": "Utilisez-la à n’importe quel magasin Best Buy au Canada ou en ligne à <a href=\"https://www.bestbuy.ca/fr-ca\">bestbuy.ca</a>.",
+        "screenName" : "best-buy_egift_card",
+        "shortName" : "BBC",
         "merchantId": "2376",
         "eGifts": [
           {
@@ -527,6 +547,8 @@
         "largeIcon": "hudson_bay_large",
         "howToRedeem": "Choisissez une valeur, confirmez l'échange, puis recevez la carte-cadeau électronique par la poste.",
         "howToUse": "Utilisez votre carte-cadeau HBC à La Baie d’Hudson et en ligne à <a href=\"https://www.labaie.com/?orgin=true\">labaie.com</a>.",
+        "screenName" : "hudsons-bay-egift-card",
+        "shortName" : "HBC",
         "merchantId": "2377",
         "eGifts": [
           {
@@ -579,6 +601,8 @@
         "largeIcon": "winners_large",
         "howToRedeem": "Choisissez une valeur, confirmez l'échange, puis recevez la carte-cadeau électronique par la poste.",
         "howToUse": "Utilisez-la à n’importe quel magasin WINNERS, HomeSense et Marshalls au Canada.",
+        "screenName" : "homesense-marshalls-winners-egift-card",
+        "shortName" : "TJX",
         "merchantId": "3267",
         "eGifts": [
           {

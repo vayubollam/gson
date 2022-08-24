@@ -30,6 +30,7 @@ import javax.inject.Inject;
 import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
+import suncor.com.android.analytics.stationlocator.FavouritesAnalytics;
 import suncor.com.android.data.DistanceApi;
 import suncor.com.android.databinding.FragmentFavouritesBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
@@ -37,13 +38,13 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.SuncorToast;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.stationlocator.StationItem;
-import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.LocationUtils;
 import suncor.com.android.utilities.UserLocalSettings;
 
 public class FavouritesFragment extends MainActivityFragment {
 
     private static final String SHOW_FAVS_HINT = "show_favs_hint";
+    private static final String SCREEN_CLASS_NAME = "FavouritesFragment";
     private FavouritesViewModel mViewModel;
     private FavouritesAdapter favouritesAdapter;
     private FragmentFavouritesBinding binding;
@@ -110,7 +111,8 @@ public class FavouritesFragment extends MainActivityFragment {
         mViewModel.stations.observe(this, stations -> {
             isLoading.set(stations.status == Resource.Status.LOADING);
             if(stations.status == Resource.Status.LOADING){
-                AnalyticsUtils.setCurrentScreenName(getActivity(), "my-petro-points-gas-station-locations-favourites-loading");
+
+                FavouritesAnalytics.logScreenNameClass(requireContext(),FavouritesAnalytics.SCREEN_NAME_FAV_LOADING,SCREEN_CLASS_NAME);
             }
             if (stations.status == Resource.Status.SUCCESS && !stations.data.isEmpty()) {
                 favouritesAdapter.setStationItems(stations.data);
@@ -123,9 +125,7 @@ public class FavouritesFragment extends MainActivityFragment {
                     userLocalSettings.setBool(SHOW_FAVS_HINT, false);
                 }
             } else if(stations.status == Resource.Status.ERROR) {
-                AnalyticsUtils.logEvent(this.getContext(), AnalyticsUtils.Event.FORMERROR,
-                        new Pair<>(AnalyticsUtils.Param.errorMessage, stations.message  + ", Error on fetch favorite Gas Station"),
-                        new Pair<>(AnalyticsUtils.Param.FORMNAME, "Favorite Gas Stations"));
+                FavouritesAnalytics.logFormError(requireContext(),stations.message  + ", Error on fetch favorite Gas Station");
             }
         });
         if (LocationUtils.isLocationEnabled(getContext())

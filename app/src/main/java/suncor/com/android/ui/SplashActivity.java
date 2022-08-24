@@ -1,5 +1,13 @@
 package suncor.com.android.ui;
 
+import static suncor.com.android.analytics.BaseEvents.ALERT_INTERACTION;
+import static suncor.com.android.utilities.Constants.ALERT;
+import static suncor.com.android.utilities.Constants.ALERT_SELECTION;
+import static suncor.com.android.utilities.Constants.ALERT_TITLE;
+import static suncor.com.android.utilities.Constants.ERROR_LOG;
+import static suncor.com.android.utilities.Constants.FORM_NAME;
+import static suncor.com.android.utilities.Constants.SPLASH;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
@@ -48,14 +56,6 @@ import suncor.com.android.utilities.ConnectionUtil;
 import suncor.com.android.utilities.FingerprintManager;
 import suncor.com.android.utilities.SharedPrefsHelper;
 import suncor.com.android.utilities.UserLocalSettings;
-
-import static suncor.com.android.utilities.Constants.ALERT;
-import static suncor.com.android.utilities.Constants.ALERT_INTERACTION;
-import static suncor.com.android.utilities.Constants.ALERT_SELECTION;
-import static suncor.com.android.utilities.Constants.ALERT_TITLE;
-import static suncor.com.android.utilities.Constants.ERROR_LOG;
-import static suncor.com.android.utilities.Constants.FORM_NAME;
-import static suncor.com.android.utilities.Constants.SPLASH;
 
 public class SplashActivity extends DaggerAppCompatActivity implements Animation.AnimationListener {
     private final static int ENTER_ANIMATION_DURATION = 1400;

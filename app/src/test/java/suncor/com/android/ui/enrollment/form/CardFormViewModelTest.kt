@@ -1,18 +1,28 @@
 package suncor.com.android.ui.enrollment.form
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
 import org.junit.Assert
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
+import org.junit.rules.TestRule
 import org.mockito.Mockito
 import suncor.com.android.R
 import suncor.com.android.data.account.EnrollmentsApi
 import suncor.com.android.model.Resource
+import suncor.com.android.model.account.CardStatus
+import suncor.com.android.model.cards.CardDetail
 import suncor.com.android.ui.enrollment.cardform.CardFormViewModel
 
 class CardFormViewModelTest {
     private lateinit var viemodel: CardFormViewModel
     private val api = Mockito.mock(EnrollmentsApi::class.java)
+
+    @get:Rule
+    val rule: TestRule = InstantTaskExecutorRule()
 
     @Before
     fun init() {
@@ -83,13 +93,22 @@ class CardFormViewModelTest {
 
     @Test
     fun testVerifyCardApi(){
-        val apiResponse = MutableLiveData<Resource<Boolean>>()
+        val card: CardStatus= Gson().fromJson(cardStatusResponse, CardStatus::class.java)
+        val apiResponse = MutableLiveData<Resource<CardStatus>>()
+        apiResponse.postValue(Resource.success(card))
+        Mockito.`when`<LiveData<Resource<CardStatus>>>(
+            api.checkCardStatus("7069198032781011","R0L1P0","LNAME")
+        ).thenReturn(apiResponse)
+
         val dummyObserver =
-            androidx.lifecycle.Observer { event: Resource<Boolean> -> }
+            androidx.lifecycle.Observer { event: Resource<CardStatus> -> }
         apiResponse.observeForever(dummyObserver)
 
-        Assert.assertEquals(true,api.checkCardStatus("7069 43443 4324 434","B1C 2B3","bob").value?.status)
+        Assert.assertNotNull(apiResponse.value?.data)
 
     }
+
+
+    private val cardStatusResponse="{\"userInfo\":{\"firstName\":\"FNAME\",\"lastName\":\"LNAME\",\"email\":\"\"},\"address\":{\"province\":\"MB\",\"streetAddress\":\"999, ADDRESS 1\",\"city\":\"HALIFAX\",\"phone\":\"\",\"postalCode\":\"R0L1P0\"},\"cardType\":\"existing\",\"status\":1}"
 
 }

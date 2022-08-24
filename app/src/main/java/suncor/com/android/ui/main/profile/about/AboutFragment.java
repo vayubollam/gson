@@ -1,7 +1,6 @@
 package suncor.com.android.ui.main.profile.about;
 
 import android.os.Bundle;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +13,11 @@ import javax.inject.Inject;
 import suncor.com.android.BuildConfig;
 import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
+import suncor.com.android.analytics.profile.ProfileAnalytics;
 import suncor.com.android.databinding.FragmentAboutBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.ui.common.webview.WebDialogFragment;
 import suncor.com.android.ui.main.common.MainActivityFragment;
-import suncor.com.android.utilities.AnalyticsUtils;
 
 public class AboutFragment extends MainActivityFragment {
     private FragmentAboutBinding binding;
@@ -49,8 +48,7 @@ public class AboutFragment extends MainActivityFragment {
     void showDialog(String url, String header) {
         WebDialogFragment webDialogFragment = WebDialogFragment.newInstance(url, header);
         webDialogFragment.show(getFragmentManager(), WebDialogFragment.TAG);
-
-        AnalyticsUtils.logEvent(getContext(), "intersite", new Pair<>("intersiteURL", url));
+        ProfileAnalytics.logInterSiteURL(requireContext(),url);
     }
 
     @Override
@@ -61,7 +59,7 @@ public class AboutFragment extends MainActivityFragment {
     }
 
     private void goBack() {
-        Navigation.findNavController(getView()).popBackStack();
+        Navigation.findNavController(requireView()).popBackStack();
     }
 
     @Override

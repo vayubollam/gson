@@ -9,6 +9,10 @@
         <import type="android.view.View" />
 
         <variable
+            name="isLoading"
+            type="androidx.databinding.ObservableBoolean" />
+
+        <variable
             name="vm"
             type="suncor.com.android.ui.enrollment.form.SecurityQuestionViewModel" />
     </data>
@@ -125,7 +129,7 @@
             android:layout_height="match_parent"
             android:background="@color/white"
             android:clickable="true"
-            app:visibleGone="@{vm.securityQuestions.status != Status.SUCCESS}"
+            app:visibleGone="@{isLoading}"
             tools:visibility="gone">
 
             <TextView
@@ -137,15 +141,14 @@
                 android:lineHeight="32dp"
                 android:text="@string/enrollment_loading_question_title"
                 android:textAppearance="@style/Title1"
-                android:visibility="@{vm.securityQuestions.status == Status.ERROR ? View.GONE : View.VISIBLE}" />
-
+                />
             <ProgressBar
                 android:id="@+id/load_questions_PB"
                 android:layout_width="84dp"
                 android:layout_height="84dp"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:visibility="@{vm.securityQuestions.status == Status.ERROR ? View.GONE : View.VISIBLE}" />
+               />
         </RelativeLayout>
 
 

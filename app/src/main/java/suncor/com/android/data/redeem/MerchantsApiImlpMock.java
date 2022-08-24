@@ -9,6 +9,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.merchants.Merchant;
+import suncor.com.android.model.redeem.response.MemberEligibilityResponse;
 import suncor.com.android.utilities.Timber;
 
 import static suncor.com.android.utilities.CommonUtils.getMockResponse;
@@ -35,5 +36,10 @@ public class MerchantsApiImlpMock implements MerchantsApi {
 
 
         return result;
+    }
+
+    @Override
+    public LiveData<Resource<MemberEligibilityResponse>> getMemberEligibility() {
+        return null;
     }
 }

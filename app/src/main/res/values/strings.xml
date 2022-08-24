@@ -118,16 +118,16 @@
     <string name="enrollment_street_address_error">Address is required.</string>
     <string name="enrollment_secuirty_question_error">Please select a security question.</string>
     <string name="enrollment_secuirty_answer_error">Answer is required.</string>
-    <string name="enrollment_phone_field_invalid_format">Please enter a valid phone number (e.g. 416-123-4567)</string>
+    <string name="enrollment_phone_field_invalid_format">Please enter a valid phone number (e.g. 416–123–4567)</string>
     <string name="enrollment_city_error">City is required.</string>
     <string name="enrollment_province_error">Province is required.</string>
     <string name="enrollment_postalcode_error">Postal code is required.</string>
     <string name="enrollment_postalcode_format_error">The postal code you entered isn\'t valid.</string>
-    <string name="enrollment_email_restricted_alert_title">Please enter a different email address or Call 1-800-668-0220 if you have any issues.</string>
+    <string name="enrollment_email_restricted_alert_title">Please enter a different email address.</string>
 
     <string name="enrollment_email_format_error">Please enter a valid email address.</string>
     <string name="discover_your_next_adventure">FIND YOUR \nHAPPY PLACE</string>
-    <string name="password_validation_text_length">Must be 8-16 characters</string>
+    <string name="password_validation_text_length">Must be 8–16 characters</string>
     <string name="password_validation_lowercase">At least one lowercase letter</string>
     <string name="password_validation_uppercase">At least one uppercase letter</string>
     <string name="password_validation_number">At least one number</string>
@@ -209,6 +209,7 @@
     <string name="customer_support_email">customerservice@petro-canada.ca</string>
     <string name="profile_get_help_call">Call</string>
     <string name="profile_get_help_email">Email</string>
+    <string name="profile_get_help_chat">Chat</string>
     <string name="navigation_cards_tab">Wallet</string>
     <string name="cards_fragment_title">Wallet</string>
     <string name="cards_fragment_petrocanada_cards_header">Petro-Canada</string>
@@ -336,11 +337,11 @@
     <string name="verify_your_email_address_description">You’ve already started an online account with this card. Check your inbox for your verification link or call customer service.</string>
     <string name="profile_personnal_informations_email_empty_inline_error">Please enter an email.</string>
     <string name="profile_personnal_informations_email_format_inline_error">Please enter a valid email address.</string>
-    <string name="profile_personnal_informations_phone_field_invalid_format">Please enter a valid phone number (e.g. 416–123-4567)</string>
+    <string name="profile_personnal_informations_phone_field_invalid_format">Please enter a valid phone number (e.g. 416–123–4567)</string>
     <string name="profile_personnal_informations_email_empty_alert_title">Email required</string>
     <string name="profile_personnal_informations_email_invalid_alert_title">Invalid email</string>
     <string name="profile_personnal_informations_email_empty_alert_message">Please enter an email.</string>
-    <string name="profile_personnal_informations_email_invalid_alert_message">Please enter a different email address or Call 1-800-668-0220 if you have any issues.</string>
+    <string name="profile_personnal_informations_email_invalid_alert_message">Please enter a different email address or Call 1–800-668-0220 if you have any issues.</string>
     <string name="profile_personnal_informations_email_alert_title">Save changes</string>
     <string name="profile_personnal_informations_email_alert_message">Changing your info will require you to sign in again. If you\'ve changed your email, check your inbox to verify your email address.</string>
     <string name="profile_personnal_informations_email_alert_signout_button">Sign out</string>
@@ -405,12 +406,12 @@
     <string name="offers_banner_4_button">Find a car wash</string>
     <string name="offers_banner_5_text">Save 3¢/litre on every fill-up with an RBC linked card.</string>
     <string name="offers_banner_5_button">Get started</string>
-    <string name="offers_leaving_app_alert_title">You are leaving our App.</string>
-    <string name="offers_leaving_app_alert_message">We will open your browser.</string>
-    <string name="offers_leaving_app_alert_button">Open</string>
+    <string name="leaving_app_alert_title">You are leaving our App.</string>
+    <string name="leaving_app_alert_message">We will open your browser.</string>
+    <string name="leaving_app_alert_button">Open</string>
     <string name="rbc_url">https://www.rbcroyalbank.com/petro-canada/index.html?suncor&amp;utm_source=suncor&amp;utm_medium=3pb&amp;utm_campaign=petrocanada_3cpl&amp;utm_content=pc_app_link</string>
     <string name="petro_points_contest_url">https://www.petro-canada.ca/en/personal/discover-petro-points/pump-up-the-points-contest-2022?utm_source=pc_app&amp;utm_medium=app_banner&amp;utm_campaign=putp</string>
-
+    <string name="chat_option_url">https://www.petro-canada.ca/en/personal/contact-customer-service#start-chat-button</string>
     <string name="transaction_type_ppt">Transfer</string>
     <string name="transaction_type_bonus">Bonus</string>
     <string name="transaction_type_pp">Petro Points</string>
@@ -466,7 +467,7 @@
     <string name="enrollment_sms_offers_hint">You can unsubscribe at any time.</string>
     <string name="rewards_details_close">CLose</string>
     <string name="station_filters_all_washes">Any wash</string>
-    <string name="station_filter_touchless_only">Touchless only</string>
+    <string name="station_filter_touchless_only">Touchless</string>
     <string name="update_required_dialog_title">Newer version required</string>
     <string name="update_required_dialog_message">Please update the app to continue using.</string>
     <string name="update_required_dialog_button">Update</string>
@@ -629,11 +630,15 @@
     <string name="single_ticket_barcode_trouble_message">Having trouble scanning?  \nTry typing your ticket number into the car wash screen.</string>
 
     <string name="zero_balance_alert_title">Your card is empty</string>
-    <string name="zero_balance_alert_message">Looks like your card is running on empty. Reload on petro-canada.ca or get a car wash ticket in store.</string>
+    <string name="zero_balance_alert_message">Looks like your card is running on empty. Reload on <a href="https://www.petro-canada.ca/en/personal"><u>petro-canada.ca</u></a> or get a car wash ticket in store.</string>
     <string name="zero_balance_alert_close">Close</string>
     <string name="zero_balance_alert_buy">Buy a wash</string>
     <string name="zero_balance_alert_view">View card details</string>
     <string name="zero_balance_other_available_message">Looks like your card is running on empty. Don\'t worry – you have other options in your account.</string>
+
+     <!-- zero vacuum balance string-->
+    <string name="zero_balance_vacuum_alert_title">You’re out of vacuums</string>
+    <string name="zero_balance_vacuum_alert_message">Looks like you’ve used up all your free vacuums.\nNo worries - You can visit the website to add more washes and get more vacuums.</string>
 
     <string name="account_page_header">Account</string>
 
@@ -776,10 +781,14 @@
     <string name="reload_card_alert_visit_web">Visit web</string>
     <string name="petro_canada_reload_url">https://www.petro-canada.ca/en/personal/my-petro-points?modalUrl=%2Fen%2Fpersonal%2Fmy-petro-points%2Freload%2Freload-card</string>
 
+    <!--vacuum reload -->
+    <string name="petro_vacuum_canada_reload_url">https://www.petro-canada.ca/en/personal/my-petro-points#mycards</string>
 
     <string name="select_value">Value</string>
     <string name="authorization_petropoints_balance">You\'re starting at %s points</string>
 
+    <string name="redemption_unavailable_title">Redemption is unavailable.</string>
+    <string name="redemption_unavailable_message">Petro-Points redemption is unavailable currently. Please try again later.</string>
     <!-- Carwash POE -->
     <string name="thank_you_carwash">Thanks, %1$s!
         Squeaky-clean is coming right up.</string>
@@ -801,6 +810,8 @@
     <string name="carwash_security_code">car-wash-security-code</string>
     <string name="carwash_cards">Carwash Cards</string>
     <string name="car_wash_card_list">car-wash-card-list</string>
+
+    <string name="carwash_zero_vacuum_error_alert_title">Can\’t activate vacuum</string>
 
     <string name="carwash_daily_vacuum_used_alert">Daily vacuum used</string>
     <string name="carwash_daily_vacuum_used_message">Your vacuum for the day was used at %s at %s.</string>
@@ -897,4 +908,8 @@
     <string name="account_deletion_phone_field_required">This field is required!</string>
     <string name="account_deletion_submitted">Submitting</string>
     <string name="different_reason">A different reason:</string>
+    <string name="redemption_unavailable_text">Redemption is unavailable at this time</string>
+    <string name="get_help_call">Call</string>
+    <string name="suncor039_error_title">It\'s not you, it\'s us</string>
+    <string name="suncor039_error_message">Something went wrong but we\'re working on a solution. Please try again later.</string>
 </resources>

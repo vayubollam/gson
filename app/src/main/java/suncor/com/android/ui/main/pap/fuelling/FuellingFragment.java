@@ -1,5 +1,14 @@
 package suncor.com.android.ui.main.pap.fuelling;
 
+import static suncor.com.android.utilities.Constants.AUTHORIZED;
+import static suncor.com.android.utilities.Constants.CANCELED;
+import static suncor.com.android.utilities.Constants.CANCELLED;
+import static suncor.com.android.utilities.Constants.GOOGLE;
+import static suncor.com.android.utilities.Constants.NEW;
+import static suncor.com.android.utilities.Constants.PAY_AT_PAUMP_FUELING_ALMOST_COMPLETE;
+import static suncor.com.android.utilities.Constants.PAY_AT_PAUMP_FUELING_COMPLETE;
+import static suncor.com.android.utilities.Constants.PAY_AT_PUMP;
+
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,6 +36,7 @@ import java.util.Objects;
 import javax.inject.Inject;
 
 import suncor.com.android.R;
+import suncor.com.android.analytics.pap.FuellingAnalytics;
 import suncor.com.android.databinding.FragmentFuellingBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
@@ -44,6 +54,7 @@ public class FuellingFragment extends MainActivityFragment {
     private FragmentFuellingBinding binding;
     private String pumpNumber;
     private String transactionId;
+    private final String SCREEN_CLASS_NAME = this.getClass().getSimpleName();
 
     private boolean pingActiveSessionStarted = false;
     private ObservableBoolean isLoading = new ObservableBoolean(true);
@@ -64,7 +75,7 @@ public class FuellingFragment extends MainActivityFragment {
         binding = FragmentFuellingBinding.inflate(inflater, container, false);
         binding.setLifecycleOwner(this);
         binding.setIsLoading(isLoading);
-        AnalyticsUtils.setCurrentScreenName(getActivity(), PAY_AT_PAUMP_AUTH_LOADING);
+        FuellingAnalytics.logScreenNameClass(requireContext(),FuellingAnalytics.SCREEN_NAME_PAP_AUTH_LOADING,SCREEN_CLASS_NAME);
         return binding.getRoot();
     }
 
@@ -73,7 +84,7 @@ public class FuellingFragment extends MainActivityFragment {
         super.onViewCreated(view, savedInstanceState);
 
         pumpNumber = FuellingFragmentArgs.fromBundle(getArguments()).getPumpNumber();
-        AnalyticsUtils.setCurrentScreenName(getActivity(), PAY_AT_PAUMP_AUTH);
+        FuellingAnalytics.logScreenNameClass(getContext(),FuellingAnalytics.SCREEN_NAME_PAP_AUTHORIZING,SCREEN_CLASS_NAME);
         binding.pumpAuthorizedText.setText(getString(R.string.pump_authorized, pumpNumber));
         binding.pumpNumberText.setText(pumpNumber);
 
@@ -88,7 +99,7 @@ public class FuellingFragment extends MainActivityFragment {
         binding.borderImageView.startAnimation(rotate);
 
         binding.cancelButton.setOnClickListener(button -> {
-            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.BUTTONTAP, new Pair<>(AnalyticsUtils.Param.buttonText, getString(R.string.cancel)));
+            FuellingAnalytics.logCancelButtonTap(requireContext());
             if (binding.cancelButton.getText().equals(getString(R.string.hide))) {
                 // Navigate to home
                 goBack();
@@ -101,10 +112,7 @@ public class FuellingFragment extends MainActivityFragment {
                         getString(R.string.cards_details_close),
                         (dialogInterface, i) -> {
                             dialogInterface.dismiss();
-                            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alertInteraction,
-                                    new Pair<>(AnalyticsUtils.Param.alertTitle, getString(R.string.cancel_alert_title)+"("+getString(R.string.cancel_alert_body)+")"),
-                                    new Pair<>(AnalyticsUtils.Param.alertSelection, getString(R.string.cancel_alert_button)),
-                                    new Pair<>(AnalyticsUtils.Param.FORMNAME, PAY_AT_PUMP));
+                            FuellingAnalytics.logStopSessionAlertInteraction(requireContext());
                             viewModel.cancelTransaction(transactionId).observe(getViewLifecycleOwner(), result -> {
                                 if (result.status == Resource.Status.LOADING) {
                                     binding.cancelLayout.setVisibility(View.VISIBLE);
@@ -130,7 +138,7 @@ public class FuellingFragment extends MainActivityFragment {
     @Override
     public void onResume() {
         super.onResume();
-        AnalyticsUtils.setCurrentScreenName(getActivity(), PAY_AT_PAUMP_FUELING_BEGIN);
+        FuellingAnalytics.logScreenNameClass(requireContext(),FuellingAnalytics.SCREEN_NAME_PAP_FUELING_WILL_BEGIN,SCREEN_CLASS_NAME);
         startFuellingActiveSession();
     }
 
@@ -139,9 +147,7 @@ public class FuellingFragment extends MainActivityFragment {
         public void run() {
             viewModel.getActiveSession().observe(getViewLifecycleOwner(), result -> {
                 if (result.status == Resource.Status.ERROR) {
-                    AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
-                            new Pair<>(AnalyticsUtils.Param.errorMessage, SOMETHING_WRONG ),
-                            new Pair<>(AnalyticsUtils.Param.FORMNAME, PAY_AT_PUMP));
+                    FuellingAnalytics.logSomethingWentWrongMessage(requireContext());
                     Alerts.prepareGeneralErrorDialog(getContext(), PAY_AT_PUMP).show();
                 } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                         if (Objects.equals(result.data.lastStatus, CANCELLED) ||
@@ -151,13 +157,10 @@ public class FuellingFragment extends MainActivityFragment {
                                     getString(R.string.cancellation_alert_body),
                                     getContext(),
                                     (dialogInterface, i) -> {
+                                        FuellingAnalytics.logScreenNameClass(requireContext(),FuellingAnalytics.SCREEN_NAME_PAP_FUELING_CANCELLED,SCREEN_CLASS_NAME);
 
-                                        AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-fuelling-transaction-cancelled" );
+                                         FuellingAnalytics.logTransactionCancelAlertInteraction(requireContext());
 
-                                        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alertInteraction,
-                                                new Pair<>(AnalyticsUtils.Param.alertTitle, getString(R.string.cancellation_alert_title)+"("+getString(R.string.cancellation_alert_body)+")"),
-                                                new Pair<>(AnalyticsUtils.Param.alertSelection, getString(R.string.cancel)),
-                                                new Pair<>(AnalyticsUtils.Param.FORMNAME, PAY_AT_PUMP));
                                         dialogInterface.dismiss();
                                         goBack();
                                     }, PAY_AT_PUMP).show();
@@ -174,8 +177,22 @@ public class FuellingFragment extends MainActivityFragment {
                                 new Pair<>(AnalyticsUtils.Param.FORMSELECTION, getString(R.string.fueling_up)),
                                 new Pair<>(AnalyticsUtils.Param.FORMNAME, PAY_AT_PUMP));
 
-                            AnalyticsUtils.setCurrentScreenName(getActivity(), result.data.status.equalsIgnoreCase(NEW)
-                                || result.data.status.equalsIgnoreCase(AUTHORIZED) ? PAY_AT_PAUMP_FUELING_BEGIN : PAY_AT_PAUMP_FUELING_BEGUN );
+                            FuellingAnalytics.logScreenNameClass(requireContext(),FuellingAnalytics.SCREEN_NAME_PAP_FUELING_ALMOST_COMPLETE,SCREEN_CLASS_NAME);
+
+                            FuellingAnalytics.logFuellingFormComplete(requireContext());
+                        }
+                    } else if (result.data.status != null) {
+                        transactionId = result.data.transId;
+                        binding.cancelButton.setVisibility(View.VISIBLE);
+                        FuellingAnalytics.logFuellingUpFormStep(requireContext());
+
+
+                        if(result.data.status.equalsIgnoreCase(NEW) || result.data.status.equalsIgnoreCase(AUTHORIZED)){
+                            FuellingAnalytics.logScreenNameClass(requireContext(),FuellingAnalytics.SCREEN_NAME_PAP_FUELING_WILL_BEGIN,SCREEN_CLASS_NAME);
+                        }else{
+                            FuellingAnalytics.logScreenNameClass(requireContext(),FuellingAnalytics.SCREEN_NAME_PAP_FUELING_HAS_BEGUN,SCREEN_CLASS_NAME);
+                        }
+
 
                             binding.pumpAuthorizedText.setText(result.data.status.equalsIgnoreCase(NEW)
                                 || result.data.status.equalsIgnoreCase(AUTHORIZED)?
@@ -206,9 +223,9 @@ public class FuellingFragment extends MainActivityFragment {
                     } else {
                         goBack();
                     }
-                }
             });
         }
+
     };
 
     private void observeTransactionData(String transactionId, String lastPaymentProvider){

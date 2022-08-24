@@ -41,6 +41,7 @@ public class ErrorCodes {
     public static final String ERR_CARD_LOCK = "SUNCOR030";
     public static final String ERR_CARD_PENDING_EMAIL_VALIDATION = "SUNCOR037";
     public static final String ERR_EMAIL_VALIDATION_INVALID_PUBWEB = "SUNCOR038";
+    public static final String ERR_PUBWEB_OPE_DOWN = "SUNCOR039";
 
     //google pay
     public static final String ERR_TRANSACTION_FAILS = "SUNCOR118";

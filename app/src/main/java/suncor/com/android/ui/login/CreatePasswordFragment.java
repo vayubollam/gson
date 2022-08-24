@@ -1,39 +1,31 @@
 package suncor.com.android.ui.login;
 
+import static suncor.com.android.analytics.login.LoginAnalyticsKt.FORM_NAME_LOGIN_FORCE_NEW_PASSWORD;
+
 import android.animation.LayoutTransition;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-
-import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.ViewModelProviders;
 
+import javax.inject.Inject;
+
 import suncor.com.android.R;
+import suncor.com.android.analytics.login.CreatePasswordAnalytics;
 import suncor.com.android.databinding.FragmentCreatePasswordBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.BaseFragment;
-import suncor.com.android.utilities.AnalyticsUtils;
-
-import static suncor.com.android.utilities.Constants.ALERT;
-import static suncor.com.android.utilities.Constants.ALERT_INTERACTION;
-import static suncor.com.android.utilities.Constants.ALERT_SELECTION;
-import static suncor.com.android.utilities.Constants.ALERT_TITLE;
-import static suncor.com.android.utilities.Constants.ERROR_LOG;
-import static suncor.com.android.utilities.Constants.ERROR_MESSAGE;
-import static suncor.com.android.utilities.Constants.FORM_NAME;
-import static suncor.com.android.utilities.Constants.LOGIN_FORCE_NEW_PASSWORD;
 
 public class CreatePasswordFragment extends BaseFragment {
 
@@ -70,34 +62,33 @@ public class CreatePasswordFragment extends BaseFragment {
                 binding.passwordInput.getEditText().clearFocus();
                 hideKeyboard();
             } else if (r.status == Resource.Status.SUCCESS) {
-                AnalyticsUtils.logEvent(getContext(), "password_reset");
+                // TODO: 2022-03-29 Update with userId and buildNumber
+                CreatePasswordAnalytics.logResetPwd(requireContext(),"","");
+
                 if (getActivity() != null) {
                     getActivity().finish();
                 }
             } else if (r.status == Resource.Status.ERROR) {
                 if (ErrorCodes.ERR_PASSWORD_DUPLICATED.equals(r.message)) {
-                    AnalyticsUtils.logEvent(getContext(), ERROR_LOG,
-                            new Pair<>(ERROR_MESSAGE,getString(R.string.login_create_password_duplicated_alert_title)+"("+getString(R.string.login_create_password_duplicated_alert_message)+")"),
-                            new Pair<>(FORM_NAME,LOGIN_FORCE_NEW_PASSWORD)
-                    );
 
-                    AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity());
-                    AnalyticsUtils.logEvent(getActivity().getApplicationContext(), ALERT, new Pair<>(ALERT_TITLE, getString(R.string.login_create_password_duplicated_alert_title)));
+                    CreatePasswordAnalytics.logInvalidPwdError(requireContext());
+                    CreatePasswordAnalytics.logInvalidPwdAlertShown(requireContext(),getString(R.string.login_create_password_duplicated_alert_title));
+
+                    AlertDialog.Builder alertBuilder = new AlertDialog.Builder(requireActivity());
                     alertBuilder.setTitle(R.string.login_create_password_duplicated_alert_title);
                     alertBuilder.setMessage(R.string.login_create_password_duplicated_alert_message);
                     alertBuilder.setPositiveButton(R.string.ok, ((dialog, which) -> {
-                        AnalyticsUtils.logEvent(getActivity().getApplicationContext(), ALERT_INTERACTION,
-                                new Pair<>(ALERT_TITLE, getString(R.string.login_create_password_duplicated_alert_title)+"("+getString(R.string.login_create_password_duplicated_alert_message)+")"),
-                                new Pair<>(ALERT_SELECTION,getString(R.string.ok)),
-                                new Pair<>(FORM_NAME, LOGIN_FORCE_NEW_PASSWORD)
+                        CreatePasswordAnalytics.logAlertInteraction(requireContext(),
+                                getString(R.string.login_create_password_duplicated_alert_title)+"("+getString(R.string.login_create_password_duplicated_alert_message)+")"
+                                ,getString(R.string.ok)
                         );
                         binding.passwordInput.setText("");
                         dialog.dismiss();
                     }));
                     alertBuilder.show();
                 } else {
-                    Dialog dialog = Alerts.prepareGeneralErrorDialog(getActivity(), LOGIN_FORCE_NEW_PASSWORD);
-                    dialog.setOnDismissListener(dialogInterface -> getActivity().finish());
+                    Dialog dialog = Alerts.prepareGeneralErrorDialog(getActivity(), FORM_NAME_LOGIN_FORCE_NEW_PASSWORD);
+                    dialog.setOnDismissListener(dialogInterface -> requireActivity().finish());
                     dialog.show();
                 }
             }
@@ -107,12 +98,12 @@ public class CreatePasswordFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        AnalyticsUtils.setCurrentScreenName(getActivity(), "login-force-new-password");
+        CreatePasswordAnalytics.logScreenNameClass(requireContext(),CreatePasswordAnalytics.SCREEN_NAME_FORCE_PASSWORD_CHANGE,this.getClass().getSimpleName());
     }
 
     private void hideKeyboard() {
-        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+        InputMethodManager imm = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(requireView().getWindowToken(), 0);
     }
 
     @Nullable
@@ -128,7 +119,7 @@ public class CreatePasswordFragment extends BaseFragment {
         binding.mainLayout.getLayoutTransition().disableTransitionType(LayoutTransition.CHANGE_APPEARING);
         binding.getRoot().post(() -> {
             binding.passwordInput.getEditText().requestFocus();
-            InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.showSoftInput(binding.passwordInput.getEditText(), InputMethodManager.SHOW_IMPLICIT);
         });
 

@@ -3,14 +3,11 @@ package suncor.com.android.ui.resetpassword;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
-
-import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,7 +16,10 @@ import androidx.navigation.Navigation;
 
 import java.util.Objects;
 
+import javax.inject.Inject;
+
 import suncor.com.android.R;
+import suncor.com.android.analytics.resetpassword.ResetPasswordAnalytics;
 import suncor.com.android.databinding.FragmentResetPasswordBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.mfp.ErrorCodes;
@@ -28,13 +28,11 @@ import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.BaseFragment;
 import suncor.com.android.ui.common.SuncorToast;
 import suncor.com.android.ui.login.LoginActivity;
-import suncor.com.android.utilities.AnalyticsUtils;
 
 public class ResetPasswordFragment extends BaseFragment {
 
     private FragmentResetPasswordBinding binding;
     private ResetPasswordViewModel viewModel;
-    private ResetPasswordRequest request;
 
     @Inject
     ViewModelFactory viewModelFactory;
@@ -43,7 +41,7 @@ public class ResetPasswordFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(ResetPasswordViewModel.class);
-        request = ResetPasswordFragmentArgs.fromBundle(getArguments()).getResetPasswordRequest();
+        ResetPasswordRequest request = ResetPasswordFragmentArgs.fromBundle(getArguments()).getResetPasswordRequest();
         viewModel.setRequest(request);
 
 
@@ -72,9 +70,9 @@ public class ResetPasswordFragment extends BaseFragment {
                     } else {
                         Alerts.prepareGeneralErrorDialog(getActivity(), "Reset Password").show();
                     }
-                    AnalyticsUtils.logEvent(this.getContext(), AnalyticsUtils.Event.FORMERROR,
-                            new Pair<>(AnalyticsUtils.Param.errorMessage,getString(R.string.msg_e001_title)),
-                            new Pair<>(AnalyticsUtils.Param.FORMNAME, "Reset Password"));
+
+                    ResetPasswordAnalytics.logFormError(requireContext());
+
                     break;
 
             }
@@ -103,12 +101,12 @@ public class ResetPasswordFragment extends BaseFragment {
 
     private void goBack() {
         hideKeyboard();
-        Navigation.findNavController(getView()).popBackStack();
+        Navigation.findNavController(requireView()).popBackStack();
     }
 
     private void hideKeyboard() {
-        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+        InputMethodManager imm = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(requireView().getWindowToken(), 0);
     }
 
 

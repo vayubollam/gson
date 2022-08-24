@@ -11,6 +11,7 @@ import dagger.android.support.DaggerAppCompatActivity;
 import suncor.com.android.R;
 import suncor.com.android.model.account.Province;
 import suncor.com.android.ui.common.OnBackPressedListener;
+import suncor.com.android.utilities.Constants;
 
 public class EnrollmentActivity extends DaggerAppCompatActivity {
     private Fragment mNavHostFragment;
@@ -25,6 +26,14 @@ public class EnrollmentActivity extends DaggerAppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enrollment);
         mNavHostFragment = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+
+        boolean isNavigatedFromRewardsGuestScreen = getIntent().getBooleanExtra(Constants.IS_COME_FROM_REWARDS_GUEST_SCREEN, false);
+
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(Constants.RESULTANT_VALUE, isNavigatedFromRewardsGuestScreen);
+
+        Navigation.findNavController(this, R.id.nav_host_fragment).setGraph(R.navigation.enrollment_navigation, bundle);
+
         String[] provincesArray = getResources().getStringArray(R.array.province_names);
 
         for (String provinceCodeName : provincesArray) {

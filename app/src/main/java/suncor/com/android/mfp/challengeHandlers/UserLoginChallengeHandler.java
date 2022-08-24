@@ -94,6 +94,9 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
                             listener.onLoginFailed(SigninResponse.passwordReset(encryptedEmail));
                         }
                         break;
+                    case ErrorCodes.ERR_PUBWEB_OPE_DOWN:
+                        listener.onLoginFailed(SigninResponse.serverFailure());
+                        cancel();
                     default:
                         listener.onLoginFailed(SigninResponse.generalFailure());
                 }

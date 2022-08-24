@@ -36,6 +36,8 @@ import dagger.android.support.AndroidSupportInjection;
 import suncor.com.android.HomeNavigationDirections;
 import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
+import suncor.com.android.analytics.BaseAnalytics;
+import suncor.com.android.analytics.stationlocator.StationDetailsAnalytics;
 import suncor.com.android.databinding.CardStationItemBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.mfp.SessionManager;
@@ -47,8 +49,6 @@ import suncor.com.android.ui.common.SuncorToast;
 import suncor.com.android.ui.enrollment.EnrollmentActivity;
 import suncor.com.android.ui.login.LoginActivity;
 import suncor.com.android.ui.main.home.HomeViewModel;
-import suncor.com.android.ui.main.pap.selectpump.SelectPumpFragmentDirections;
-import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.NavigationAppsHelper;
 import suncor.com.android.utilities.Timber;
 
@@ -58,6 +58,7 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
     public static final String TAG = StationDetailsDialog.class.getSimpleName();
 
     private final static float DIM_AMOUNT = 0.6f;
+    private final static String SCREEN_CLASS_NAME = "StationDetailsDialog";
     private int initialHeight;
     private int initialPosition;
     private int fullHeight;
@@ -114,7 +115,8 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
         windowParams.flags |= WindowManager.LayoutParams.FLAG_DIM_BEHIND;
         window.setAttributes(windowParams);
 
-        AnalyticsUtils.setCurrentScreenName(requireActivity(), "station-details-home");
+        StationDetailsAnalytics.logScreenNameClass(requireContext(),StationDetailsAnalytics.SCREEN_NAME_STATION_DETAIL_HOME,SCREEN_CLASS_NAME);
+
     }
 
     @Override
@@ -252,6 +254,7 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
             ModalDialog dialog = new ModalDialog();
             dialog.setTitle(getString(R.string.login_prompt_title))
                     .setMessage(getString(R.string.login_prompt_message))
+                    .setFormName("")
                     .setRightButton(getString(R.string.sign_in), (v) -> {
                         startActivity(new Intent(getContext(), LoginActivity.class));
                         dialog.dismiss();
@@ -276,7 +279,7 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
                     }
                 } else if (r.status == Resource.Status.SUCCESS) {
                     if (stationItem.isFavourite()) {
-                        AnalyticsUtils.logEvent(getContext(), "station_add_to_favourite", new Pair<>("location", stationItem.getStation().getAddress().getAddressLine()));
+                        StationDetailsAnalytics.logAddToFav(requireContext(),stationItem.getStation().getAddress().getAddressLine());
                     }
                 }
             });
@@ -287,8 +290,7 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
         Intent intent = new Intent(Intent.ACTION_DIAL);
         intent.setData(Uri.parse("tel:" + station.getAddress().getPhone()));
         startActivity(intent);
-
-        AnalyticsUtils.logEvent(getContext(), "tap_to_call", new Pair<>("phoneNumberTapped", station.getAddress().getPhone()));
+        BaseAnalytics.logTapToCall(requireContext(),station.getAddress().getPhone());
     }
 
     private int getStatusBarHeight() {

@@ -1,5 +1,11 @@
 package suncor.com.android.ui.main.stationlocator;
 
+import static android.Manifest.permission;
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+
+import static suncor.com.android.analytics.stationlocator.StationLocatorAnalyticsKt.FORM_NAME_GAS_STATION_LOCATIONS;
+import static suncor.com.android.analytics.stationlocator.StationsAnalytics.SCREEN_NAME_LOCATION_FILTER;
+
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
@@ -10,7 +16,6 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,13 +57,13 @@ import com.google.android.material.chip.Chip;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 
 import javax.inject.Inject;
 
 import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
+import suncor.com.android.analytics.stationlocator.StationsAnalytics;
 import suncor.com.android.data.DistanceApi;
 import suncor.com.android.databinding.FragmentStationsBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
@@ -67,15 +72,10 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.common.ModalDialog;
 import suncor.com.android.ui.enrollment.EnrollmentActivity;
-import suncor.com.android.ui.enrollment.form.EnrollmentFormFragmentArgs;
 import suncor.com.android.ui.login.LoginActivity;
 import suncor.com.android.ui.main.BottomNavigationFragment;
-import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.LocationUtils;
 import suncor.com.android.utilities.PermissionManager;
-
-import static android.Manifest.permission;
-import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 
 public class StationsFragment extends BottomNavigationFragment implements GoogleMap.OnMarkerClickListener, GoogleMap.OnCameraIdleListener, GoogleMap.OnCameraMoveStartedListener
@@ -84,6 +84,17 @@ public class StationsFragment extends BottomNavigationFragment implements Google
 
     private static final int PERMISSION_REQUEST_CODE = 124;
     private static final int REQUEST_CHECK_SETTINGS = 125;
+    private static final String SCREEN_CLASS_NAME = "StationsFragment";
+
+    static String filtersListString = "";
+    @Inject
+    PermissionManager permissionManager;
+    @Inject
+    ViewModelFactory viewModelFactory;
+    @Inject
+    SessionManager sessionManager;
+    @Inject
+    DistanceApi distanceApi;
     private StationsViewModel mViewModel;
     private LocationLiveData locationLiveData;
     private GoogleMap mGoogleMap;
@@ -97,20 +108,9 @@ public class StationsFragment extends BottomNavigationFragment implements Google
     private FragmentStationsBinding binding;
     private ObservableBoolean isLoading = new ObservableBoolean(false);
     private ObservableBoolean isErrorCardVisible = new ObservableBoolean(false);
-    String listString = " ";
     private boolean userScrolledMap;
     private boolean systemMarginsAlreadyApplied;
-    @Inject
-    PermissionManager permissionManager;
-
-    @Inject
-    ViewModelFactory viewModelFactory;
-
-    @Inject
-    SessionManager sessionManager;
-
-    @Inject
-    DistanceApi distanceApi;
+    private boolean analyticsIsClearingText;
 
     //convert vector images to bitmap in order to use as lastSelectedMarker icons
     private static BitmapDescriptor getBitmapFromVector(@NonNull Context context,
@@ -280,7 +280,7 @@ public class StationsFragment extends BottomNavigationFragment implements Google
         this.mGoogleMap.setOnCameraIdleListener(this);
         mGoogleMap.getUiSettings().setCompassEnabled(false);
         mGoogleMap.getUiSettings().setMapToolbarEnabled(false);
-        mGoogleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(), R.raw.map_style));
+        mGoogleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(requireContext(), R.raw.map_style));
         mGoogleMap.setOnMarkerClickListener(this);
         mGoogleMap.setOnCameraMoveStartedListener(this);
 
@@ -327,10 +327,10 @@ public class StationsFragment extends BottomNavigationFragment implements Google
                 myLocationMarker.remove();
             }
             if (mViewModel.getUserLocationType() == StationsViewModel.UserLocationType.GPS) {
-                myLocationMarker = mGoogleMap.addMarker(new MarkerOptions().position(location).icon(getBitmapFromVector(getActivity(), R.drawable.ic_my_location)));
+                myLocationMarker = mGoogleMap.addMarker(new MarkerOptions().position(location).icon(getBitmapFromVector(requireActivity(), R.drawable.ic_my_location)));
                 stationAdapter.setUserLocation(location);
             } else {
-                myLocationMarker = mGoogleMap.addMarker(new MarkerOptions().position(location).icon(getBitmapFromVector(getActivity(), R.drawable.ic_pin_search)));
+                myLocationMarker = mGoogleMap.addMarker(new MarkerOptions().position(location).icon(getBitmapFromVector(requireActivity(), R.drawable.ic_pin_search)));
             }
         });
 
@@ -345,20 +345,70 @@ public class StationsFragment extends BottomNavigationFragment implements Google
             }
         }));
         mViewModel.filters.observe(getViewLifecycleOwner(), v -> {
-                    for (String s : v){
-                        listString += s + " | ";
+
+                    if (v.isEmpty()) {
+                        filtersListString="";
+                        return;
                     }
 
-        }
-                 );
+                    StringBuilder servicesList = new StringBuilder();
+                    StringBuilder fuelList = new StringBuilder();
+                    StringBuilder washList = new StringBuilder();
+
+                    for (int i = 0; i < v.size(); i++) {
+                        String filterApplied = v.get(i);
+
+                        if (Station.SERVICE_AMENITIES.containsKey(filterApplied)) {
+                            servicesList.append(Station.ANALYTICS_ABBREVIATIONS_MAP.get(filterApplied)).append(", ");
+                        } else if (Station.FUEL_AMENITIES.containsKey(filterApplied)) {
+                            fuelList.append(Station.ANALYTICS_ABBREVIATIONS_MAP.get(filterApplied)).append(", ");
+                        } else {
+                            washList.append(Station.ANALYTICS_ABBREVIATIONS_MAP.get(filterApplied)).append(", ");
+                        }
+                    }
+
+                    filtersListString = (removeLastCommaAddPipe(servicesList, true)
+                            + removeLastCommaAddPipe(fuelList, true)
+                            + removeLastCommaAddPipe(washList, false)).trim();
+
+                    filtersListString = removeFirstLastPipe(filtersListString);
+
+                }
+        );
 
         mViewModel.queryText.observe(getViewLifecycleOwner(), (text) ->
         {
             binding.addressSearchText.setText(text);
-            AnalyticsUtils.setCurrentScreenName(getActivity(), "my-petro-points-gas-station-locations-filter");
-            AnalyticsUtils.logEvent(getContext(), "Location_search", new Pair<>("location", text), new Pair<>("filtersApplied", listString));
+
+            if(!analyticsIsClearingText) {
+                StationsAnalytics.logScreenNameClass(requireActivity(),SCREEN_NAME_LOCATION_FILTER
+                        ,this.getClass().getSimpleName());
+                StationsAnalytics.logFiltersApplied(requireContext(), text, filtersListString);
+            }
+            analyticsIsClearingText = false;
+
             binding.clearSearchButton.setVisibility(text == null || text.isEmpty() ? View.GONE : View.VISIBLE);
         });
+    }
+
+    private String removeFirstLastPipe(String filtersListString) {
+        if(filtersListString.charAt(0) == '|') {
+            filtersListString = filtersListString.substring(1);
+        }
+        if(filtersListString.charAt(filtersListString.length()-1) == '|'){
+            filtersListString = filtersListString.substring(0,filtersListString.length()-2);
+        }
+        return filtersListString;
+    }
+
+    private String removeLastCommaAddPipe(StringBuilder builder, boolean addPipe) {
+        if (builder.length() <= 0) return "";
+        builder.deleteCharAt(builder.length() - 1);
+        if (addPipe)
+            return String.valueOf(builder.deleteCharAt(builder.length() - 1).append(" | "));
+        else
+            return String.valueOf(builder.deleteCharAt(builder.length() - 1));
+
     }
 
     @Override
@@ -429,7 +479,7 @@ public class StationsFragment extends BottomNavigationFragment implements Google
         binding.bottomSheet.requestLayout();
         if (result.status == Resource.Status.LOADING) {
             isLoading.set(true);
-            AnalyticsUtils.setCurrentScreenName(getActivity(), "gas-station-locations-loading");
+            StationsAnalytics.logScreenNameClass(requireContext(),StationsAnalytics.SCREEN_NAME_LOCATION_LOADING,SCREEN_CLASS_NAME);
             isErrorCardVisible.set(false);
         } else {
             isLoading.set(false);
@@ -488,7 +538,7 @@ public class StationsFragment extends BottomNavigationFragment implements Google
                 } else {
                     filterText = Station.FULL_AMENITIES.get(filter);
                 }
-                Chip chip = new Chip(getActivity());
+                Chip chip = new Chip(requireActivity());
                 chip.setText(filterText);
                 chip.setElevation(8);
                 chip.setTag(filter);
@@ -501,13 +551,15 @@ public class StationsFragment extends BottomNavigationFragment implements Google
                 chip.setOnCloseIconClickListener(listener);
                 binding.filtersChipgroup.addView(chip);
             }
-            Chip clearFiltersChip = new Chip(getActivity());
+            Chip clearFiltersChip = new Chip(requireActivity());
             clearFiltersChip.setText(R.string.station_clear_all_filters_chip);
             clearFiltersChip.setTextColor(getResources().getColor(R.color.red));
             clearFiltersChip.setCloseIconVisible(false);
             clearFiltersChip.setElevation(8);
             clearFiltersChip.setOnClickListener((v) -> {
                 mViewModel.clearFilters();
+//              StationsAnalytics.logFiltersApplied(requireContext(), binding.addressSearchText.getText().toString(), "");
+
             });
             binding.filtersChipgroup.addView(clearFiltersChip);
         }
@@ -541,7 +593,7 @@ public class StationsFragment extends BottomNavigationFragment implements Google
             }
         }
 
-        return getBitmapFromVector(getActivity(), drawable);
+        return getBitmapFromVector(requireActivity(), drawable);
     }
 
     private Marker findMarkerForStation(StationItem station) {
@@ -563,6 +615,7 @@ public class StationsFragment extends BottomNavigationFragment implements Google
     }
 
     public void clearSearchText() {
+        analyticsIsClearingText = true;
         mViewModel.setTextQuery("");
         permissionManager.checkPermission(getContext(), permission.ACCESS_FINE_LOCATION, new PermissionManager.PermissionAskListener() {
             @Override
@@ -593,40 +646,40 @@ public class StationsFragment extends BottomNavigationFragment implements Google
         //start by loading only if the current location is not initialized or not GPS
         boolean alreadyHasGPSLocation = mViewModel.userLocation.getValue() != null && mViewModel.getUserLocationType() == StationsViewModel.UserLocationType.GPS;
         isLoading.set(!alreadyHasGPSLocation);
-        if (ContextCompat.checkSelfPermission(getContext(), permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(requireContext(), permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             locationLiveData.observe(getViewLifecycleOwner(), this::gotoMyLocation);
         }
     }
 
     private void showRequestLocationDialog(boolean previouselyDeniedWithNeverASk) {
-        AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert",
-                new Pair<>("alertTitle", getString(R.string.enable_location_dialog_title)+"("+getString(R.string.enable_location_dialog_message)+")"),
-                new Pair<>("fromName","Gas Station Locations")
-        );
-        AlertDialog.Builder adb = new AlertDialog.Builder(getContext());
-        //AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage",getString(R.string.enable_location_dialog_title)));
+        StationsAnalytics.logLocationAccessAlertShown(requireContext()
+                , getString(R.string.enable_location_dialog_title) + "(" + getString(R.string.enable_location_dialog_message) + ")");
+
+
+        AlertDialog.Builder adb = new AlertDialog.Builder(requireContext());
         adb.setTitle(R.string.enable_location_dialog_title);
         adb.setMessage(R.string.enable_location_dialog_message);
         adb.setNegativeButton(R.string.cancel, (dialog, which) -> {
-            AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
-                    new Pair<>("alertTitle", getString(R.string.enable_location_dialog_title)+"("+getString(R.string.enable_location_dialog_message)+")"),
-                    new Pair<>("alertSelection",getString(R.string.cancel)),
-                    new Pair<>("fromName","Gas Station Locations")
-            );
+
+            StationsAnalytics.logAlertInteraction(requireContext()
+                    , getString(R.string.enable_location_dialog_title) + "(" + getString(R.string.enable_location_dialog_message) + ")"
+                    , getString(R.string.cancel));
+
         });
         adb.setPositiveButton(R.string.ok, (dialog, which) -> {
-            AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
-                    new Pair<>("alertTitle", getString(R.string.enable_location_dialog_title)+"("+getString(R.string.enable_location_dialog_message)+")"),
-                    new Pair<>("alertSelection",getString(R.string.ok)),
-                    new Pair<>("fromName","Gas Station Locations")
+
+            StationsAnalytics.logAlertInteraction(requireContext()
+                    , getString(R.string.enable_location_dialog_title) + "(" + getString(R.string.enable_location_dialog_message) + ")"
+                    , getString(R.string.ok)
             );
-            if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PERMISSION_GRANTED && !LocationUtils.isLocationEnabled(getContext())) {
+
+            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PERMISSION_GRANTED && !LocationUtils.isLocationEnabled(requireContext())) {
                 LocationUtils.openLocationSettings(this, REQUEST_CHECK_SETTINGS);
                 return;
             }
 
             if (previouselyDeniedWithNeverASk) {
-                PermissionManager.openAppSettings(getActivity());
+                PermissionManager.openAppSettings(requireActivity());
             } else {
                 requestPermissions(new String[]{permission.ACCESS_FINE_LOCATION, permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_CODE);
             }
@@ -639,17 +692,18 @@ public class StationsFragment extends BottomNavigationFragment implements Google
 
     public void showFavourites() {
         if (sessionManager.isUserLoggedIn()) {
-            Navigation.findNavController(getView()).navigate(R.id.action_stations_tab_to_favouritesFragment);
+            Navigation.findNavController(requireView()).navigate(R.id.action_stations_tab_to_favouritesFragment);
         } else {
             ModalDialog dialog = new ModalDialog();
             dialog.setTitle(getString(R.string.login_prompt_title))
                     .setMessage(getString(R.string.login_prompt_message))
+                    .setFormName(FORM_NAME_GAS_STATION_LOCATIONS)
                     .setRightButton(getString(R.string.sign_in), (v) -> {
-                        startActivity(new Intent(getContext(), LoginActivity.class));
+                        startActivity(new Intent(requireContext(), LoginActivity.class));
                         dialog.dismiss();
                     })
                     .setCenterButton(getString(R.string.join), (v) -> {
-                        startActivity(new Intent(getContext(), EnrollmentActivity.class));
+                        startActivity(new Intent(requireContext(), EnrollmentActivity.class));
                         dialog.dismiss();
                     })
                     .setLeftButton(getString(R.string.cancel), (v) -> {

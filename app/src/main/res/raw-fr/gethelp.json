@@ -3,6 +3,31 @@
     "title": "Questions les plus fréquentes",
     "questions": [
       {
+        "id": "J'ai une carte accès lave-auto, combien de fois puis-je utiliser l'aspirateur par jour?",
+        "question": "J'ai une carte accès lave-auto, combien de fois puis-je utiliser l'aspirateur par jour?",
+        "response": "Comme dans le cas des lavages, les titulaires d'une carte accès lave-auto ne peuvent utiliser qu'un cycle d'aspirateur par jour."
+      },
+      {
+        "id": "J'ai scanné mon code à barres, mais l'aspirateur ne démarre pas, que dois-je faire?",
+        "question": "J'ai scanné mon code à barres, mais l'aspirateur ne démarre pas, que dois-je faire?",
+        "response": "Attendez 2 minutes, puis essayez de scanner à nouveau le code à barres."
+      },
+      {
+        "id": "Y a-t-il une date d'expiration sur l'utilisation de l'aspirateur?",
+        "question": "Y a-t-il une date d'expiration sur l'utilisation de l'aspirateur?",
+        "response": "Oui, pour les cartes Lavez Partez, vous avez 7 jours pour utiliser les cycles d'aspirateur à compter de l'utilisation du premier lavage.<br/><br/>Par exemple, si vous avez 15 lavages et 15 cycles d'aspirateur et que vous utilisez un lavage, il vous restera 14 lavages et 15 cycles d'aspirateur. L'utilisation du 15e cycle d'aspirateur expirera après 7 jours.<br/><br/>Pour les cartes accès lave-auto, vous pouvez utiliser un lavage et un cycle d'aspirateur par jour. Si au cours d'une journée, vous n'utilisez pas le lavage ou le cycle d'aspirateur, ceux-ci sont supprimés et ne sont pas reportés ultérieurement."
+      },
+      {
+        "id": "Y a-t-il une expiration sur l'utilisation des lavages?",
+        "question": "Y a-t-il une expiration sur l'utilisation des lavages?",
+        "response": "Non, pour les cartes Lavez Partez, vos lavages n'expirent pas.<br/><br/>Pour les cartes accès lave-auto, vous pouvez utiliser un lavage et un cycle d'aspirateur par jour. Si au cours d'une journée, vous n'utilisez pas le lavage ou le cycle d'aspirateur, ceux-ci sont supprimés et ne sont pas reportés ultérieurement."
+      },
+      {
+        "id": "Comment puis-je obtenir plus de cycles d'aspirateur?",
+        "question": "Comment puis-je obtenir plus de cycles d'aspirateur?",
+        "response": "En rechargeant ou en achetant plus de lavages afin d'avoir accès à plus de cycles d'aspirateur gratuits."
+      },
+      {
         "id": "i-accidentally-authorized-the-wrong-pump-what-happens",
         "question": "J'ai accidentellement autorisé le mauvais distributeur. Qu'arrivera-t-il?",
         "response": "L'autorisation expire si vous ne commencez pas le ravitaillement au distributeur autorisé dans les 30 secondes. Vous ne serez pas facturé."

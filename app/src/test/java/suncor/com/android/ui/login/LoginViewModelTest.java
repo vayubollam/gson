@@ -172,8 +172,24 @@ public class LoginViewModelTest {
         Assert.assertEquals(signinResponse.getRemainingAttempts(), loginFailResponse.message.args[0]);
         Assert.assertEquals(R.string.login_invalid_credentials_reset_password, loginFailResponse.negativeButtonTitle);
         Assert.assertTrue(viewModel.getPasswordResetEvent().getValue().getContentIfNotHandled().booleanValue());
+    }
 
-
+    @Test
+    public void test_when_server_is_down_on_login() {
+        MutableLiveData<Resource<SigninResponse>> serverError = new MutableLiveData<>();
+        SigninResponse signinResponse = SigninResponse.serverFailure();
+        serverError.postValue(Resource.success(signinResponse));
+        when(sessionManager.login("email@ibm.com", "password")).thenReturn(serverError);
+        Observer<Event<LoginViewModel.LoginFailResponse>> dummyObserver = event -> {
+            //Just to active the livedata
+        };
+        viewModel.getLoginFailedEvent().observeForever(dummyObserver);
+        viewModel.getEmailInputField().setText("email@ibm.com");
+        viewModel.getPasswordInputField().setText("password");
+        viewModel.onClickSignIn();
+        LoginViewModel.LoginFailResponse loginFailResponse = viewModel.getLoginFailedEvent().getValue().getContentIfNotHandled();
+        Assert.assertEquals(R.string.suncor039_error_message, loginFailResponse.message.content);
+        Assert.assertEquals(R.string.suncor039_error_title, loginFailResponse.title);
     }
 
 
