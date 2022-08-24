@@ -138,8 +138,6 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
                 });
                 adb.setTitle(getResources().getString(R.string.password_change_re_login_alert_title));
                 adb.setMessage(getResources().getString(R.string.pawword_change_re_login_alert_body));
-
-
                 adb.show();
             }
             autoLoginFailed = false;
@@ -158,9 +156,8 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
         flags |= View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
         getWindow().getDecorView().setSystemUiVisibility(flags);
         getWindow().setStatusBarColor(Color.TRANSPARENT);
-        if (BuildConfig.APPLICATION_ID.equalsIgnoreCase("com.petrocanada.my_petro_canada")) {
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
-        }
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+               WindowManager.LayoutParams.FLAG_SECURE);
 
         mainViewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel.class);
 

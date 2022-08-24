@@ -1,8 +1,10 @@
 package suncor.com.android.ui.main.carwash.reload;
 
+
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -63,6 +65,7 @@ import suncor.com.android.model.carwash.reload.TransactionReloadData;
 import suncor.com.android.model.pap.P97StoreDetailsResponse;
 import suncor.com.android.model.payments.PaymentDetail;
 import suncor.com.android.ui.common.Alerts;
+import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.main.carwash.CarWashActivationSecurityFragmentArgs;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.pap.fuelup.FuelLimitDropDownAdapter;
@@ -86,15 +89,16 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static suncor.com.android.utilities.Constants.PUMP_PRE_AUTHORIZED;
 
 public class CarwashTransactionFragment extends MainActivityFragment implements ExpandableViewListener,
-        PaymentDropDownCallbacks, CardReloadValuesDropDownAdapter.CardReloadValuesCallbacks, CardsDropDownAdapter.CardCallbacks {
+        PaymentDropDownCallbacks, CardReloadValuesDropDownAdapter.CardReloadValuesCallbacks, CardsDropDownAdapter.CardCallbacks, OnBackPressedListener {
+
 
     // Arbitrarily-picked constant integer you define to track a request for payment data activity.
     private static final int LOAD_PAYMENT_DATA_REQUEST_CODE = 991;
-    private NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.getDefault());
+    private final NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.getDefault());
 
     private FragmentCarwashTransactionBinding binding;
     private CarwashTransactionViewModel viewModel;
-    private ObservableBoolean isLoading = new ObservableBoolean(false);
+    private final ObservableBoolean isLoading = new ObservableBoolean(false);
     private Double lastTransactionValue;
     SettingsResponse.Pap papData;
     PaymentDropDownAdapter paymentDropDownAdapter;
@@ -102,6 +106,7 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
     private String cardNumber;
     private String userPaymentId;
     private String cardType;
+    private Handler handler;
 
     // A client for interacting with the Google Pay API.
     private PaymentsClient paymentsClient;
@@ -257,14 +262,40 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
 
     }
 
+    private void fetchTaxValues(){
+        viewModel.fetchTaxValues(viewModel.getSelectedProduct().getRewardId(), viewModel.getUserProvince()).observe(getViewLifecycleOwner(), result -> {
+            if (result.status == Resource.Status.LOADING) {
+                binding.loadingProgressBar.setVisibility(View.VISIBLE);
+            } else if (result.status == Resource.Status.ERROR) {
+                binding.loadingProgressBar.setVisibility(View.GONE);
+                Alerts.prepareGeneralErrorDialog(getContext(), "", (dialog, which) -> Navigation.findNavController(getView()).popBackStack()).show();
+            } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
+                binding.loadingProgressBar.setVisibility(View.GONE);
+                viewModel.setTransactionReloadTax(result.data);
+                calculateTax();
+            }
+        });
+    }
+
+
+    private void calculateTax() {
+        if (Objects.isNull(viewModel.getTransactionReloadTax()) || Objects.isNull(viewModel.getSelectedProduct())) {
+            return;
+        }
+        Double totalTax = viewModel.getTransactionReloadTax().getTotalTax(viewModel.getSelectedValuesAmount());
+        viewModel.setTotalAmount(viewModel.getSelectedValuesAmount() + totalTax);
+        binding.taxAmount.setText(formatter.format(totalTax));
+        binding.totalAmount.setText(formatter.format(viewModel.getSelectedValuesAmount() + totalTax));
+    }
     private void setCardReloadAdapter(){
         CardReloadValuesDropDownAdapter adapter = new CardReloadValuesDropDownAdapter(
                 getContext(),
                 viewModel.getTransactionReloadData().getProducts(),
-                this, cardType, viewModel.getLastSelectedValue()
+                this, cardType, viewModel.getSelectedProduct().getUnits()
         );
         binding.valuesLayout.setDropDownData(adapter);
         binding.loadingProgressBar.setVisibility(View.GONE);
+
     }
 
     private void initializeCards(){
@@ -287,18 +318,17 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
                         this, viewModel.cardNumber
                 );
                 binding.cardsLayout.setDropDownData(adapter);
-
+                if(selectCards.size() == 1){
+                    binding.cardsLayout.hideExpandDropdownButton();
+                }
             }
         });
     }
-
 
     private void showHelp() {
         DialogFragment fragment = new SelectPumpHelpDialogFragment();
         fragment.show(getFragmentManager(), "dialog");
     }
-
-
 
     @Override
     public void onExpandCollapseListener(boolean isExpand, String cardTitle) {
@@ -307,9 +337,21 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
     }
 
     private void goBack() {
-        Navigation.findNavController(getView()).popBackStack();
+        Alerts.prepareCustomDialog(getActivity(), getString(R.string.transacation_back_alert_title),
+                getString(R.string.transacation_back_alert_msg), getString(R.string.transacation_back_alert_leave),getString(R.string.transacation_back_alert_cancel),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Navigation.findNavController(requireView()).popBackStack();
+                    }
+                }, "carwash_transaction_form"
+        ).show();
     }
 
+    @Override
+    public void onBackPressed() {
+        goBack();
+    }
 
     @Override
     public void onPaymentChanged(String userPaymentId) {
@@ -338,16 +380,57 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
     }
 
     private void handleConfirmAndAuthorizedClick(){
-        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.BUTTONTAP, new Pair<>(AnalyticsUtils.Param.buttonText, getString(R.string.confirm_and_authorized).toLowerCase()));
-        if(userPaymentId == null) {
+        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.buttonTap, new Pair<>(AnalyticsUtils.Param.buttonText, getString(R.string.confirm_and_authorized).toLowerCase()));
+        if(userPaymentId == null || Objects.isNull(viewModel.getTransactionReloadTax())) {
             // select payment type error
             return;
         }
         if(userPaymentId.equals(PaymentDropDownAdapter.PAYMENT_TYPE_GOOGLE_PAY)){
             verifyFingerPrints();
         } else {
-
+            try {
+                String kountSessionId = generateKountSessionID();
+                Double totalAmount = viewModel.getTotalAmount();
+                viewModel.payByWalletRequest(cardType, totalAmount, kountSessionId, Integer.parseInt(userPaymentId)).observe(getViewLifecycleOwner(), result -> {
+                    if (result.status == Resource.Status.LOADING) {
+                        isLoading.set(true);
+                        AnalyticsUtils.setCurrentScreenName(requireActivity(), "pay-at-pump-preauthorize-loading");
+                    } else if (result.status == Resource.Status.ERROR) {
+                        isLoading.set(false);
+                        handleAuthorizationFail(result.message);
+                    } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
+                        showPaymentSuccessfulDialogAndNavigateToReceipt();
+                        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.paymentPreauthorize,
+                                new Pair<>(AnalyticsUtils.Param.paymentMethod, "Credit Card"),
+                                new Pair<>(AnalyticsUtils.Param.fuelAmountSelection, String.valueOf(totalAmount)));
+                    }
+                });
+            } catch (Exception ex) {
+                Timber.e(Objects.requireNonNull(ex.getMessage()));
+            }
         }
+    }
+
+    private void showPaymentSuccessfulDialogAndNavigateToReceipt(){
+      viewModel.refreshCards();
+      binding.authorizedProgressbar.setVisibility(View.GONE);
+      binding.progressbarImage.setVisibility(View.GONE);
+      binding.paymentSuccessImage.setVisibility(View.VISIBLE);
+      binding.progressbarText.setText(R.string.payment_successful);
+      if(handler == null){
+          handler =  new Handler(Looper.getMainLooper());
+      }
+      handler.postDelayed(() -> {
+          isLoading.set(false);
+          Navigation.findNavController(requireView()).popBackStack();
+          CarwashTransactionFragmentDirections.ActionTransactionToReceiptFragment action
+                  = CarwashTransactionFragmentDirections.actionTransactionToReceiptFragment();
+          action.setCardType(cardType);
+          action.setTotalAmount(formatter.format(viewModel.getTotalAmount()));
+          action.setUserName(viewModel.getUserName());
+          Navigation.findNavController(getView()).navigate(action);
+
+      }, 2000);
     }
 
 
@@ -367,9 +450,84 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
                         requireActivity(), LOAD_PAYMENT_DATA_REQUEST_CODE);
             }
         }catch (ParseException ex){
-                Timber.e(ex.getMessage());
-            }
+            Timber.e(ex.getMessage());
+        }
 
+    }
+
+
+
+    public void requestGooglePaymentTransaction() {
+        try {
+            //change value
+            double preAuthPrices = formatter.parse("1").doubleValue();
+            PaymentDataRequest request = viewModel.createGooglePayInitiationRequest(preAuthPrices,
+                    BuildConfig.GOOGLE_PAY_MERCHANT_GATEWAY, papData.getP97TenantID());
+
+            // Since loadPaymentData may show the UI asking the user to select a payment method, we use
+            // AutoResolveHelper to wait for the user interacting with it. Once completed,
+            // onActivityResult will be called with the result.
+            if (request != null) {
+                AutoResolveHelper.resolveTask(
+                        paymentsClient.loadPaymentData(request),
+                        requireActivity(), LOAD_PAYMENT_DATA_REQUEST_CODE);
+            }
+        } catch (Exception ex) {
+            Timber.e(ex.getMessage());
+        }
+    }
+
+
+        private void handleAuthorizationFail(String errorCode){
+        if(errorCode == null){
+            return;
+        }
+        if (ErrorCodes.ERR_TRANSACTION_FAILS_CARWASH.equals(errorCode.toUpperCase())) {
+            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
+                    new Pair<>(AnalyticsUtils.Param.errorMessage, "Something went wrong on our side"),
+                    new Pair<>(AnalyticsUtils.Param.detailMessage, "Transaction fails, errorCode : " + errorCode),
+                    new Pair<>(AnalyticsUtils.Param.formName, "carwash_transaction_form"));
+
+            transactionFailsAlert(getContext()).show();
+        } else {
+            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
+                    new Pair<>(AnalyticsUtils.Param.errorMessage, "Something went wrong on our side"),
+                    new Pair<>(AnalyticsUtils.Param.detailMessage, "Something went wrong on our side, errorCode : " + errorCode),
+                    new Pair<>(AnalyticsUtils.Param.formName, "carwash_transaction_form"));
+            Alerts.prepareGeneralErrorDialog(getContext(), "carwash_transaction_form").show();
+        }
+    }
+
+    private AlertDialog transactionFailsAlert(Context context) {
+
+        String analyticsName = context.getString(R.string.payment_failed_title)
+                + "(" + context.getString(R.string.payment_failed_message) + ")";
+        AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.alert,
+                new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsName),
+                new Pair<>(AnalyticsUtils.Param.formName, "carwash_transaction_form")
+        );
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context)
+                .setTitle(R.string.payment_failed_title)
+                .setMessage(R.string.payment_failed_message)
+                .setNegativeButton(R.string.payment_failed_cancel, ((dialog, i) -> {
+                    AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.alertInteraction,
+                            new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsName),
+                            new Pair<>(AnalyticsUtils.Param.alertSelection, context.getString(R.string.payment_failed_cancel)),
+                            new Pair<>(AnalyticsUtils.Param.formName, "carwash_transaction_form")
+                    );
+                    dialog.dismiss();
+                }))
+
+                .setPositiveButton(R.string.try_agian, (dialog, which) -> {
+                    handleConfirmAndAuthorizedClick();
+                    AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.alertInteraction,
+                            new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsName),
+                            new Pair<>(AnalyticsUtils.Param.alertSelection, context.getString(R.string.try_agian)),
+                            new Pair<>(AnalyticsUtils.Param.formName, "carwash_transaction_form"));
+                    dialog.dismiss();
+                });
+        return builder.create();
     }
 
     @Override
@@ -381,12 +539,12 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
                 switch (resultCode) {
 
                     case Activity.RESULT_OK:
-                        PaymentData paymentData = PaymentData.getFromIntent(data);
-                      //  String paymentToken =  viewModel.handlePaymentSuccess(paymentData);
-
-
+                        PaymentData paymentData = PaymentData.getFromIntent(Objects.requireNonNull(data));
+                        String paymentToken =  viewModel.handlePaymentSuccess(paymentData);
+                        payByGooglePayRequestToServer(paymentToken);
                         break;
                     case Activity.RESULT_CANCELED:
+                        // The user cancelled the payment attempt
                         // The user cancelled the payment attempt
                     /*    AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
                                 new Pair<>(AnalyticsUtils.Param.errorMessage, "Google pay transaction cancel by user"),
@@ -394,17 +552,38 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
                         break;
 
                     case AutoResolveHelper.RESULT_ERROR:
-                        Status status = AutoResolveHelper.getStatusFromIntent(data);
-//                        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
+                        Status status = AutoResolveHelper.getStatusFromIntent(data);//                       AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
 //                                new Pair<>(AnalyticsUtils.Param.errorMessage, "Google Pay error , message" + status.getStatusMessage()),
 //                                new Pair<>(AnalyticsUtils.Param.formName, "Pump PreAuthorized"));
 //                        Alerts.prepareGeneralErrorDialog(getContext(), "Pump PreAuthorized").show();
-//
-//
-                    break;
+                        break;
                 }
         }
     }
+
+    private void payByGooglePayRequestToServer(String paymentToken){
+        try {
+            String kountSessionId = generateKountSessionID();
+            Double totalAmount = viewModel.getTotalAmount();
+            viewModel.payByGooglePayRequest(cardType, totalAmount, kountSessionId, paymentToken).observe(getViewLifecycleOwner(), result -> {
+                if (result.status == Resource.Status.LOADING) {
+                    isLoading.set(true);
+                    AnalyticsUtils.setCurrentScreenName(requireActivity(), "pay-at-pump-preauthorize-loading");
+                } else if (result.status == Resource.Status.ERROR) {
+                    isLoading.set(false);
+                    handleAuthorizationFail(result.message);
+                } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
+                    showPaymentSuccessfulDialogAndNavigateToReceipt();
+                    AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.paymentPreauthorize,
+                            new Pair<>(AnalyticsUtils.Param.paymentMethod, "Google Pay"),
+                            new Pair<>(AnalyticsUtils.Param.fuelAmountSelection, String.valueOf(totalAmount)));
+                }
+            });
+        } catch (Exception ex) {
+            Timber.e(Objects.requireNonNull(ex.getMessage()));
+        }
+    }
+
 
     private void verifyFingerPrints(){
         if (fingerPrintManager.isFingerPrintExistAndEnrolled()) {
@@ -414,7 +593,7 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
                     .setDescription(getResources().getString(R.string.login_fingerprint_alert_desc))
                     .setNegativeButtonText(getResources().getString(R.string.login_fingerprint_alert_negative_button)).build();
             Executor executor = Executors.newSingleThreadExecutor();
-            BiometricPrompt biometricPrompt = new BiometricPrompt(getActivity(), executor, new BiometricPrompt.AuthenticationCallback() {
+            BiometricPrompt biometricPrompt = new BiometricPrompt(requireActivity(), executor, new BiometricPrompt.AuthenticationCallback() {
                 @Override
                 public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
                     super.onAuthenticationError(errorCode, errString);
@@ -451,8 +630,10 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
     }
 
     @Override
-    public void onValueChanged(Double value, String unit) {
-       binding.totalAmount.setText(formatter.format(value));
-       viewModel.setLastSelectedValue(unit);
+    public void onValueChanged(Double value, TransactionProduct product) {
+        binding.totalAmount.setText(formatter.format(value));
+        viewModel.setSelectedProduct(product);
+        viewModel.setSelectedValuesAmount(value);
+        fetchTaxValues();
     }
 }

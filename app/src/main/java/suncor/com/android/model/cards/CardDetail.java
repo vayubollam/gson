@@ -183,7 +183,7 @@ public class CardDetail {
     }
 
     public boolean isExpiredCard() {
-        return (status != null &&  (status.equals("Expired") || status.equals("Depleted")));
+        return (status != null && (status.equals("Expired") || status.equals("Depleted")));
     }
 
     public int getVacuumRemaining() {

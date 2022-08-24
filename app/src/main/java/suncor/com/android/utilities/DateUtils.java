@@ -69,6 +69,11 @@ public class DateUtils {
         return calender.get(Calendar.DATE);
     }
 
+    public static String getFromattedDate(long timestamp, String format){
+        DateFormat dateFormat = new SimpleDateFormat(format);
+        return DateFormat.getDateInstance(DateFormat.LONG).format(new Date(timestamp));
+    }
+
     @SuppressLint("SimpleDateFormat")
     public static long getDateTimeDifference(String startDate , String endDate, boolean isDifferenceInDays){
 

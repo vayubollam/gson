@@ -133,6 +133,7 @@ public class CardsUtil {
         builder.show();
     }
 
+
     public static void ShowSuspendedCardAlertForActivateWash(Context context, String type) {
         String title = null;
         if (type.equalsIgnoreCase(Constants.TYPE_VACUUM)) {
@@ -160,6 +161,7 @@ public class CardsUtil {
         alertWashDialog.show();
     }
 
+
     public static void showDailyWashUsedAlert(Context context, String time, String address) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context).setTitle(context.getResources().getString(R.string.carwash_daily_wash_used_alert)).setMessage(context.getResources().getString(R.string.carwash_daily_wash_used_message,time,address))
                 .setPositiveButton(context.getResources().getString(R.string.ok), (dialog, which) -> {
@@ -174,7 +176,6 @@ public class CardsUtil {
                 });
         builder.show();
     }
-
     public static void showWashInprogressAlert(Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context).setTitle(context.getResources().getString(R.string.session_in_progress_title)).setMessage(context.getResources().getString(R.string.session_wash_in_progress_message))
                 .setNegativeButton(context.getResources().getString(R.string.ok), (dialog, which) -> {

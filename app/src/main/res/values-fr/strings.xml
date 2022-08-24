@@ -806,14 +806,14 @@
     <string name="cards_days">%1$s jours</string>
     <string name="cards_washes">%1$s lavages</string>
 
-    <string name="bonus_days"> + %1$d prime jours</string>
-    <string name="bonus_washes"> + %1$d prime lavages</string>
+    <string name="bonus_days"> + %1$d jours en prime</string>
+    <string name="bonus_washes"> + %1$d lavages en prime</string>
 
     <string name="select_cards_to_reload">Sélectionnez la carte pour la recharger</string>
     <string name="select_value_to_reload">Choisir une valeur</string>
-    <string name="slect_payment_method">Sélectionnez un mode de paiement</string>
 
     <string name="discount_prices">%1$s (a été %2$s)</string>
+    <string name="discount_prices">%1$s (ancien prix %2$s)</string>
     <string name="petro_canada_carwash">https://www.petro-canada.ca/fr/personnel/lave-auto</string>
 
     <string name="google_passes_name_label">Nom</string>
@@ -879,5 +879,20 @@
     <string name="get_help_call">Appel</string>
     <string name="suncor039_error_title">Ce n’est pas vous, c’est nous</string>
     <string name="suncor039_error_message">Quelque chose a mal tourné, mais nous travaillons à trouver une solution. Veuillez réessayer plus tard.</string>
+
+
+    <string name="transacation_back_alert_title">Interrompre la recharge?</string>
+    <string name="transacation_back_alert_msg">Si vous quittez cet écran, vous perdrez vos sélections.</string>
+    <string name="transacation_back_alert_cancel">Annuler</string>
+    <string name="transacation_back_alert_leave">Quitter</string>
+    <string name="payment_in_progress">Paiement en cours</string>
+    <string name="payment_successful">Paiement réussi</string>
+
+    <string name="wng_washes_added_msg">Vos nouveaux lavages sont disponibles dans l\'application et sur votre carte physique.</string>
+    <string name="sp_washes_added_msg">Vos jours sont disponibles dans l\'application et sur votre carte physique.</string>
+<!-- Transaction Receipt -->
+    <string name="base_points_earned">Points de base</string>
+    <string name="bonus_points_earned">Points en prime</string>
+    <string name="new_balance">Nouveau solde</string>
 
 </resources>

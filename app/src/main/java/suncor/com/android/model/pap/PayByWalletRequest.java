@@ -29,6 +29,8 @@ public class PayByWalletRequest {
         this.kountSessionId = kountSessionId;
     }
 
+
+
     @Override
     public String toString() {
         return "PayByWalletRequest{" +

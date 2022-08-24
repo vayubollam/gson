@@ -29,7 +29,13 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.model.SettingsResponse;
 import suncor.com.android.model.account.Profile;
 import suncor.com.android.model.cards.CardDetail;
+import suncor.com.android.model.carwash.FundingPayload;
+import suncor.com.android.model.carwash.reload.TransactionProduct;
 import suncor.com.android.model.carwash.reload.TransactionReloadData;
+import suncor.com.android.model.carwash.reload.TransactionReloadTaxes;
+import suncor.com.android.model.carwash.PayByWalletRequest;
+import suncor.com.android.model.carwash.PayByGooglePayRequest;
+import suncor.com.android.model.pap.PayResponse;
 import suncor.com.android.model.payments.PaymentDetail;
 import suncor.com.android.ui.common.cards.CardFormatUtils;
 import suncor.com.android.ui.main.wallet.payments.list.PaymentListItem;
@@ -42,12 +48,15 @@ public class CarwashTransactionViewModel extends ViewModel {
     private final PaymentsRepository paymentsRepository;
     private final CardsRepository cardsRepository;
     private LatLng userLocation;
-    private Profile profile;
+    private final Profile profile;
     public String cardNumber;
     public String cardName;
     private TransactionReloadData transactionReloadData;
+    private TransactionProduct selectedProduct;
+    private TransactionReloadTaxes transactionReloadTax;
+    private Double selectedValuesAmount = 0.0;
     private String lastSelectedValue;
-
+    private Double totalAmount;
 
 
     @Inject
@@ -85,16 +94,48 @@ public class CarwashTransactionViewModel extends ViewModel {
         this.transactionReloadData = transactionReloadData;
     }
 
-    public String getLastSelectedValue() {
-        return lastSelectedValue;
+    public TransactionProduct getSelectedProduct() {
+        return selectedProduct;
     }
 
-    public void setLastSelectedValue(String lastSelectedValue) {
-        this.lastSelectedValue = lastSelectedValue;
+    public void setSelectedProduct(TransactionProduct selectedProduct) {
+        this.selectedProduct = selectedProduct;
+    }
+
+    public TransactionReloadTaxes getTransactionReloadTax() {
+        return transactionReloadTax;
+    }
+
+    public void setTransactionReloadTax(TransactionReloadTaxes transactionReloadTax) {
+        this.transactionReloadTax = transactionReloadTax;
+    }
+
+    public Double getSelectedValuesAmount() {
+        return selectedValuesAmount;
+    }
+
+    public void setSelectedValuesAmount(Double selectedValuesAmount) {
+        this.selectedValuesAmount = selectedValuesAmount;
+    }
+
+    public Double getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(Double totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    public String getUserName() {
+        return profile.getFirstName();
     }
 
     LiveData<Resource<TransactionReloadData>> getTransactionData(String cardType) {
         return carwashApi.reloadTransactionCarwash(cardType);
+    }
+
+    LiveData<Resource<TransactionReloadTaxes>> fetchTaxValues(String rewardId , String provience) {
+        return carwashApi.taxCalculationTransactionCarwash(rewardId, provience);
     }
 
     LiveData<Resource<ArrayList<PaymentListItem>>> getPayments(Context context) {
@@ -167,11 +208,48 @@ public class CarwashTransactionViewModel extends ViewModel {
         return CardFormatUtils.formatBalance(profile.getPointsBalance());
     }
 
+    public String getPetroPointsNumber() {
+        return profile.getPetroPointsNumber();
+    }
+
+    public String getUserProvince() {
+        return profile.getProvince();
+    }
+
     public LiveData<Resource<SettingsResponse>> getSettings(){
         return settingsApi.retrieveSettings();
     }
 
-    public LiveData<Resource<ArrayList<CardDetail>>> getcards(){
+    public LiveData<Resource<ArrayList<CardDetail>>> getCards(){
        return cardsRepository.getCards(false);
     }
+
+    /**
+     * Payment initiate with wallet
+     */
+    LiveData<Resource<PayResponse>> payByWalletRequest(String cardType,double totalAmount, String kountSessionId, int userPaymentSourceId) {
+        PayByWalletRequest request = new PayByWalletRequest(cardType, cardNumber.replace(" ", ""), selectedProduct.getBonusValues(),
+                selectedProduct.getSKU(), selectedProduct.getMaterialCode(), getUserProvince(), selectedValuesAmount,transactionReloadTax.getPst(),
+                transactionReloadTax.getGst(), transactionReloadTax.getQst(), transactionReloadTax.getHst(), totalAmount, profile.getPetroPointsNumber(), profile.getPointsBalance(),
+                selectedProduct.getBonusValues(),"moneris",userPaymentSourceId,
+                kountSessionId);
+        return carwashApi.authorizePaymentByWallet(request, userLocation);
+    }
+
+    /**
+     * Payment initiate with wallet
+     */
+    LiveData<Resource<PayResponse>> payByGooglePayRequest(String cardType,double totalAmount, String kountSessionId, String token) {
+        PayByGooglePayRequest request = new PayByGooglePayRequest(cardType, cardNumber.replace(" ", ""), selectedProduct.getBonusValues(),
+                selectedProduct.getSKU(), selectedProduct.getMaterialCode(), getUserProvince(), selectedValuesAmount,transactionReloadTax.getPst(),
+                transactionReloadTax.getGst(), transactionReloadTax.getQst(), transactionReloadTax.getHst(), totalAmount, profile.getPetroPointsNumber(), profile.getPointsBalance(),
+                selectedProduct.getBonusValues(),"moneris",
+                kountSessionId, new FundingPayload(token));
+        return carwashApi.authorizePaymentByGooglePay(request, userLocation);
+    }
+
+    public LiveData<Resource<ArrayList<CardDetail>>>  refreshCards(){
+       return cardsRepository.getCards(true);
+    }
+
 }

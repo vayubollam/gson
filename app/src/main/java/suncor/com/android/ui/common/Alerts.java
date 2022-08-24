@@ -35,6 +35,33 @@ public class Alerts {
         return builder.create();
     }
 
+    public static AlertDialog prepareGeneralErrorDialog(Context context, String formName , DialogInterface.OnClickListener listener) {
+        boolean hasInternetConnection = ConnectionUtil.haveNetworkConnection(context);
+        AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.formError,
+                new Pair<>(AnalyticsUtils.Param.errorMessage,hasInternetConnection ? context.getString( R.string.msg_e001_title) : context.getString( R.string.msg_e002_title))
+                ,new Pair<>(AnalyticsUtils.Param.formName, formName));
+
+        String analyticsName = context.getString(hasInternetConnection ? R.string.msg_e001_title : R.string.msg_e002_title)
+                + "(" + context.getString(hasInternetConnection ? R.string.msg_e001_message : R.string.msg_e002_message) + ")";
+        AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.alert,
+                new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsName),
+                new Pair<>(AnalyticsUtils.Param.formName, formName)
+        );
+        AlertDialog.Builder builder = new AlertDialog.Builder(context)
+                .setTitle(hasInternetConnection ? R.string.msg_e001_title : R.string.msg_e002_title)
+                .setMessage(hasInternetConnection ? R.string.msg_e001_message : R.string.msg_e002_message)
+
+                .setPositiveButton(R.string.ok, (dialog, which) -> {
+                    AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.alertInteraction,
+                            new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsName),
+                            new Pair<>(AnalyticsUtils.Param.alertSelection, context.getString(R.string.ok)),
+                            new Pair<>(AnalyticsUtils.Param.formName, formName)
+                    );
+                    listener.onClick(dialog, which);
+                });
+        return builder.create();
+    }
+
     public static AlertDialog prepareGeneralErrorDialogWithTryAgain(Context context, DialogInterface.OnClickListener listener, String formName) {
         boolean hasInternetConnection = ConnectionUtil.haveNetworkConnection(context);
         if (hasInternetConnection) AlertsAnalytics.logNoInternetConnection(context, formName);

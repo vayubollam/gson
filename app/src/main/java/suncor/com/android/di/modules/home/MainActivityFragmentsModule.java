@@ -3,6 +3,7 @@ package suncor.com.android.di.modules.home;
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
 import suncor.com.android.ui.main.actionmenu.ActionMenuFragment;
+//import suncor.com.android.ui.main.carwash.r.CarwashTransactionReceiptFragment;
 import suncor.com.android.ui.main.carwash.reload.CarwashTransactionFragment;
 import suncor.com.android.ui.main.carwash.activate.CarwashActivatedFragment;
 import suncor.com.android.ui.main.pap.fuelling.FuellingFragment;
@@ -51,6 +52,7 @@ import suncor.com.android.ui.main.stationlocator.search.SearchFragment;
 import suncor.com.android.ui.main.wallet.payments.add.AddPaymentFragment;
 import suncor.com.android.ui.main.wallet.payments.details.PaymentsDetailsFragment;
 import suncor.com.android.ui.main.wallet.payments.list.PaymentsFragment;
+import suncor.com.android.ui.tutorial.TutorialFragment;
 
 @Module
 abstract class MainActivityFragmentsModule {
@@ -200,5 +202,9 @@ abstract class MainActivityFragmentsModule {
 
     @ContributesAndroidInjector
     abstract AccountDeleteNotesFragment contributeAccountDeleteNotesFragment();
+
+//    @ContributesAndroidInjector
+//    abstract CarwashTransactionReceiptFragment contributeCarwashTransactionReceiptFragmentt();
+
 
 }

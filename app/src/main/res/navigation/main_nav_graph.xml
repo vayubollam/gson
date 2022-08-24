@@ -386,6 +386,14 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/dummy"
             app:popExitAnim="@anim/slide_out_right"/>
+
+        <action
+            android:id="@+id/action_transaction_to_receiptFragment"
+            app:destination="@id/carwahTransactionReceiptFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_out_right" >
+        </action>
     </keep_state_fragment>
 
     <keep_state_fragment
@@ -427,6 +435,34 @@
                 app:argType="boolean" />
         </action>
 
+        <action
+            android:id="@+id/action_transaction_to_receiptFragment"
+            app:destination="@id/carwahTransactionReceiptFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_out_right" >
+        </action>
+
+
+    </keep_state_fragment>
+
+    <keep_state_fragment
+        android:id="@+id/carwahTransactionReceiptFragment"
+        android:name="suncor.com.android.ui.main.carwash.receipt.CarwashTransactionReceiptFragment"
+        android:label="CarwahTransactionReceiptFragment" >
+        <argument
+            android:name="cardType"
+            android:defaultValue="0"
+            app:argType="string" />
+
+        <argument
+            android:name="totalAmount"
+            android:defaultValue="0"
+            app:argType="string" />
+        <argument
+            android:name="userName"
+            android:defaultValue="0"
+            app:argType="string" />
     </keep_state_fragment>
 
     <keep_state_fragment
