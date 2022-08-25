@@ -13,7 +13,7 @@
 
         <variable
             name="vm"
-            type="suncor.com.android.ui.main.rewards.donate.DonatePetroPointsViewModel" />
+            type="suncor.com.android.ui.main.rewards.donatepetropoints.donate.DonatePetroPointsViewModel" />
 
 
         <variable

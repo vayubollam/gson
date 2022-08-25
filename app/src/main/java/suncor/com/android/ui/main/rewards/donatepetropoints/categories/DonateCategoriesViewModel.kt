@@ -1,4 +1,4 @@
-package suncor.com.android.ui.main.rewards.donatepetropoints
+package suncor.com.android.ui.main.rewards.donatepetropoints.categories
 
 import androidx.lifecycle.ViewModel
 import suncor.com.android.mfp.SessionManager

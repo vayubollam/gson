@@ -31,6 +31,7 @@ import suncor.com.android.utilities.DateUtils;
 import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.MerchantsUtil;
 
+/*
 public class RedeemReceiptFragment extends MainActivityFragment implements OnBackPressedListener {
 
 
@@ -44,6 +45,7 @@ public class RedeemReceiptFragment extends MainActivityFragment implements OnBac
     private boolean isLinkToAccount;
     private MainViewModel mainViewModel;
     private PetroCanadaProduct product;
+    private boolean isDonate = false;
 
     @Override
     public void onCreate(Bundle savedInstance) {
@@ -59,17 +61,26 @@ public class RedeemReceiptFragment extends MainActivityFragment implements OnBac
         binding.buttonDone.setOnClickListener(v -> goBack());
 
         if (getArguments() != null) {
-            orderResponse = RedeemReceiptFragmentArgs.fromBundle(getArguments()).getOrderResponse();
-            isMerchant = RedeemReceiptFragmentArgs.fromBundle(getArguments()).getIsMerchant();
-            isLinkToAccount = RedeemReceiptFragmentArgs.fromBundle(getArguments()).getIsLinkToAccount();
-            product = RedeemReceiptFragmentArgs.fromBundle(getArguments()).getPetroCanadaProduct();
-            binding.setResponse(orderResponse);
+            isDonate = RedeemReceiptFragmentArgs.fromBundle(getArguments()).getIsDonate();
+
+
+            if(!isDonate){
+                orderResponse = RedeemReceiptFragmentArgs.fromBundle(getArguments()).getOrderResponse();
+                isMerchant = RedeemReceiptFragmentArgs.fromBundle(getArguments()).getIsMerchant();
+                isLinkToAccount = RedeemReceiptFragmentArgs.fromBundle(getArguments()).getIsLinkToAccount();
+                product = RedeemReceiptFragmentArgs.fromBundle(getArguments()).getPetroCanadaProduct();
+                binding.setResponse(orderResponse);
+            }else{
+
+            }
+
         }
         return initView();
     }
 
     private View initView() {
-        int imageId;
+        int imageId = 0;
+        if (getContext() != null) {
         if (isMerchant) {
             sessionManager.getProfile().setPointsBalance(orderResponse.getTransaction().getTransactionAmount().getPetroPoints().getPetroPointsRemaining());
             binding.newBalanceValue.setText(getString(R.string.points_redeemed_value, CardFormatUtils.formatBalance(orderResponse.getTransaction().getTransactionAmount().getPetroPoints().getPetroPointsRemaining())));
@@ -93,6 +104,7 @@ public class RedeemReceiptFragment extends MainActivityFragment implements OnBac
             binding.emailSentToValue.setText(sessionManager.getProfile().getEmail());
             binding.dateValue.setText(DateUtils.getFormattedDate(Calendar.getInstance().getTime()));
         }
+    }
         if(getActivity() != null)
         AnalyticsUtils.setCurrentScreenName(getActivity(), "my-petro-points-redeem-info-"+MerchantsUtil.getMerchantScreenName(orderResponse.getShoppingCart().geteGift().getMerchantId())+"-success");
         AnalyticsUtils.logEvent(this.getContext(),"form_complete",
@@ -119,4 +131,4 @@ public class RedeemReceiptFragment extends MainActivityFragment implements OnBac
         Navigation.findNavController(getView()).popBackStack();
     }
 
-}
+}*/

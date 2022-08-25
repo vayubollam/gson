@@ -1,4 +1,4 @@
-package suncor.com.android.ui.main.rewards.donate
+package suncor.com.android.ui.main.rewards.donatepetropoints.donate
 
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField

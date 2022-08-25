@@ -10,6 +10,7 @@ import org.mockito.Mockito
 import org.mockito.junit.MockitoJUnitRunner
 import suncor.com.android.mfp.SessionManager
 import suncor.com.android.model.account.Profile
+import suncor.com.android.ui.main.rewards.donatepetropoints.donate.DonatePetroPointsViewModel
 
 @RunWith(MockitoJUnitRunner::class)
 class DonatePetroPointsViewModelTest {

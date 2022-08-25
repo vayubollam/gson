@@ -13,8 +13,9 @@ import suncor.com.android.ui.main.profile.account.AccountDeleteNotesFragment;
 import suncor.com.android.ui.main.profile.account.AccountDeleteSubmitFragment;
 import suncor.com.android.ui.main.profile.account.AccountDetailsFragment;
 import suncor.com.android.ui.main.profile.account.AccountDeleteFragment;
-import suncor.com.android.ui.main.rewards.donatepetropoints.DonateCategoriesFragment;
-import suncor.com.android.ui.main.rewards.donate.DonatePetroPointsFragment;
+import suncor.com.android.ui.main.rewards.RedeemSummaryFragment;
+import suncor.com.android.ui.main.rewards.donatepetropoints.categories.DonateCategoriesFragment;
+import suncor.com.android.ui.main.rewards.donatepetropoints.donate.DonatePetroPointsFragment;
 import suncor.com.android.ui.main.rewards.thirdpartygiftcard.MoreEGiftCardCategoriesFragment;
 import suncor.com.android.ui.main.stationlocator.NearestStationFragment;
 import suncor.com.android.ui.main.vacuum.VacuumBarcodeFragment;
@@ -39,7 +40,6 @@ import suncor.com.android.ui.main.profile.securityquestion.SecurityQuestionValid
 import suncor.com.android.ui.main.profile.transcations.TransactionDetailFragment;
 import suncor.com.android.ui.main.profile.transcations.TransactionsFragment;
 import suncor.com.android.ui.main.rewards.MerchantDetailsFragment;
-import suncor.com.android.ui.main.rewards.RedeemReceiptFragment;
 import suncor.com.android.ui.main.rewards.RewardsDetailsFragment;
 import suncor.com.android.ui.main.rewards.RewardsDiscoveryFragment;
 import suncor.com.android.ui.main.rewards.RewardsGuestFragment;
@@ -147,7 +147,7 @@ abstract class MainActivityFragmentsModule {
     abstract MerchantDetailsFragment contributesMerchantDetailsFragment();
 
     @ContributesAndroidInjector
-    abstract RedeemReceiptFragment contributesRedeemReceiptFragment();
+    abstract RedeemSummaryFragment contributesRedeemReceiptFragment();
 
     @ContributesAndroidInjector
     abstract GiftCardValueConfirmationFragment contributeCardValueConfirmationFragment();

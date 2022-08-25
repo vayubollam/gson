@@ -488,6 +488,8 @@
     <string name="login_conflict_alert_positive_button">OK</string>
     <string name="rewards_egift_card_subtitle">Carte-cadeau électronique</string>
     <string name="donate_points_header">Faire don de Petro-Points</string>
+    <string name="donation_value_text">Donation Value</string>
+
     <string name="donate_petro_points_subtitle">Nos membres Petro‑Points ont fait don de plus de 220 millions de Petro‑Points!</string>
     <string name="rewards_e_gift_card_starting_points">À compter de 10 000 points</string>
     <string name="donate_petro_points_starting_points">A compter de 1 000 points</string>

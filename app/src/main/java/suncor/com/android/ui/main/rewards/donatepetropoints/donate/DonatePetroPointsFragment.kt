@@ -1,4 +1,4 @@
-package suncor.com.android.ui.main.rewards.donate
+package suncor.com.android.ui.main.rewards.donatepetropoints.donate
 
 import android.graphics.Rect
 import android.os.Build
@@ -57,7 +57,9 @@ class DonatePetroPointsFragment : MainActivityFragment(), OnKeyboardVisibilityLi
 
         arguments.let {
             if (it != null) {
-                programString = DonatePetroPointsFragmentArgs.fromBundle(it).program
+                programString = DonatePetroPointsFragmentArgs.fromBundle(
+                    it
+                ).program
             }
         }
 
@@ -73,6 +75,15 @@ class DonatePetroPointsFragment : MainActivityFragment(), OnKeyboardVisibilityLi
 
         binding.closeButton.setOnClickListener {
             Navigation.findNavController(requireView()).navigateUp()
+        }
+
+        binding.buyButton.setOnClickListener {
+            val action = DonatePetroPointsFragmentDirections.actionDonatePetroPointsFragmentToRedeemReceiptFragment(null,
+            viewModel.program, false, true)
+            val navDestination = Navigation.findNavController(requireView()).currentDestination
+            if (navDestination != null && navDestination.id == R.id.donatePetroPointsFragment) {
+                Navigation.findNavController(requireView()).navigate(action)
+            }
         }
 
         binding.inputField.addTextChangedListener(object : TextWatcher {
