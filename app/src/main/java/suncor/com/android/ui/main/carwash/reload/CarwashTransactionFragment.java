@@ -244,9 +244,9 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
     }
 
     private void initializeCardsValues(){
-//        if(viewModel.getTransactionReloadData() != null){
-//            setCardReloadAdapter();
-//        } else {
+        if(viewModel.getTransactionReloadData() != null){
+            setCardReloadAdapter();
+        } else {
             viewModel.getTransactionData(cardType).observe(getViewLifecycleOwner(), result -> {
                 if (result.status == Resource.Status.LOADING) {
                     //hideKeyBoard();
@@ -256,11 +256,12 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
                     Alerts.prepareGeneralErrorDialog(getContext(), PUMP_PRE_AUTHORIZED).show();
                 } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                     viewModel.setTransactionReloadData(result.data);
-                    viewModel.setLastSelectedValue(cardType.equals("SP") ? "90" : "5");
+                    viewModel.setSelectedProduct(result.data.getDefaultSelectProduct(cardType));
+                   // viewModel.setLastSelectedValue(cardType.equals("SP") ? "90" : "5");
                     setCardReloadAdapter();
                 }
             });
-        //}
+        }
 
     }
 
@@ -294,7 +295,9 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
             CardReloadValuesDropDownAdapter adapter = new CardReloadValuesDropDownAdapter(
                     getContext(),
                     viewModel.getTransactionReloadData().getProducts(),
-                    this, cardType, viewModel.getSelectedProduct().getUnits()
+                    this,
+                    cardType,
+                    viewModel.getSelectedProduct().getUnits()
             );
             binding.valuesLayout.setDropDownData(adapter);
             binding.loadingProgressBar.setVisibility(View.GONE);
@@ -441,27 +444,6 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
       }, 2000);
     }
 
-
-//    public void requestGooglePaymentTransaction() {
-//        try {
-//            //change value
-//            double preAuthPrices = formatter.parse("1").doubleValue();
-//            PaymentDataRequest request = viewModel.createGooglePayInitiationRequest(preAuthPrices,
-//                    BuildConfig.GOOGLE_PAY_MERCHANT_GATEWAY, papData.getP97TenantID());
-//
-//            // Since loadPaymentData may show the UI asking the user to select a payment method, we use
-//            // AutoResolveHelper to wait for the user interacting with it. Once completed,
-//            // onActivityResult will be called with the result.
-//            if (request != null) {
-//                AutoResolveHelper.resolveTask(
-//                        paymentsClient.loadPaymentData(request),
-//                        requireActivity(), LOAD_PAYMENT_DATA_REQUEST_CODE);
-//            }
-//        }catch (ParseException ex){
-//            Timber.e(ex.getMessage());
-//        }
-//
-//    }
 
 
 
@@ -637,13 +619,13 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
       viewModel.setCardNumber(cardNumber);
     }
 
+
     @Override
-    public void onValueChanged(Double value, TransactionProduct product) {
+    public void onValueChanged(Double value, TransactionProduct transactionProduct) {
         binding.totalAmount.setText(formatter.format(value));
-        viewModel.setSelectedProduct(product);
+        Timber.d("product:"+transactionProduct);
+        viewModel.setSelectedProduct(transactionProduct);
         viewModel.setSelectedValuesAmount(value);
         fetchTaxValues();
     }
-
-
 }
