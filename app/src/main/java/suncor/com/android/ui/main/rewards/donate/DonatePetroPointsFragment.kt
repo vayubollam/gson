@@ -26,11 +26,13 @@ import java.util.*
 import javax.inject.Inject
 
 
-class DonatePetroPointsFragment : MainActivityFragment(), OnKeyboardVisibilityListener,DotAnimControl.Callback {
+class DonatePetroPointsFragment : MainActivityFragment(), OnKeyboardVisibilityListener,
+    DotAnimControl.Callback {
 
 
     @Inject
     lateinit var gson: Gson
+
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
@@ -71,7 +73,7 @@ class DonatePetroPointsFragment : MainActivityFragment(), OnKeyboardVisibilityLi
                 "drawable",
                 context?.packageName
             )
-           binding.image = context?.getDrawable(imageId?:0)
+            binding.image = context?.getDrawable(imageId ?: 0)
         }
 
         binding.closeButton.setOnClickListener {
@@ -123,13 +125,15 @@ class DonatePetroPointsFragment : MainActivityFragment(), OnKeyboardVisibilityLi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            view.setWindowInsetsAnimationCallback(object : WindowInsetsAnimation.Callback(DISPATCH_MODE_STOP) {
+            view.setWindowInsetsAnimationCallback(object :
+                WindowInsetsAnimation.Callback(DISPATCH_MODE_STOP) {
                 override fun onProgress(
                     insets: WindowInsets,
                     runningAnimations: MutableList<WindowInsetsAnimation>
                 ): WindowInsets {
                     return insets
                 }
+
                 override fun onEnd(animation: WindowInsetsAnimation) {
                     super.onEnd(animation)
                     val showingKeyboard = view.rootWindowInsets.isVisible(WindowInsets.Type.ime())
@@ -140,21 +144,44 @@ class DonatePetroPointsFragment : MainActivityFragment(), OnKeyboardVisibilityLi
             setKeyboardVisibilityListener(this)
         }
         val context = context
-        if(context != null){
-            dotAnimControl.start(context,R.string.donating)
+        if (context != null) {
+            dotAnimControl.start(context, R.string.donating)
+        }
+
+        binding.buyButton.setOnClickListener {
+            viewModel.donatePoints().observe(viewLifecycleOwner) { response ->
+                if (response != null) {
+                    when (response.status) {
+                        Resource.Status.SUCCESS -> {
+                            viewModel.isLoading.set(false)
+                            Timber.d("Hurrah Money Donated")
+                        }
+
+                        Resource.Status.ERROR -> {
+                            viewModel.isLoading.set(false)
+                            Timber.d("ALAS! Money Donation failed")
+                        }
+
+                        Resource.Status.LOADING -> {
+                            viewModel. isLoading.set(true)
+                        }
+                    }
+                }
+
+            }
         }
     }
 
 
     override fun onVisibilityChanged(visible: Boolean) {
-        if(!visible){
+        if (!visible) {
             viewModel.enableDonation.set(true)
             viewModel.rectifyValuesOnKeyboardGone()
             binding.inputField.setText(viewModel.formattedDonationAmount.get())
             binding.inputField.setSelection(
                 viewModel.formattedDonationAmount.get()?.length ?: 0
             )
-        }else{
+        } else {
             viewModel.enableDonation.set(false)
         }
 
@@ -186,6 +213,7 @@ class DonatePetroPointsFragment : MainActivityFragment(), OnKeyboardVisibilityLi
             }
         })
     }
+
     override fun onDestroy() {
         super.onDestroy()
         originalMode?.let { activity?.window?.setSoftInputMode(it) }

@@ -37,28 +37,13 @@ class DonatePetroPointsViewModel @Inject constructor(
 
     var donationResponseLiveData = MutableLiveData<Resource<Unit>>()
 
-    fun donatePoints() {
-        donationResponseLiveData =
-            repository.makeDonateCall(program.programId, getPetroPointsId(), getPointsFromDollar())
-        donationResponseLiveData.observeForever() { response ->
-            if (response != null) {
-                when (response.status) {
-                    Resource.Status.SUCCESS -> {
-                        isLoading.set(false)
-                        Timber.d("Hurrah Money Donated")
-                    }
+    fun donatePoints(): MutableLiveData<Resource<Unit>> {
+        return repository.makeDonateCall(
+            program.programId,
+            getPetroPointsId(),
+            getPointsFromDollar()
+        )
 
-                    Resource.Status.ERROR ->{
-                        isLoading.set(false)
-                        Timber.d("ALAS! Money Donation failed")
-
-                    }
-                    Resource.Status.LOADING -> {
-                        isLoading.set(true)
-                    }
-                }
-            }
-        }
     }
 
     fun incrementAmount() {
@@ -117,7 +102,7 @@ class DonatePetroPointsViewModel @Inject constructor(
         return 0
     }
 
-    fun getPetroPointsId(): String {
+    private fun getPetroPointsId(): String {
         try {
             return sessionManager.profile.petroPointsNumber
         } catch (e: Exception) {
