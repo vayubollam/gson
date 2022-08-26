@@ -27,13 +27,13 @@
         android:layout_height="match_parent"
         android:background="@color/black_4"
         android:clickable="true"
-        android:paddingTop="15dp">
+        android:focusable="true">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/points"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="13dp"
+            android:layout_marginTop="28dp"
             android:layout_marginBottom="30dp"
             android:fontFamily="@font/gibson_semibold"
             android:gravity="center"
@@ -333,10 +333,12 @@
             android:elevation="16dp"
             app:visibleGone="@{vm.isLoading()}"
             tools:visibility="gone"
+            android:clickable="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            android:focusable="true">
 
             <androidx.appcompat.widget.AppCompatTextView
                 style="@style/Headline1"
