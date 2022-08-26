@@ -21,11 +21,13 @@
             name="image"
             type="android.graphics.drawable.Drawable" />
     </data>
-
+<FrameLayout
+    android:layout_width="match_parent"
+    android:background="@{vm.isLoading ? @color/white : @color/black_4}"
+    android:layout_height="match_parent">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/black_4"
         android:clickable="true"
         android:focusable="true">
 
@@ -326,48 +328,46 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@color/white"
-            android:elevation="16dp"
-            app:visibleGone="@{vm.isLoading()}"
-            tools:visibility="gone"
-            android:clickable="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:focusable="true">
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/text_view_progress"
-                style="@style/Headline1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_above="@+id/authorized_pprogressbar"
-                android:layout_centerHorizontal="true"
-                android:padding="16dp"
-                android:text="@string/donating"
-                android:textSize="18sp"
-                android:visibility="visible"
-                app:autoSizeTextType="uniform" />
-
-            <ProgressBar
-                android:id="@+id/authorized_pprogressbar"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:indeterminateTint="@color/red" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_centerInParent="true"
-                android:src="@drawable/ic_icon_rewards"
-                />
-        </RelativeLayout>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:elevation="16dp"
+        app:visibleGone="@{vm.isLoading()}"
+        tools:visibility="gone"
+        android:clickable="true"
+        android:focusable="true">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/text_view_progress"
+            style="@style/Headline1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/authorized_pprogressbar"
+            android:layout_centerHorizontal="true"
+            android:padding="16dp"
+            android:text="@string/donating"
+            android:textSize="18sp"
+            android:visibility="visible"
+            app:autoSizeTextType="uniform" />
+
+        <ProgressBar
+            android:id="@+id/authorized_pprogressbar"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:indeterminateTint="@color/red" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_icon_rewards"
+            />
+    </RelativeLayout>
+
+</FrameLayout>
 </layout>
