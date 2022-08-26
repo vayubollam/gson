@@ -19,12 +19,14 @@ import suncor.com.android.extensions.getSoftInputMode
 import suncor.com.android.model.Resource
 import suncor.com.android.model.redeem.response.Program
 import suncor.com.android.ui.main.common.MainActivityFragment
+import suncor.com.android.utilities.DotAnimControl
+import suncor.com.android.utilities.DotAnimType
 import suncor.com.android.utilities.Timber
 import java.util.*
 import javax.inject.Inject
 
 
-class DonatePetroPointsFragment : MainActivityFragment(), OnKeyboardVisibilityListener {
+class DonatePetroPointsFragment : MainActivityFragment(), OnKeyboardVisibilityListener,DotAnimControl.Callback {
 
 
     @Inject
@@ -37,7 +39,7 @@ class DonatePetroPointsFragment : MainActivityFragment(), OnKeyboardVisibilityLi
     private var originalMode: Int? = null
     private var programString: String = ""
     private var isFrench: Boolean = false
-
+    private val dotAnimControl = DotAnimControl(DotAnimType.SPAN, callback = this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -137,6 +139,10 @@ class DonatePetroPointsFragment : MainActivityFragment(), OnKeyboardVisibilityLi
         } else {
             setKeyboardVisibilityListener(this)
         }
+        val context = context
+        if(context != null){
+            dotAnimControl.start(context,R.string.donating)
+        }
     }
 
 
@@ -183,6 +189,11 @@ class DonatePetroPointsFragment : MainActivityFragment(), OnKeyboardVisibilityLi
     override fun onDestroy() {
         super.onDestroy()
         originalMode?.let { activity?.window?.setSoftInputMode(it) }
+        dotAnimControl.stop()
+    }
+
+    override fun onDotAnimUpdate(text: CharSequence) {
+        binding.textViewProgress.text = text
     }
 }
 

@@ -914,4 +914,5 @@
     <string name="donate_points">DONATE POINTS</string>
     <string name="hint_0" translatable="false">0</string>
     <string name="donating">Donating</string>
+    <string name="dot" translatable="false">.</string>
 </resources>
