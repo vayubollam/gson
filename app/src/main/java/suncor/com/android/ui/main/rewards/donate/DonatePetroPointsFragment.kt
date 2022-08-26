@@ -16,6 +16,7 @@ import suncor.com.android.R
 import suncor.com.android.databinding.FragmentDonatePetroPointsBinding
 import suncor.com.android.di.viewmodel.ViewModelFactory
 import suncor.com.android.extensions.getSoftInputMode
+import suncor.com.android.model.Resource
 import suncor.com.android.model.redeem.response.Program
 import suncor.com.android.ui.main.common.MainActivityFragment
 import suncor.com.android.utilities.Timber

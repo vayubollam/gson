@@ -3,11 +3,15 @@ package suncor.com.android.ui.main.rewards.donate
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import suncor.com.android.data.redeem.donate.DonateRepository
 import suncor.com.android.mfp.SessionManager
+import suncor.com.android.model.Resource
 import suncor.com.android.model.redeem.response.Program
 import suncor.com.android.ui.common.cards.CardFormatUtils
+import suncor.com.android.utilities.Timber
 import java.util.*
 import javax.inject.Inject
 
@@ -19,6 +23,7 @@ class DonatePetroPointsViewModel @Inject constructor(
 
     lateinit var program: Program
     val enableDeduction: ObservableBoolean = ObservableBoolean(false)
+    val isLoading: ObservableBoolean = ObservableBoolean(false)
     val enableIncrement: ObservableBoolean = ObservableBoolean(getPetroPoints() >= 1000)
     val enableDonation: ObservableBoolean = ObservableBoolean(false)
     private val donationPoints: ObservableInt = ObservableInt(0)
@@ -30,8 +35,30 @@ class DonatePetroPointsViewModel @Inject constructor(
     val formattedDonationAmount: ObservableField<String> =
         ObservableField(getFormattedDonateAmount())
 
+    var donationResponseLiveData = MutableLiveData<Resource<Unit>>()
+
     fun donatePoints() {
-        repository.makeDonateCall(program.programId,getPetroPointsId(),getPointsFromDollar())
+        donationResponseLiveData =
+            repository.makeDonateCall(program.programId, getPetroPointsId(), getPointsFromDollar())
+        donationResponseLiveData.observeForever() { response ->
+            if (response != null) {
+                when (response.status) {
+                    Resource.Status.SUCCESS -> {
+                        isLoading.set(false)
+                        Timber.d("Hurrah Money Donated")
+                    }
+
+                    Resource.Status.ERROR ->{
+                        isLoading.set(false)
+                        Timber.d("ALAS! Money Donation failed")
+
+                    }
+                    Resource.Status.LOADING -> {
+                        isLoading.set(true)
+                    }
+                }
+            }
+        }
     }
 
     fun incrementAmount() {

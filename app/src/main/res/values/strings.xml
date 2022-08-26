@@ -913,4 +913,5 @@
     <string name="donation_tax_notice">Donation of Petro-Points is not eligible for tax receipts.</string>
     <string name="donate_points">DONATE POINTS</string>
     <string name="hint_0" translatable="false">0</string>
+    <string name="donating">Donating</string>
 </resources>
