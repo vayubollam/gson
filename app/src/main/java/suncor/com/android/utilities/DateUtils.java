@@ -27,6 +27,12 @@ public class DateUtils {
         return DateFormat.getDateInstance(DateFormat.LONG).format(date);
     }
 
+    public static String getDate(){
+       String date  = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+
+        return getFormattedDate(date);
+    }
+
     public static String getFormattedDate(String inputDate, String format) {
         DateFormat dateFormat = new SimpleDateFormat(format);
         Date date = null;
