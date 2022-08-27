@@ -295,6 +295,7 @@
                         android:gravity="center|end"
                         android:textAlignment="textEnd"
                         android:textAppearance="@style/Body"
+                        android:fontFamily="@font/gibson_regular"
                         app:layout_constraintLeft_toRightOf="@id/points_redeemed_title"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/details_divider"

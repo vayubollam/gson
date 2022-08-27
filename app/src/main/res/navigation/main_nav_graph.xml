@@ -994,7 +994,8 @@
             app:destination="@id/redeemReceiptFragment"
             app:enterAnim="@anim/slide_up"
             app:exitAnim="@anim/dummy"
-            app:popExitAnim="@anim/slide_down"/>
+            app:popExitAnim="@anim/slide_down"
+            app:popUpTo="@+id/rewards_signedin_tab"/>
     </keep_state_fragment>
 
 </navigation>
