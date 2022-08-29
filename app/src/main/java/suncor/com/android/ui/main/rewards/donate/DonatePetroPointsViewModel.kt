@@ -3,19 +3,26 @@ package suncor.com.android.ui.main.rewards.donate
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import suncor.com.android.data.redeem.donate.DonateRepository
 import suncor.com.android.mfp.SessionManager
+import suncor.com.android.model.Resource
 import suncor.com.android.model.redeem.response.Program
 import suncor.com.android.ui.common.cards.CardFormatUtils
 import java.util.*
 import javax.inject.Inject
 
-class DonatePetroPointsViewModel @Inject constructor(val sessionManager: SessionManager) :
+class DonatePetroPointsViewModel @Inject constructor(
+    val sessionManager: SessionManager,
+    val repository: DonateRepository
+) :
     ViewModel() {
 
     lateinit var program: Program
     val enableDeduction: ObservableBoolean = ObservableBoolean(false)
-    val enableIncrement: ObservableBoolean = ObservableBoolean(getPetroPoints()>=1000)
+    val isLoading: ObservableBoolean = ObservableBoolean(false)
+    val enableIncrement: ObservableBoolean = ObservableBoolean(getPetroPoints() >= 1000)
     val enableDonation: ObservableBoolean = ObservableBoolean(false)
     private val donationPoints: ObservableInt = ObservableInt(0)
     val donateAmount: ObservableInt = ObservableInt(0)
@@ -26,6 +33,13 @@ class DonatePetroPointsViewModel @Inject constructor(val sessionManager: Session
     val formattedDonationAmount: ObservableField<String> =
         ObservableField(getFormattedDonateAmount())
 
+    fun donatePoints(): MutableLiveData<Resource<Unit>> {
+        return repository.makeDonateCall(
+            program.programId,
+            getPetroPointsId(),
+            getPointsFromDollar()
+        )
+    }
 
     fun incrementAmount() {
         if (donateAmount.get() >= getDonationLimit()) return
@@ -81,6 +95,15 @@ class DonatePetroPointsViewModel @Inject constructor(val sessionManager: Session
             e.printStackTrace()
         }
         return 0
+    }
+
+    private fun getPetroPointsId(): String {
+        try {
+            return sessionManager.profile.petroPointsNumber
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return "0"
     }
 
     fun getFormattedPoints(): String {

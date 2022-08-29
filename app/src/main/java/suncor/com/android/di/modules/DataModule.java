@@ -3,7 +3,6 @@ package suncor.com.android.di.modules;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.gson.Gson;
-import com.worklight.wlclient.api.WLAuthorizationManager;
 
 import javax.inject.Singleton;
 
@@ -30,6 +29,8 @@ import suncor.com.android.data.redeem.MerchantsApi;
 import suncor.com.android.data.redeem.MerchantsApiImpl;
 import suncor.com.android.data.redeem.OrderApi;
 import suncor.com.android.data.redeem.OrderApiImpl;
+import suncor.com.android.data.redeem.donate.DonateApi;
+import suncor.com.android.data.redeem.donate.DonateApiImpl;
 import suncor.com.android.data.resetpassword.ForgotPasswordProfileApi;
 import suncor.com.android.data.resetpassword.ForgotPasswordProfileApiImpl;
 import suncor.com.android.data.settings.SettingsApi;
@@ -44,10 +45,8 @@ import suncor.com.android.data.transcations.TransactionApiImpl;
 import suncor.com.android.data.users.UsersApi;
 import suncor.com.android.data.users.UsersApiImpl;
 import suncor.com.android.mfp.SessionManager;
-import suncor.com.android.mfp.challengeHandlers.UserLoginChallengeHandler;
 import suncor.com.android.model.redeem.response.OrderResponse;
 import suncor.com.android.utilities.SharedPrefsHelper;
-import suncor.com.android.utilities.UserLocalSettings;
 
 @Module
 public class DataModule {
@@ -168,5 +167,11 @@ public class DataModule {
     @Singleton
     CarwashApi providesCarwashApi() {
         return new CarwashApiImpl();
+    }
+
+    @Provides
+    @Singleton
+    DonateApi providesDonateApi() {
+        return new DonateApiImpl();
     }
 }

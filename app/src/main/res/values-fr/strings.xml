@@ -877,4 +877,5 @@
     <string name="x_points">%s points</string>
     <string name="donation_tax_notice">Le don de Petro-Points n\'est pas admissible à un reçu d\'impôt.</string>
     <string name="donate_points">FAIRE DON DE POINTS</string>
+    <string name="donating">Faire un don</string>
 </resources>
