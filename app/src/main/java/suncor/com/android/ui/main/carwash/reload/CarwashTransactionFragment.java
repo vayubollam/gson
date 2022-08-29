@@ -445,12 +445,8 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
     }
 
 
-
-
     public void requestGooglePaymentTransaction() {
-        try {
-            //change value
-            double preAuthPrices = formatter.parse("1").doubleValue();
+            double preAuthPrices = viewModel.getTotalAmount();
             PaymentDataRequest request = viewModel.createGooglePayInitiationRequest(preAuthPrices,
                     BuildConfig.GOOGLE_PAY_MERCHANT_GATEWAY, papData.getP97TenantID());
 
@@ -462,13 +458,10 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
                         paymentsClient.loadPaymentData(request),
                         requireActivity(), LOAD_PAYMENT_DATA_REQUEST_CODE);
             }
-        } catch (Exception ex) {
-            Timber.e(ex.getMessage());
-        }
+
     }
 
-
-        private void handleAuthorizationFail(String errorCode){
+    private void handleAuthorizationFail(String errorCode){
         if(errorCode == null){
             return;
         }
