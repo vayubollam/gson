@@ -867,7 +867,8 @@
 
     <!-- Gift cards -->
     <string name="redemption_unavailable_text">Les échanges ne sont pas disponibles pour le moment</string>
-
+    <string name="redemption_10_000_error">Vous avez besoin d\'au moins 10 000 points pour effectuer un échange</string>
+    <string name="redemption_1_000_error">Vous avez besoin d\'au moins 1 000 points pour effectuer un échange</string>
 
     <!--  Donate petro points default screen  -->
     <string name="donate_points_remaining">Vous avez %s points</string>

@@ -20,6 +20,7 @@ public class GenericEGiftCard implements Parcelable {
     private String shortName;
     private String screenName;
     private String group;
+    private String notEnoughPointsErrorMsg;
 
     public String getGroup() {
         return group;
@@ -70,7 +71,7 @@ public class GenericEGiftCard implements Parcelable {
         return CREATOR;
     }
 
-    public GenericEGiftCard(){
+    public GenericEGiftCard() {
 
     }
 
@@ -83,6 +84,7 @@ public class GenericEGiftCard implements Parcelable {
         howToRedeem = in.readString();
         largeImage = in.readString();
         smallImage = in.readString();
+        notEnoughPointsErrorMsg = in.readString();
         isDataDynamic = in.readByte() != 0;
     }
 
@@ -170,6 +172,14 @@ public class GenericEGiftCard implements Parcelable {
         isDataDynamic = dataDynamic;
     }
 
+    public String getNotEnoughPointsErrorMsg() {
+        return notEnoughPointsErrorMsg;
+    }
+
+    public void setNotEnoughPointsErrorMsg(String notEnoughPointsErrorMsg) {
+        this.notEnoughPointsErrorMsg = notEnoughPointsErrorMsg;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -185,6 +195,7 @@ public class GenericEGiftCard implements Parcelable {
         dest.writeString(howToUse);
         dest.writeString(largeImage);
         dest.writeString(smallImage);
+        dest.writeString(notEnoughPointsErrorMsg);
         dest.writeByte((byte) (isDataDynamic ? 1 : 0));
     }
 }
