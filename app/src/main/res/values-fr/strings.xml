@@ -227,7 +227,7 @@
     <string name="customer_support_email">servicealaclientele@petro-canada.ca</string>
     <string name="profile_get_help_call">Appeler</string>
     <string name="profile_get_help_email">Courriel</string>
-    <string name="enrollment_phone_field_invalid_format">Veuillez entrer un numéro de téléphone valide (p. ex., 514-123-4567)</string>
+    <string name="enrollment_phone_field_invalid_format">Veuillez entrer un numéro de téléphone valide (p. ex., 514–123–4567)</string>
     <string name="cards_fsr_description">Notre carte Économie sur l\'essence en prime vous permet d\'économiser %d ¢ le litre sur 200 litres d\'essence.\n\u2014\nRechargez votre carte à petro-points.com.</string>
     <string name="cards_wag_description">À utiliser aux établissements avec lave-auto GlideWash ou SuperDoux participants.</string>
     <string name="cards_wag_description_vacuum_expire">Votre utilisation de l\'aspirateur expire 7 jours après le lavage connecté.</string>
@@ -329,11 +329,11 @@
     <string name="cards_details_close">Fermer</string>
     <string name="profile_personnal_informations_email_empty_inline_error">Veuillez entrer une adresse courriel.</string>
     <string name="profile_personnal_informations_email_format_inline_error">Veuillez entrer une adresse courriel valide.</string>
-    <string name="profile_personnal_informations_phone_field_invalid_format">Veuillez entrer un numéro de téléphone valide (p. ex., 514-123-4567)</string>
+    <string name="profile_personnal_informations_phone_field_invalid_format">Veuillez entrer un numéro de téléphone valide (p. ex., 514–123–4567)</string>
     <string name="profile_personnal_informations_email_empty_alert_title">Courriel est requis</string>
     <string name="profile_personnal_informations_email_invalid_alert_title">Courriel invalide</string>
     <string name="profile_personnal_informations_email_empty_alert_message">Veuillez entrer une adresse courriel.</string>
-    <string name="profile_personnal_informations_email_invalid_alert_message">Veuillez entrer une autre adresse courriel ou composer le 1-800-668-0222 si vous avez un problème.</string>
+    <string name="profile_personnal_informations_email_invalid_alert_message">Veuillez entrer une autre adresse courriel ou composer le 1–800–668–0222 si vous avez un problème.</string>
     <string name="profile_personnal_informations_email_alert_title">Enregistrer les changements</string>
     <string name="profile_personnal_informations_email_alert_message">Pour modifier vos renseignements, vous devrez ouvrir une autre session. Si vous avez modifié votre courriel, consultez votre boîte de réception pour vérifier votre adresse de courriel.</string>
     <string name="profile_personnal_informations_email_alert_signout_button">Fermer la session</string>
@@ -360,7 +360,7 @@
     <string name="profile_personnal_informations_email_restricted_inline_error">Veuillez utiliser un autre adresse courriel.</string>
     <string name="enrollment_email_restricted_error">Veuillez utiliser un autre adresse courriel.</string>
     <string name="enrollment_email_format_error">Veuillez entrer une adresse courriel valide.</string>
-    <string name="enrollment_email_restricted_alert_title">Veuillez entrer une autre adresse courriel ou composer le 1-800-668-0222 si vous avez un problème.</string>
+    <string name="enrollment_email_restricted_alert_title">Veuillez entrer une autre adresse courriel ou composer le 1–800–668–0222 si vous avez un problème.</string>
     <string name="enrollment_street_format_error">Adresse invalide</string>
     <string name="enrollment_city_format_error">Ville invalide</string>
     <string name="profile_preferences_email_header">Courriel</string>
@@ -369,7 +369,7 @@
     <string name="profile_preferences_text_header">Message texte</string>
     <string name="profile_preferences_enable_text_offers_message">Oui, j\'aimerais recevoir des offres spéciales et des alertes par SMS de Petro\u2011Points.</string>
     <string name="profile_preferences_disable_text_offers_message">Non, je ne suis pas intéressé à recevoir des offres spéciales et des alertes par SMS de Petro\u2011Points.</string>
-    <string name="profile_preferences_address">Petro‑Points – C.P. 59257, Westwood Mall Mississauga (Ontario).  Canada.  L4T 4J1 Téléphone : 1 (800) 668-0222  .  TTY : 1 (888) 290-7377\t</string>
+    <string name="profile_preferences_address">Petro‑Points – C.P. 59257, Westwood Mall Mississauga (Ontario).  Canada.  L4T 4J1 Téléphone : 1 (800) 668–0222  .  TTY : 1 (888) 290–7377\t</string>
     <string name="profile_preferences_header">Changer mes préférences.</string>
     <string name="cards_add_fragment_done_button">Fini</string>
     <string name="transaction_title_pe">points accumulés</string>
@@ -535,8 +535,9 @@
     <string name="redeem_receipt_point_redeemeed">Points échangés</string>
     <string name="redeem_receipt_new_balance">Nouveau solde</string>
     <string name="redeem_receipt_details_label">Détails</string>
+    <string name="redeem_receipt_date_label">Date</string>
     <string name="redeem_receipt_order_id_label">Numéro de commande</string>
-    <string name="msg_e030_message">Si ce problème persiste, appelez-nous au 1-800-668-0222.</string>
+    <string name="msg_e030_message">Si ce problème persiste, appelez–nous au 1–800–668–0222.</string>
     <string name="msg_e030_title">Échange de points non accepté</string>
     <string name="redeem_receipt_email_sent_to_label">Envoyée à</string>
     <string name="forgot_password_header">Réinitialisation du mot de passe</string>

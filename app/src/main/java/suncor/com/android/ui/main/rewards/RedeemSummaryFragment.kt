@@ -3,6 +3,7 @@ package suncor.com.android.ui.main.rewards
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -115,7 +116,7 @@ class RedeemSummaryFragment : MainActivityFragment(), OnBackPressedListener {
                                     getString(R.string.leaving_app_alert_button),
                                     getString(R.string.cancel),
                                     program.info.url,
-                                     this@RedeemSummaryFragment :: redirectToUrl)
+                                    this@RedeemSummaryFragment :: redirectToUrl)
                             }
                         }
                     }
@@ -170,9 +171,11 @@ class RedeemSummaryFragment : MainActivityFragment(), OnBackPressedListener {
 
     private fun redirectToUrl(url: String){
 
-        val intent = Intent(Intent.ACTION_VIEW)
-        intent.data = Uri.parse(url)
-        startActivity(intent)
+        if(TextUtils.isEmpty(url)){
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(url)
+            startActivity(intent)
+        }
     }
 
     private fun getNewBalance(): String{
