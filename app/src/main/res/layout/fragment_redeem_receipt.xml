@@ -351,7 +351,6 @@
                         android:layout_width="0dp"
                         android:layout_height="48dp"
                         android:gravity="center|start"
-                        android:maxLines="2"
                         android:text="@{!isDonate ? @string/egift_card_value_title : @string/donation_value_text }"
                         android:textAppearance="@style/Body"
                         app:layout_constraintEnd_toStartOf="@+id/card_value"

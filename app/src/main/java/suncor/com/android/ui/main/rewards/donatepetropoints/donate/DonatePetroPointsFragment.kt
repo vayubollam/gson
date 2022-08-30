@@ -82,15 +82,6 @@ class DonatePetroPointsFragment : MainActivityFragment(), OnKeyboardVisibilityLi
             Navigation.findNavController(requireView()).navigateUp()
         }
 
-        binding.buyButton.setOnClickListener {
-            val action = DonatePetroPointsFragmentDirections.actionDonatePetroPointsFragmentToRedeemReceiptFragment(null,
-            viewModel.program, false, true)
-            val navDestination = Navigation.findNavController(requireView()).currentDestination
-            if (navDestination != null && navDestination.id == R.id.donatePetroPointsFragment) {
-                Navigation.findNavController(requireView()).navigate(action)
-            }
-        }
-
         binding.inputField.addTextChangedListener(object : TextWatcher {
 
             override fun afterTextChanged(arg: Editable) {
@@ -166,6 +157,17 @@ class DonatePetroPointsFragment : MainActivityFragment(), OnKeyboardVisibilityLi
                         Resource.Status.SUCCESS -> {
                             viewModel.isLoading.set(false)
                             Timber.d("Hurrah Money Donated")
+                            val action = DonatePetroPointsFragmentDirections.actionDonatePetroPointsFragmentToRedeemReceiptFragment(
+                                null,
+                                viewModel.program,
+                                false,
+                                viewModel.getPointsFromDollar(),
+                                true
+                            )
+                            val navDestination = Navigation.findNavController(requireView()).currentDestination
+                            if (navDestination != null && navDestination.id == R.id.donatePetroPointsFragment) {
+                                Navigation.findNavController(requireView()).navigate(action)
+                            }
                         }
 
                         Resource.Status.ERROR -> {

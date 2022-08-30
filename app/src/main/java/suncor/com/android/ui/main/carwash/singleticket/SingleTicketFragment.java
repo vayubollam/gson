@@ -98,7 +98,7 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
                     OrderResponse orderResponse = orderResponseResource.data;
                     if (isFromCardsTab) {
                         SingleTicketFragmentDirections.ActionCarWashPurchaseFragmentToRedeemReceiptFragmentPopToCards action
-                                = SingleTicketFragmentDirections.actionCarWashPurchaseFragmentToRedeemReceiptFragmentPopToCards(Objects.requireNonNull(orderResponse),null,  false, false);
+                                = SingleTicketFragmentDirections.actionCarWashPurchaseFragmentToRedeemReceiptFragmentPopToCards(Objects.requireNonNull(orderResponse),null,  false,0, false);
                         action.setIsLinkToAccount(viewModel.isLinkedToAccount());
                         action.setPetroCanadaProduct(viewModel.getSelectedSingleTicketRedeem());
                         if (getView() != null) {
@@ -106,7 +106,7 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
                         }
                     } else {
                         SingleTicketFragmentDirections.ActionCarWashPurchaseFragmentToRedeemReceiptFragmentPopToCarWash action
-                                = SingleTicketFragmentDirections.actionCarWashPurchaseFragmentToRedeemReceiptFragmentPopToCarWash(Objects.requireNonNull(orderResponse),null, false, false);
+                                = SingleTicketFragmentDirections.actionCarWashPurchaseFragmentToRedeemReceiptFragmentPopToCarWash(Objects.requireNonNull(orderResponse),null, false,0, false);
                         action.setIsLinkToAccount(viewModel.isLinkedToAccount());
                         action.setPetroCanadaProduct(viewModel.getSelectedSingleTicketRedeem());
                         if (getView() != null) {

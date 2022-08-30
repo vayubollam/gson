@@ -80,7 +80,7 @@ class DonatePetroPointsViewModel @Inject constructor(
     }
 
 
-    private fun getPointsFromDollar(): Int {
+    fun getPointsFromDollar(): Int {
         return donateAmount.get() * 1000
     }
 

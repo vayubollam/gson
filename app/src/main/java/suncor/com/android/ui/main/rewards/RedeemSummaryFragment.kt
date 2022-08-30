@@ -69,6 +69,7 @@ class RedeemSummaryFragment : MainActivityFragment(), OnBackPressedListener {
             if (it != null){
 
                 isDonate = RedeemSummaryFragmentArgs.fromBundle(it).isDonate
+                donationPoints = RedeemSummaryFragmentArgs.fromBundle(it).donatedPoints
                 binding.isDonate  = observableBoolean
 
                 if(isDonate){
@@ -98,8 +99,10 @@ class RedeemSummaryFragment : MainActivityFragment(), OnBackPressedListener {
                     sessionManager.profile.petroPointsNumber = getNewBalance()
                     binding.apply {
                         newBalanceValue.text = getNewBalance()
+                        pointsRedeemedValue.text = donationPoints.toString()
                         subtitle.text = program.info.message
                         emailSentToValue.text = sessionManager.profile.email
+                        valueTitle.text = (donationPoints/1000).toString()
                         dateValue.text = DateUtils.getDate()
                     }
                 }

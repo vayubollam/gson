@@ -610,6 +610,9 @@
             app:argType="boolean"
             app:nullable="false" />
         <argument
+            android:name="donatedPoints"
+            app:argType="integer"/>
+        <argument
             android:name="isDonate"
             app:argType="boolean"
             app:nullable="false" />
