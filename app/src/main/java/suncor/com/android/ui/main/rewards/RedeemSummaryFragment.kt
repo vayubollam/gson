@@ -35,10 +35,8 @@ class RedeemSummaryFragment : MainActivityFragment(), OnBackPressedListener {
 
     @Inject
     lateinit var factory: ViewModelFactory
-
     @Inject
     lateinit var gson: Gson
-
     @Inject
     lateinit var sessionManager: SessionManager
 
@@ -100,8 +98,8 @@ class RedeemSummaryFragment : MainActivityFragment(), OnBackPressedListener {
                     imageId = it.resources.getIdentifier(program.smallImage.toString(), "drawable", it.packageName)
                     sessionManager.profile.petroPointsNumber = getNewBalance()
                     binding.apply {
-                        newBalanceValue.text = getString(R.string. points_redeemed_value, getNewBalance())
-                        pointsRedeemedValue.text = getString(R.string.points_redeemed_value ,CardFormatUtils.formatBalance(donationPoints))
+                        newBalanceValue.text =  getNewBalance()
+                        pointsRedeemedValue.text = CardFormatUtils.formatBalance(donationPoints)
                         subtitle.text = program.info.message
                         emailSentToValue.text = sessionManager.profile.email
                         cardValue.text = getString(R.string.egift_card_value_in_dollar_generic, donationPoints/1000)
@@ -171,7 +169,7 @@ class RedeemSummaryFragment : MainActivityFragment(), OnBackPressedListener {
 
     private fun redirectToUrl(url: String){
 
-        if(TextUtils.isEmpty(url)){
+        if(!TextUtils.isEmpty(url)){
             val intent = Intent(Intent.ACTION_VIEW)
             intent.data = Uri.parse(url)
             startActivity(intent)

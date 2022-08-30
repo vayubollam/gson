@@ -537,6 +537,7 @@
     <string name="redeem_receipt_details_label">Détails</string>
     <string name="redeem_receipt_date_label">Date</string>
     <string name="redeem_receipt_order_id_label">Numéro de commande</string>
+    <string name="caremakers_reciept_button">En savoir plus sur la Fondation proches aimants</string>
     <string name="msg_e030_message">Si ce problème persiste, appelez–nous au 1–800–668–0222.</string>
     <string name="msg_e030_title">Échange de points non accepté</string>
     <string name="redeem_receipt_email_sent_to_label">Envoyée à</string>

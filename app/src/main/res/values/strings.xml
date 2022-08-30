@@ -556,6 +556,7 @@
     <string name="redeem_receipt_details_label">Details</string>
     <string name="redeem_receipt_date_label">Date</string>
     <string name="redeem_receipt_order_id_label">Order ID</string>
+    <string name="caremakers_reciept_button">Learn about caremakers</string>
     <string name="msg_e030_message">You cannot redeem for this item at this time. If this issue continues, contact customer service at 1 (800) 668–0220 (TTY: 1 (888) 290–7377).</string>
 
     <string name="action_menu_what_would_you_like_to_do">What would you \nlike to do?</string>
