@@ -21,7 +21,7 @@ public class GenericGiftCardsAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     private static Consumer<GenericEGiftCard> clickListener = null;
     private static Consumer<GenericEGiftCard> clickListenerForFurtherUse = null;
-    private ArrayList<GenericEGiftCard> genericEGiftCards;
+    private final ArrayList<GenericEGiftCard> genericEGiftCards;
 
     public static final int REWARDS_LAYOUT = 3;
     public static final int MERCHANT_LAYOUT = 4;
@@ -30,6 +30,7 @@ public class GenericGiftCardsAdapter extends RecyclerView.Adapter<RecyclerView.V
     public static int petroPoints;
     private static final int MIN_REDEEM_POINT_LIMIT = 10_000;
     private static final int MIN_DONATE_POINT_LIMIT = 1_000;
+    private static final String TAG_DISABLED = "disabled";
 
     public GenericGiftCardsAdapter(ArrayList<GenericEGiftCard> genericEGiftCards, Consumer<GenericEGiftCard> clickListener, boolean isEligible) {
         this.genericEGiftCards = genericEGiftCards;
@@ -84,12 +85,9 @@ public class GenericGiftCardsAdapter extends RecyclerView.Adapter<RecyclerView.V
             binding.setGiftCard(giftCard);
             binding.setImage(context.getDrawable(imageId));
 
-            binding.cardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (clickListenerForFurtherUse != null) {
-                        clickListenerForFurtherUse.accept(giftCard);
-                    }
+            binding.cardView.setOnClickListener(v -> {
+                if (clickListenerForFurtherUse != null) {
+                    clickListenerForFurtherUse.accept(giftCard);
                 }
             });
             binding.executePendingBindings();
@@ -113,23 +111,17 @@ public class GenericGiftCardsAdapter extends RecyclerView.Adapter<RecyclerView.V
             if (!isEligible) {
                 enableView(false);
             } else {
-                if (petroPoints >= MIN_REDEEM_POINT_LIMIT) {
+                if (petroPoints >= MIN_REDEEM_POINT_LIMIT || (petroPoints >= MIN_DONATE_POINT_LIMIT && giftCard.getShortName().equals(Constants.DONATE_SHORT_NAME))) {
                     enableView(true);
                 } else {
                     enableView(false);
                     binding.textViewRedemptionUnavailable.setText(giftCard.getNotEnoughPointsErrorMsg());
-                    if(petroPoints>=MIN_DONATE_POINT_LIMIT && giftCard.getShortName().equals(Constants.DONATE_SHORT_NAME)){
-                        enableView(true);
-                    }
                 }
             }
 
-            binding.cardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (clickListener != null) {
-                        clickListener.accept(giftCard);
-                    }
+            binding.cardView.setOnClickListener(v -> {
+                if (clickListener != null && binding.cardView.getTag()==null) {
+                    clickListener.accept(giftCard);
                 }
             });
 
@@ -138,13 +130,13 @@ public class GenericGiftCardsAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         public void enableView(Boolean enable) {
             if (enable) {
-                clickListener = clickListenerForFurtherUse;
+                binding.cardView.setTag(null);
                 binding.constraintLayout.setDisabled(false);
                 binding.constraintLayout.setAlpha(1f);
                 binding.title.setAlpha(1f);
                 binding.redemptionUnavailableText.setVisibility(View.GONE);
             } else {
-                clickListener = null;
+                binding.cardView.setTag(TAG_DISABLED);
                 binding.constraintLayout.setDisabled(true);
                 binding.constraintLayout.setAlpha(0.5f);
                 binding.title.setAlpha(0.5f);
