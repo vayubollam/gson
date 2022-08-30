@@ -1,8 +1,8 @@
 package suncor.com.android.ui.main.rewards
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.util.Log
-import android.util.Pair
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,12 +22,13 @@ import suncor.com.android.ui.common.OnBackPressedListener
 import suncor.com.android.ui.common.cards.CardFormatUtils
 import suncor.com.android.ui.main.MainViewModel
 import suncor.com.android.ui.main.common.MainActivityFragment
-import suncor.com.android.utilities.AnalyticsUtils
 import suncor.com.android.utilities.DateUtils
 import suncor.com.android.utilities.MerchantsUtil
-import java.lang.Exception
+import suncor.com.android.utilities.NavigationConsentAlerts
+import suncor.com.android.utilities.Timber
 import java.util.*
 import javax.inject.Inject
+
 
 class RedeemSummaryFragment : MainActivityFragment(), OnBackPressedListener {
 
@@ -48,7 +49,7 @@ class RedeemSummaryFragment : MainActivityFragment(), OnBackPressedListener {
     private var isDonate: Boolean = false
     private var product: PetroCanadaProduct? = null
     private var program: Program?= null
-    private var donationPoints: Int = 0;
+    private var donationPoints: Int = 0
 
     private var observableBoolean: ObservableBoolean = ObservableBoolean(false)
 
@@ -92,18 +93,31 @@ class RedeemSummaryFragment : MainActivityFragment(), OnBackPressedListener {
     private fun initView(): View{
         var imageId = 0
         try{
-             context?.let {
-            if(isDonate){
+             context?.let { it ->
+                 if(isDonate){
                 program?.let {program ->
                     imageId = it.resources.getIdentifier(program.smallImage.toString(), "drawable", it.packageName)
                     sessionManager.profile.petroPointsNumber = getNewBalance()
                     binding.apply {
-                        newBalanceValue.text = getNewBalance()
-                        pointsRedeemedValue.text = donationPoints.toString()
+                        newBalanceValue.text = getString(R.string. points_redeemed_value, getNewBalance())
+                        pointsRedeemedValue.text = getString(R.string.points_redeemed_value ,CardFormatUtils.formatBalance(donationPoints))
                         subtitle.text = program.info.message
                         emailSentToValue.text = sessionManager.profile.email
-                        valueTitle.text = (donationPoints/1000).toString()
+                        cardValue.text = getString(R.string.egift_card_value_in_dollar_generic, donationPoints/1000)
                         dateValue.text = DateUtils.getDate()
+                        navigationButton.setOnClickListener {
+
+                            activity?.let { activity ->
+
+                                NavigationConsentAlerts.createAlert(activity,
+                                    getString(R.string.leaving_app_alert_title),
+                                    getString(R.string.leaving_app_alert_message),
+                                    getString(R.string.leaving_app_alert_button),
+                                    getString(R.string.cancel),
+                                    program.info.url,
+                                     this@RedeemSummaryFragment :: redirectToUrl)
+                            }
+                        }
                     }
                 }
             }else{
@@ -147,9 +161,18 @@ class RedeemSummaryFragment : MainActivityFragment(), OnBackPressedListener {
         binding.image = requireContext().getDrawable(imageId)
         binding.redeemReceiptCardviewTitle.text = String.format(getString(R.string.thank_you), sessionManager.profile.firstName)
         }catch (e: Exception){
-            Log.d("TAG" , e.localizedMessage)
+            e.let {
+                Timber.d( it)
+            }
         }
         return  binding.root
+    }
+
+    private fun redirectToUrl(url: String){
+
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.data = Uri.parse(url)
+        startActivity(intent)
     }
 
     private fun getNewBalance(): String{

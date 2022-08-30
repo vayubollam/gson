@@ -155,8 +155,6 @@ class DonatePetroPointsFragment : MainActivityFragment(), OnKeyboardVisibilityLi
                 if (response != null) {
                     when (response.status) {
                         Resource.Status.SUCCESS -> {
-                            viewModel.isLoading.set(false)
-                            Timber.d("Hurrah Money Donated")
                             val action = DonatePetroPointsFragmentDirections.actionDonatePetroPointsFragmentToRedeemReceiptFragment(
                                 null,
                                 viewModel.program,
@@ -172,7 +170,6 @@ class DonatePetroPointsFragment : MainActivityFragment(), OnKeyboardVisibilityLi
 
                         Resource.Status.ERROR -> {
                             viewModel.isLoading.set(false)
-                            Timber.d("ALAS! Money Donation failed")
                         }
 
                         Resource.Status.LOADING -> {

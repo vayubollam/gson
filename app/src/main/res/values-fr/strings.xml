@@ -421,9 +421,9 @@
     <string name="offers_banner_4_button">Trouver un lave-auto</string>
     <string name="offers_banner_5_text">Économisez 3 ¢ le litre à chaque plein avec une carte RBC liée.</string>
     <string name="offers_banner_5_button">Pour commencer</string>
-    <string name="offers_leaving_app_alert_title">Vous quittez notre application.</string>
-    <string name="offers_leaving_app_alert_message">Nous ouvrons votre navigateur web.</string>
-    <string name="offers_leaving_app_alert_button">Continuer</string>
+    <string name="leaving_app_alert_title">Vous quittez notre application.</string>
+    <string name="leaving_app_alert_message">Nous ouvrons votre navigateur web.</string>
+    <string name="leaving_app_alert_button">Continuer</string>
     <string name="rbc_url">https://www.rbcbanqueroyale.com/petro-canada/index.html?suncor&amp;utm_source=suncor&amp;utm_medium=3pb&amp;utm_campaign=petrocanada_3cpl&amp;utm_content=pc_app_link</string>
     <string name="transaction_type_pp">Petro Points</string>
     <string name="rewards_guest_join_button">Inscrivez-vous pour économiser</string>
@@ -488,8 +488,7 @@
     <string name="login_conflict_alert_positive_button">OK</string>
     <string name="rewards_egift_card_subtitle">Carte-cadeau électronique</string>
     <string name="donate_points_header">Faire don de Petro-Points</string>
-    <string name="donation_value_text">Donation Value</string>
-
+    <string name="donation_value_text">Valeur du don</string>
     <string name="donate_petro_points_subtitle">Nos membres Petro‑Points ont fait don de plus de 220 millions de Petro‑Points!</string>
     <string name="rewards_e_gift_card_starting_points">À compter de 10 000 points</string>
     <string name="donate_petro_points_starting_points">A compter de 1 000 points</string>

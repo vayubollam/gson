@@ -403,9 +403,9 @@
     <string name="offers_banner_4_button">Find a car wash</string>
     <string name="offers_banner_5_text">Save 3¢/litre on every fill-up with an RBC linked card.</string>
     <string name="offers_banner_5_button">Get started</string>
-    <string name="offers_leaving_app_alert_title">You are leaving our App.</string>
-    <string name="offers_leaving_app_alert_message">We will open your browser.</string>
-    <string name="offers_leaving_app_alert_button">Open</string>
+    <string name="leaving_app_alert_title">You are leaving our App.</string>
+    <string name="leaving_app_alert_message">We will open your browser.</string>
+    <string name="leaving_app_alert_button">Open</string>
     <string name="rbc_url">https://www.rbcroyalbank.com/petro-canada/index.html?suncor&amp;utm_source=suncor&amp;utm_medium=3pb&amp;utm_campaign=petrocanada_3cpl&amp;utm_content=pc_app_link</string>
     <string name="petro_points_contest_url">https://www.petro-canada.ca/en/personal/discover-petro-points/pump-up-the-points-contest-2022?utm_source=pc_app&amp;utm_medium=app_banner&amp;utm_campaign=putp</string>
 
