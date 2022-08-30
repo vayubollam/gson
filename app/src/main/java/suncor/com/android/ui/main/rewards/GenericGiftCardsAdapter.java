@@ -28,8 +28,8 @@ public class GenericGiftCardsAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     public static boolean isEligible;
     public static int petroPoints;
-    private static int MIN_REDEEM_POINT_LIMIT = 10_000;
-    private static int MIN_DONATE_POINT_LIMIT = 1_000;
+    private static final int MIN_REDEEM_POINT_LIMIT = 10_000;
+    private static final int MIN_DONATE_POINT_LIMIT = 1_000;
 
     public GenericGiftCardsAdapter(ArrayList<GenericEGiftCard> genericEGiftCards, Consumer<GenericEGiftCard> clickListener, boolean isEligible) {
         this.genericEGiftCards = genericEGiftCards;

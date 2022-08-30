@@ -118,7 +118,7 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
                         viewModel.updatePetroPoints(data.getPointsBalance());
                         petroPointsBalance.set(data.getPointsBalance());
                         adapter.isEligible = isRedeemable;
-                        GenericGiftCardsAdapter.petroPoints = 16_000;
+                        GenericGiftCardsAdapter.petroPoints = data.getPointsBalance();
 
                         // Handling the visibility of donate card as per the available element of categories.
                         if (viewModel.isDonateEnabled() && data.getCategories().size() > 0)
