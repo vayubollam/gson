@@ -527,7 +527,7 @@
 
     <string name="redeeming">Échange en cours…</string>
     <string name="points_redeemed">Points échangés</string>
-    <string name="thank_you">Merci %1$s!</string>
+    <string name="thank_you">Merci, %1$s!</string>
     <string name="redeem_done">Terminé</string>
     <string name="redeem_receipt_body">Vérifiez vos courriels pour trouver un lien menant à votre carte-cadeau électronique.</string>
     <string name="redeem_receipt_header">Votre reçu</string>

@@ -344,6 +344,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:src="@drawable/horizontal_divider"
+                        android:visibility="@{!isDonate ? View.VISIBLE : View.GONE}"
                         app:layout_constraintTop_toBottomOf="@+id/order_id_title" />
 
                     <androidx.appcompat.widget.AppCompatTextView
