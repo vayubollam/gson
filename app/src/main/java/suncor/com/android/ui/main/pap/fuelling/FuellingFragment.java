@@ -220,13 +220,18 @@ public class FuellingFragment extends MainActivityFragment {
                             if(pingActiveSessionStarted) {
                                 observerFuellingActiveSession();
                             }
-                    } else {
-                        goBack();
-                    }
+                } else {
+                    resubscribe();
+                }
             });
         }
 
     };
+
+    private void resubscribe() {
+        stopFuellingActiveSessionObserver();
+        startFuellingActiveSession();
+    }
 
     private void observeTransactionData(String transactionId, String lastPaymentProvider){
         FuellingFragmentDirections.ActionFuellingToReceiptFragment action = FuellingFragmentDirections.actionFuellingToReceiptFragment(transactionId);
