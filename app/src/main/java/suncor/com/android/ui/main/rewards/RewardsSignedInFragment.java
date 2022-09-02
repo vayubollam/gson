@@ -1,25 +1,30 @@
 package suncor.com.android.ui.main.rewards;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.databinding.ObservableInt;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+
 import javax.inject.Inject;
+
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentRewardsSignedinBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
@@ -65,6 +70,7 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
         });
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -90,6 +96,7 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
                             eGiftCard.seteGifts(m.geteGifts());
                             eGiftCard.setScreenName(merchantItem.getMerchantScreenName());
                             eGiftCard.setShortName(merchantItem.getMerchantShortName());
+                            eGiftCard.setNotEnoughPointsErrorMsg(getString(R.string.redemption_10_000_error));
 
                             eGiftCardsList.add(2, eGiftCard);
                         }
@@ -100,7 +107,8 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
             }
         });
 
-        adapter = new GenericGiftCardsAdapter(eGiftCardsList, this::eCardClicked, isRedeemable);
+        adapter = new GenericGiftCardsAdapter(eGiftCardsList, this::eCardClicked);
+        GenericGiftCardsAdapter.petroPoints = viewModel.getPetroPointsBalance();
         binding.rewardsList.setAdapter(adapter);
 
         viewModel.getMemberEligibility().observe(getViewLifecycleOwner(), response -> {
@@ -111,7 +119,8 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
                         isRedeemable = data.getEligible();
                         viewModel.updatePetroPoints(data.getPointsBalance());
                         petroPointsBalance.set(data.getPointsBalance());
-                        adapter.isEligible = isRedeemable;
+                        GenericGiftCardsAdapter.isEligible = isRedeemable;
+                        GenericGiftCardsAdapter.petroPoints = data.getPointsBalance();
 
                         // Handling the visibility of donate card as per the available element of categories.
                         if (viewModel.isDonateEnabled() && data.getCategories().size() > 0)
@@ -122,7 +131,7 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
                     return;
 
                 case ERROR:
-                    adapter.isEligible = false;
+                    GenericGiftCardsAdapter.isEligible = false;
                     petroPointsBalance.set(viewModel.getPetroPointsBalance());
                     adapter.notifyDataSetChanged();
             }
@@ -307,6 +316,7 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
                 eGiftCard.setGroup(Constants.GROUP_DONATE);
                 eGiftCard.setScreenName(Constants.DONATE_SCREEN_NAME);
                 eGiftCard.setShortName(Constants.DONATE_SHORT_NAME);
+                eGiftCard.setNotEnoughPointsErrorMsg(getString(R.string.redemption_1_000_error));
                 break;
 
             case 3:
@@ -322,6 +332,7 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
                 eGiftCard.setGroup(Constants.GROUP_MORE);
                 eGiftCard.setScreenName(Constants.MORE_GIFT_CARD_SCREEN_NAME);
                 eGiftCard.setShortName(Constants.MORE_GIFT_CARD_SHORT_NAME);
+                eGiftCard.setNotEnoughPointsErrorMsg(getString(R.string.redemption_10_000_error));
                 break;
         }
 
