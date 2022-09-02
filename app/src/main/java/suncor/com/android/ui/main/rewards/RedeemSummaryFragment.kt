@@ -96,9 +96,9 @@ class RedeemSummaryFragment : MainActivityFragment(), OnBackPressedListener {
                  if(isDonate){
                 program?.let {program ->
                     imageId = it.resources.getIdentifier(program.smallImage.toString(), "drawable", it.packageName)
-                    sessionManager.profile.petroPointsNumber = getNewBalance()
+                    sessionManager.profile.pointsBalance = getNewBalance()
                     binding.apply {
-                        newBalanceValue.text =  getNewBalance()
+                        newBalanceValue.text =  CardFormatUtils.formatBalance( sessionManager.profile.pointsBalance)
                         pointsRedeemedValue.text = CardFormatUtils.formatBalance(donationPoints)
                         subtitle.text = program.info.message
                         emailSentToValue.text = sessionManager.profile.email
@@ -176,8 +176,8 @@ class RedeemSummaryFragment : MainActivityFragment(), OnBackPressedListener {
         }
     }
 
-    private fun getNewBalance(): String{
-        return CardFormatUtils.formatBalance(sessionManager.profile.pointsBalance - donationPoints)
+    private fun getNewBalance(): Int{
+        return sessionManager.profile.pointsBalance - donationPoints
     }
 
     private fun goBack() {
