@@ -1,4 +1,4 @@
-package suncor.com.android.ui.main.rewards.donate
+package suncor.com.android.ui.main.rewards.donatepetropoints.donate
 
 import android.graphics.Rect
 import android.os.Build
@@ -62,7 +62,9 @@ class DonatePetroPointsFragment : MainActivityFragment(), OnKeyboardVisibilityLi
 
         arguments.let {
             if (it != null) {
-                programString = DonatePetroPointsFragmentArgs.fromBundle(it).program
+                programString = DonatePetroPointsFragmentArgs.fromBundle(
+                    it
+                ).program
             }
         }
 
@@ -153,13 +155,21 @@ class DonatePetroPointsFragment : MainActivityFragment(), OnKeyboardVisibilityLi
                 if (response != null) {
                     when (response.status) {
                         Resource.Status.SUCCESS -> {
-                            viewModel.isLoading.set(false)
-                            Timber.d("Hurrah Money Donated")
+                            val action = DonatePetroPointsFragmentDirections.actionDonatePetroPointsFragmentToRedeemReceiptFragment(
+                                null,
+                                viewModel.program,
+                                false,
+                                viewModel.getPointsFromDollar(),
+                                true
+                            )
+                            val navDestination = Navigation.findNavController(requireView()).currentDestination
+                            if (navDestination != null && navDestination.id == R.id.donatePetroPointsFragment) {
+                                Navigation.findNavController(requireView()).navigate(action)
+                            }
                         }
 
                         Resource.Status.ERROR -> {
                             viewModel.isLoading.set(false)
-                            Timber.d("ALAS! Money Donation failed")
                         }
 
                         Resource.Status.LOADING -> {

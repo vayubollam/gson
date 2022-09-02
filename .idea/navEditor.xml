@@ -571,7 +571,7 @@
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="action_rewards_signedin_tab_to_donatePetroPointsFragment">
+                            <entry key="action_donate_categories_to_donatePetroPointsFragment">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -586,8 +586,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-2" />
-                            <option name="y" value="429" />
+                            <option name="x" value="548" />
+                            <option name="y" value="2259" />
                           </Point>
                         </option>
                       </LayoutPositions>

@@ -118,16 +118,16 @@
     <string name="enrollment_street_address_error">Address is required.</string>
     <string name="enrollment_secuirty_question_error">Please select a security question.</string>
     <string name="enrollment_secuirty_answer_error">Answer is required.</string>
-    <string name="enrollment_phone_field_invalid_format">Please enter a valid phone number (e.g. 416-123-4567)</string>
+    <string name="enrollment_phone_field_invalid_format">Please enter a valid phone number (e.g. 416–123–4567)</string>
     <string name="enrollment_city_error">City is required.</string>
     <string name="enrollment_province_error">Province is required.</string>
     <string name="enrollment_postalcode_error">Postal code is required.</string>
     <string name="enrollment_postalcode_format_error">The postal code you entered isn\'t valid.</string>
-    <string name="enrollment_email_restricted_alert_title">Please enter a different email address or Call 1-800-668-0220 if you have any issues.</string>
+    <string name="enrollment_email_restricted_alert_title">Please enter a different email address or Call 1–800–668–0220 if you have any issues.</string>
 
     <string name="enrollment_email_format_error">Please enter a valid email address.</string>
     <string name="discover_your_next_adventure">FIND YOUR \nHAPPY PLACE</string>
-    <string name="password_validation_text_length">Must be 8-16 characters</string>
+    <string name="password_validation_text_length">Must be 8–16 characters</string>
     <string name="password_validation_lowercase">At least one lowercase letter</string>
     <string name="password_validation_uppercase">At least one uppercase letter</string>
     <string name="password_validation_number">At least one number</string>
@@ -334,11 +334,11 @@
     <string name="verify_your_email_address_description">You’ve already started an online account with this card. Check your inbox for your verification link or call customer service.</string>
     <string name="profile_personnal_informations_email_empty_inline_error">Please enter an email.</string>
     <string name="profile_personnal_informations_email_format_inline_error">Please enter a valid email address.</string>
-    <string name="profile_personnal_informations_phone_field_invalid_format">Please enter a valid phone number (e.g. 416–123-4567)</string>
+    <string name="profile_personnal_informations_phone_field_invalid_format">Please enter a valid phone number (e.g. 416–123–4567)</string>
     <string name="profile_personnal_informations_email_empty_alert_title">Email required</string>
     <string name="profile_personnal_informations_email_invalid_alert_title">Invalid email</string>
     <string name="profile_personnal_informations_email_empty_alert_message">Please enter an email.</string>
-    <string name="profile_personnal_informations_email_invalid_alert_message">Please enter a different email address or Call 1-800-668-0220 if you have any issues.</string>
+    <string name="profile_personnal_informations_email_invalid_alert_message">Please enter a different email address or Call 1–800–668–0220 if you have any issues.</string>
     <string name="profile_personnal_informations_email_alert_title">Save changes</string>
     <string name="profile_personnal_informations_email_alert_message">Changing your info will require you to sign in again. If you\'ve changed your email, check your inbox to verify your email address.</string>
     <string name="profile_personnal_informations_email_alert_signout_button">Sign out</string>
@@ -372,7 +372,7 @@
     <string name="profile_preferences_text_header">Text messages</string>
     <string name="profile_preferences_enable_text_offers_message">Yes, I’d like to receive special offers and alerts via SMS from Petro\u2011Points.</string>
     <string name="profile_preferences_disable_text_offers_message">No, I’m not interested in special offers and alerts via SMS from Petro\u2011Points.</string>
-    <string name="profile_preferences_address">Petro‑Points – P.O. Box 59257 Westwood Mall\nMississauga, ON.  Canada.  L4T 4J1\nTel: 1 (800) 668-0220  .  TTY: 1 (888) 290-7377</string>
+    <string name="profile_preferences_address">Petro‑Points – P.O. Box 59257 Westwood Mall\nMississauga, ON.  Canada.  L4T 4J1\nTel: 1 (800) 668–0220  .  TTY: 1 (888) 290–7377</string>
     <string name="profile_personnal_informations_email_restricted_alert_message">Please enter a different email account.</string>
     <string name="profile_personnal_informations_update_toast">Your personal info has been updated.</string>
     <string name="profile_about_app_version">App version</string>
@@ -403,9 +403,9 @@
     <string name="offers_banner_4_button">Find a car wash</string>
     <string name="offers_banner_5_text">Save 3¢/litre on every fill-up with an RBC linked card.</string>
     <string name="offers_banner_5_button">Get started</string>
-    <string name="offers_leaving_app_alert_title">You are leaving our App.</string>
-    <string name="offers_leaving_app_alert_message">We will open your browser.</string>
-    <string name="offers_leaving_app_alert_button">Open</string>
+    <string name="leaving_app_alert_title">You are leaving our App.</string>
+    <string name="leaving_app_alert_message">We will open your browser.</string>
+    <string name="leaving_app_alert_button">Open</string>
     <string name="rbc_url">https://www.rbcroyalbank.com/petro-canada/index.html?suncor&amp;utm_source=suncor&amp;utm_medium=3pb&amp;utm_campaign=petrocanada_3cpl&amp;utm_content=pc_app_link</string>
     <string name="petro_points_contest_url">https://www.petro-canada.ca/en/personal/discover-petro-points/pump-up-the-points-contest-2022?utm_source=pc_app&amp;utm_medium=app_banner&amp;utm_campaign=putp</string>
 
@@ -504,6 +504,7 @@
     <string name="donate_petro_points_starting_points">From 1,000 points</string>
     <string name="rewards_egift_card_subtitle">eGift card</string>
     <string name="donate_points_header">Donate Petro-Points</string>
+    <string name="donation_value_text">Donation value</string>
 
     <string name="donate_petro_points_subtitle">Our Petro‑Points members have donated over 220 million Petro‑Points!</string>
     <string name="merchant_winners">WINNERS, Marshalls and HomeSense</string>
@@ -555,7 +556,8 @@
     <string name="redeem_receipt_details_label">Details</string>
     <string name="redeem_receipt_date_label">Date</string>
     <string name="redeem_receipt_order_id_label">Order ID</string>
-    <string name="msg_e030_message">You cannot redeem for this item at this time. If this issue continues, contact customer service at 1 (800) 668-0220 (TTY: 1 (888) 290-7377).</string>
+    <string name="caremakers_reciept_button">Learn about caremakers</string>
+    <string name="msg_e030_message">You cannot redeem for this item at this time. If this issue continues, contact customer service at 1 (800) 668–0220 (TTY: 1 (888) 290–7377).</string>
 
     <string name="action_menu_what_would_you_like_to_do">What would you \nlike to do?</string>
     <string name="action_menu_scan_card">Scan my points card</string>

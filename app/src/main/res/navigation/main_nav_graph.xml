@@ -595,13 +595,25 @@
     </keep_state_fragment>
     <keep_state_fragment
         android:id="@+id/redeemReceiptFragment"
-        android:name="suncor.com.android.ui.main.rewards.RedeemReceiptFragment"
+        android:name="suncor.com.android.ui.main.rewards.RedeemSummaryFragment"
         android:label="RedeemReceiptFragment">
         <argument
             android:name="orderResponse"
+            app:nullable="true"
             app:argType="suncor.com.android.model.redeem.response.OrderResponse" />
         <argument
+            android:name="program"
+            app:nullable="true"
+            app:argType="suncor.com.android.model.redeem.response.Program" />
+        <argument
             android:name="isMerchant"
+            app:argType="boolean"
+            app:nullable="false" />
+        <argument
+            android:name="donatedPoints"
+            app:argType="integer"/>
+        <argument
+            android:name="isDonate"
             app:argType="boolean"
             app:nullable="false" />
         <argument
@@ -955,7 +967,7 @@
     </keep_state_fragment>
     <keep_state_fragment
         android:id="@+id/donateCategoriesFragment"
-        android:name="suncor.com.android.ui.main.rewards.donatepetropoints.DonateCategoriesFragment"
+        android:name="suncor.com.android.ui.main.rewards.donatepetropoints.categories.DonateCategoriesFragment"
         android:label="DonateCategoriesFragment" >
         <action
             android:id="@+id/action_donate_categories_to_donatePetroPointsFragment"
@@ -974,13 +986,17 @@
 
     <keep_state_fragment
         android:id="@+id/donatePetroPointsFragment"
-        android:name="suncor.com.android.ui.main.rewards.donate.DonatePetroPointsFragment"
+        android:name="suncor.com.android.ui.main.rewards.donatepetropoints.donate.DonatePetroPointsFragment"
         android:label="DonatePetroPointsFragment" >
         <argument
             android:name="program"
             android:defaultValue="null"
-            app:argType="string"
-            />
+            app:argType="string" />
+        <action
+            android:id="@+id/action_donatePetroPointsFragment_to_redeemReceiptFragment"
+            app:destination="@id/redeemReceiptFragment"
+            app:exitAnim="@anim/fade_out"
+            app:popExitAnim="@anim/fade_out"
+            app:popUpTo="@+id/rewards_signedin_tab"/>
     </keep_state_fragment>
-
 </navigation>

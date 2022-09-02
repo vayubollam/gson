@@ -6,6 +6,7 @@ apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'org.sonarqube'
 apply from: "../android-sonarqube.gradle"
 apply from: "$project.rootDir/jacoco.gradle"
+apply plugin: 'org.jetbrains.kotlin.android.extensions'
 
 repositories {
     jcenter()
@@ -40,6 +41,10 @@ android {
     }
     testOptions {
         unitTests.returnDefaultValues = true
+    }
+
+    androidExtensions {
+        experimental = true
     }
 
     signingConfigs {

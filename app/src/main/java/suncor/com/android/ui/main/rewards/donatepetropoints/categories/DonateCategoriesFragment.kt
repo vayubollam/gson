@@ -1,4 +1,4 @@
-package suncor.com.android.ui.main.rewards.donatepetropoints
+package suncor.com.android.ui.main.rewards.donatepetropoints.categories
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,6 +14,7 @@ import suncor.com.android.model.redeem.response.MemberEligibilityResponse
 import suncor.com.android.model.redeem.response.Program
 import suncor.com.android.ui.common.OnBackPressedListener
 import suncor.com.android.ui.main.common.MainActivityFragment
+import suncor.com.android.ui.main.rewards.donatepetropoints.ImageMapper
 import javax.inject.Inject
 
 class DonateCategoriesFragment : MainActivityFragment(), OnBackPressedListener {
@@ -43,7 +44,9 @@ class DonateCategoriesFragment : MainActivityFragment(), OnBackPressedListener {
         binding = FragmentDonateCategoriesBinding.inflate(inflater, container, false)
         arguments.let {
             if (it != null) {
-                categoryString = DonateCategoriesFragmentArgs.fromBundle(it).categoriesList
+                categoryString = DonateCategoriesFragmentArgs.fromBundle(
+                    it
+                ).categoriesList
             }
         }
 

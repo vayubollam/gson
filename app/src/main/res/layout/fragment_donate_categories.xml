@@ -7,7 +7,7 @@
 
         <variable
             name="vm"
-            type="suncor.com.android.ui.main.rewards.donatepetropoints.DonateCategoriesViewModel" />
+            type="suncor.com.android.ui.main.rewards.donatepetropoints.categories.DonateCategoriesViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

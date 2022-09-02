@@ -87,7 +87,7 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
                 case SUCCESS:
                     OrderResponse orderResponse = orderResponseResource.data;
                     GiftCardValueConfirmationFragmentDirections.ActionGiftCardValueConfirmationToRedeemReceiptFragment action =
-                            GiftCardValueConfirmationFragmentDirections.actionGiftCardValueConfirmationToRedeemReceiptFragment(Objects.requireNonNull(orderResponse), true);
+                            GiftCardValueConfirmationFragmentDirections.actionGiftCardValueConfirmationToRedeemReceiptFragment(Objects.requireNonNull(orderResponse),null, true,0, false);
 
                     if (getView() != null) {
                         getView().postDelayed(() -> Navigation.findNavController(getView()).navigate(action), 1000);

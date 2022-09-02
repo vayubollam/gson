@@ -1,4 +1,4 @@
-package suncor.com.android.ui.main.rewards.donatepetropoints
+package suncor.com.android.ui.main.rewards.donatepetropoints.categories
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,8 +6,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import suncor.com.android.databinding.ItemMoreEGiftCardSubCategoryBinding
 import suncor.com.android.model.redeem.response.Program
-import suncor.com.android.model.thirdpartycard.ThirdPartyGiftCardSubCategory
-import suncor.com.android.utilities.Consumer
 
 interface OnCardClickListener {
     fun onCardClicked(program: Program)

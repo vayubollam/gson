@@ -1,4 +1,4 @@
-package suncor.com.android.ui.main.rewards.donatepetropoints
+package suncor.com.android.ui.main.rewards.donatepetropoints.categories
 
 import android.content.Context
 import android.view.LayoutInflater
