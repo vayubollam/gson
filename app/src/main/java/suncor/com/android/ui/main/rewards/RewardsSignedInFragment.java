@@ -1,5 +1,6 @@
 package suncor.com.android.ui.main.rewards;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -69,6 +70,7 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
         });
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -105,7 +107,7 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
             }
         });
 
-        adapter = new GenericGiftCardsAdapter(eGiftCardsList, this::eCardClicked, isRedeemable);
+        adapter = new GenericGiftCardsAdapter(eGiftCardsList, this::eCardClicked);
         GenericGiftCardsAdapter.petroPoints = viewModel.getPetroPointsBalance();
         binding.rewardsList.setAdapter(adapter);
 
@@ -117,7 +119,7 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
                         isRedeemable = data.getEligible();
                         viewModel.updatePetroPoints(data.getPointsBalance());
                         petroPointsBalance.set(data.getPointsBalance());
-                        adapter.isEligible = isRedeemable;
+                        GenericGiftCardsAdapter.isEligible = isRedeemable;
                         GenericGiftCardsAdapter.petroPoints = data.getPointsBalance();
 
                         // Handling the visibility of donate card as per the available element of categories.
@@ -129,7 +131,7 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
                     return;
 
                 case ERROR:
-                    adapter.isEligible = false;
+                    GenericGiftCardsAdapter.isEligible = false;
                     petroPointsBalance.set(viewModel.getPetroPointsBalance());
                     adapter.notifyDataSetChanged();
             }

@@ -32,11 +32,10 @@ public class GenericGiftCardsAdapter extends RecyclerView.Adapter<RecyclerView.V
     private static final int MIN_DONATE_POINT_LIMIT = 1_000;
     private static final String TAG_DISABLED = "disabled";
 
-    public GenericGiftCardsAdapter(ArrayList<GenericEGiftCard> genericEGiftCards, Consumer<GenericEGiftCard> clickListener, boolean isEligible) {
+    public GenericGiftCardsAdapter(ArrayList<GenericEGiftCard> genericEGiftCards, Consumer<GenericEGiftCard> clickListener) {
         this.genericEGiftCards = genericEGiftCards;
         this.clickListener = clickListener;
         this.clickListenerForFurtherUse = clickListener;
-        this.isEligible = isEligible;
     }
 
 
