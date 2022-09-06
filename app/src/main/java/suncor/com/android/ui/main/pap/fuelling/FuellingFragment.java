@@ -221,12 +221,17 @@ public class FuellingFragment extends MainActivityFragment {
                                 observerFuellingActiveSession();
                             }
                     } else {
-                        goBack();
+                        resubscribe();
                     }
             });
         }
 
     };
+
+    private void resubscribe() {
+        stopFuellingActiveSessionObserver();
+        startFuellingActiveSession();
+    }
 
     private void observeTransactionData(String transactionId, String lastPaymentProvider){
         FuellingFragmentDirections.ActionFuellingToReceiptFragment action = FuellingFragmentDirections.actionFuellingToReceiptFragment(transactionId);
