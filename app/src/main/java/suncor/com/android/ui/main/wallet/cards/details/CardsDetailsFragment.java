@@ -76,7 +76,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
     private FragmentCardsDetailsBinding binding;
     CardDetailsViewModel viewModel;
     private MainViewModel mainViewModel;
-    private MutableLiveData<Integer> clickedCardIndex = new MutableLiveData<>();
+    private MutableLiveData<Integer> clickedCardIndex = new MutableLiveData<>(0);
     private CardsLoadType loadType;
     @Inject
     ViewModelFactory viewModelFactory;
@@ -357,10 +357,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
     @Override
     public void onPause() {
         super.onPause();
-        if (cardsDetailsAdapter.getCardItems() != null && cardsDetailsAdapter.getCardItems().get(clickedCardIndex.getValue()).isTimer()) {
-            cardsDetailsAdapter.getCardItems().get(clickedCardIndex.getValue()).setTimer(false);
-            viewModel.stopRecurringService();
-        }
+        viewModel.stopRecurringService();
     }
 
     @Override
@@ -369,11 +366,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
         WindowManager.LayoutParams attributes = getActivity().getWindow().getAttributes();
         attributes.screenBrightness = previousBrightness;
         getActivity().getWindow().setAttributes(attributes);
-        if (cardsDetailsAdapter.getCardItems() != null && cardsDetailsAdapter.getCardItems().get(clickedCardIndex.getValue()).isTimer()) {
-            cardsDetailsAdapter.getCardItems().get(clickedCardIndex.getValue()).setTimer(false);
-            viewModel.stopRecurringService();
-        }
-
+        viewModel.stopRecurringService();
     }
 
     @Override
