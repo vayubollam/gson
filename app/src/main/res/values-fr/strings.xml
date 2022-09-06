@@ -762,6 +762,7 @@
     <string name="confirm_and_pay">CONFIRMER ET PAYER</string>
 
     <string name="reload">Recharger</string>
+    <string name="reload_camel_case">Recharger</string>
     <string name="reload_card_alet_title">Impossible de recharger la carte</string>
     <string name="reload_card_alert_description">Cette carte n\'est plus valide. De nouvelles cartes peuvent être achetées sur notre site Web ou au dépanneur.</string>
     <string name="reload_card_alert_cancel">Annuler</string>

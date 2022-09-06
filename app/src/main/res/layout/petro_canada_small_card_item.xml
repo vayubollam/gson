@@ -51,5 +51,23 @@
             android:textSize="16sp"
             app:fontFamily="@font/gibson_semibold"
             tools:text="100 Litres" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/card_reload_balance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:ellipsize="end"
+            android:padding="8dp"
+            android:gravity="end"
+            android:visibility="gone"
+            android:textAllCaps="false"
+            android:background="@drawable/rounded_white_button"
+            android:lines="1"
+            android:text="@string/reload_camel_case"
+            android:textColor="@color/red"
+            android:textSize="13sp"
+            app:fontFamily="@font/gibson_semibold"
+            tools:text="@string/reload" />
     </LinearLayout>
 </layout>

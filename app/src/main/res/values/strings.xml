@@ -775,6 +775,7 @@
     <string name="confirm_and_pay">CONFIRM AND PAY</string>
 
     <string name="reload">RELOAD</string>
+    <string name="reload_camel_case">Reload</string>
     <string name="reload_card_alet_title">Can\'t reload card</string>
     <string name="reload_card_alert_description">This card is no longer valid. New cards can be purchased on our website or in-store.</string>
     <string name="reload_card_alert_cancel">Cancel</string>

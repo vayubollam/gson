@@ -156,6 +156,13 @@
                 app:argType="boolean" />
         </action>
 
+        <action
+            android:id="@+id/action_cards_tab_to_carWashTransactionFragment"
+            app:destination="@id/carWashTransactionFragment"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_down" />
+
     </keep_state_fragment>
 
     <keep_state_fragment
@@ -199,6 +206,12 @@
         <action
             android:id="@+id/action_payments_tab_to_addPaymentFragment"
             app:destination="@id/addPaymentFragment"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_down" />
+        <action
+            android:id="@+id/action_wallet_tab_to_carWashTransactionFragment"
+            app:destination="@id/carWashTransactionFragment"
             app:enterAnim="@anim/slide_up"
             app:exitAnim="@anim/dummy"
             app:popExitAnim="@anim/slide_down" />
@@ -688,6 +701,12 @@
             app:destination="@id/addCardFragment"
             app:enterAnim="@anim/slide_up"
             app:exitAnim="@anim/slide_down"
+            app:popExitAnim="@anim/slide_down" />
+        <action
+            android:id="@+id/action_carWashCardFragment_to_carWashTransactionFragment"
+            app:destination="@id/carWashTransactionFragment"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/dummy"
             app:popExitAnim="@anim/slide_down" />
     </keep_state_fragment>
     <keep_state_fragment

@@ -23,10 +23,12 @@ public class CardsListAdapter extends RecyclerView.Adapter<CardsListAdapter.Petr
     private Context context;
     private ArrayList<CardListItem> cards = new ArrayList<>();
     Consumer<CardDetail> callback;
+    Consumer<CardDetail> reloadCallBack;
 
 
-    public CardsListAdapter(Consumer<CardDetail> callback) {
+    public CardsListAdapter(Consumer<CardDetail> callback,Consumer<CardDetail> reloadCallBack) {
         this.callback = callback;
+        this.reloadCallBack=reloadCallBack;
     }
 
     @NonNull
@@ -40,6 +42,7 @@ public class CardsListAdapter extends RecyclerView.Adapter<CardsListAdapter.Petr
     public void onBindViewHolder(@NonNull PetroCanadaViewHolder holder, int position) {
         holder.binding.setItem(cards.get(position));
         View view = holder.binding.getRoot();
+
         int color;
         if (position % 2 == 0) {
             color = Color.parseColor("#FFAB252C");
@@ -56,7 +59,16 @@ public class CardsListAdapter extends RecyclerView.Adapter<CardsListAdapter.Petr
             view.setPadding(0, 0, 0, view.getResources().getDimensionPixelSize(R.dimen.petro_canada_cards_padding));
         }
 
+        if (cards.get(position).getCardDetail().isExpiredCard()||cards.get(position).getCardDetail().getBalance()==0){
+             holder.binding.cardBalance.setVisibility(View.GONE);
+             holder.binding.cardReloadBalance.setVisibility(View.VISIBLE);
+        } else {
+            holder.binding.cardBalance.setVisibility(View.VISIBLE);
+            holder.binding.cardReloadBalance.setVisibility(View.GONE);
+        }
+
         view.setOnClickListener(v -> callback.accept(cards.get(position).getCardDetail()));
+        holder.binding.cardReloadBalance.setOnClickListener(v->reloadCallBack.accept(cards.get(position).getCardDetail()));
 
         holder.binding.executePendingBindings();
     }

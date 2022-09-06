@@ -60,7 +60,7 @@ public class CarWashCardFragment extends CarwashLocation implements OnBackPresse
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         appBarElevation = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics());
-        petroCanadaCardsAdapter = new CardsListAdapter(this::cardClick);
+        petroCanadaCardsAdapter = new CardsListAdapter(this::cardClick, this::reloadButtonClick);
 
         carWashCardViewModel.getViewState().observe(this, (result) -> {
             if (result != CarWashCardViewModel.ViewState.REFRESHING) {
@@ -217,15 +217,24 @@ public class CarWashCardFragment extends CarwashLocation implements OnBackPresse
         if (carWashCardViewModel.getIsNearestStationIndependent().getValue() != null
                 && carWashCardViewModel.getIsNearestStationIndependent().getValue()) {
             StationsUtil.showIndependentStationAlert(getContext());
-        } else if (carWashCardViewModel.getIsBalanceZero().getValue() != null &&
-                carWashCardViewModel.getIsBalanceZero().getValue()) {
-            CardsUtil.showZeroBalanceAlert(getActivity(),
-                    (dialog, v) -> Navigation.findNavController(getView()).navigate(R.id.action_carWashCardFragment_to_carWashPurchaseFragment),
-                    (dialog, v) -> navigateToCardDetail(cardDetail));
-        } else if (cardDetail.getBalance() <= 0) {
-            CardsUtil.showOtherCardAvailableAlert(getContext());
         } else {
             navigateToCardDetail(cardDetail);
+        }
+
+    }
+
+    private void reloadButtonClick(CardDetail cardDetail) {
+        if (carWashCardViewModel.getIsNearestStationIndependent().getValue() != null
+                && carWashCardViewModel.getIsNearestStationIndependent().getValue()) {
+            StationsUtil.showIndependentStationAlert(getContext());
+        }else if (cardDetail.isSuspendedCard()) {
+             CardsUtil.showSuspendedCardAlert(getContext());
+        }
+        else if (carWashCardViewModel.getIsBalanceZero().getValue() != null &&
+                carWashCardViewModel.getIsBalanceZero().getValue()) {
+            navigateToReloadTransaction(cardDetail);
+        } else if (cardDetail.getBalance() <= 0 || cardDetail.isExpiredCard()) {
+            navigateToReloadTransaction(cardDetail);
         }
 
     }
@@ -239,8 +248,24 @@ public class CarWashCardFragment extends CarwashLocation implements OnBackPresse
         action.setLoadType(CardsLoadType.CAR_WASH_PRODUCTS);
         NavController controller = Navigation.findNavController(getView());
         if (controller.getCurrentDestination() != null
-                && controller.getCurrentDestination().getAction(action.getActionId()) != null ) {
+                && controller.getCurrentDestination().getAction(action.getActionId()) != null) {
             controller.navigate((NavDirections) action);
+        }
+    }
+
+    private void navigateToReloadTransaction(CardDetail cardDetail) {
+        if (getView() == null) return;
+
+        if (cardDetail.isSuspendedCard()) {
+            CardsUtil.showSuspendedCardAlert(getContext());
+        } else {
+            //open Reload Transaction form
+            CarWashCardFragmentDirections.ActionCarWashCardFragmentToCarWashTransactionFragment
+                    action = CarWashCardFragmentDirections.actionCarWashCardFragmentToCarWashTransactionFragment();
+            action.setCardNumber(cardDetail.getCardNumber());
+            action.setCardName(cardDetail.getCardName());
+            action.setCardType(cardDetail.getCardType().name());
+            Navigation.findNavController(getView()).navigate(action);
         }
     }
 
@@ -249,7 +274,7 @@ public class CarWashCardFragment extends CarwashLocation implements OnBackPresse
 //        Navigation.findNavController(getView()).navigate(R.id.action_carWashCardFragment_to_carWashPurchaseFragment);
 //    };
 
-    private View.OnClickListener addNewCardListener = v ->{
+    private View.OnClickListener addNewCardListener = v -> {
         Navigation.findNavController(getView()).navigate(R.id.action_carWashCardFragment_to_addCardFragment);
     };
 
