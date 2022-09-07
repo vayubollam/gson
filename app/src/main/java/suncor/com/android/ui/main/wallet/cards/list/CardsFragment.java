@@ -39,11 +39,14 @@ import suncor.com.android.ui.common.SuncorToast;
 import suncor.com.android.ui.main.MainViewModel;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.wallet.WalletFragment;
+import suncor.com.android.ui.main.wallet.WalletFragmentDirections;
 import suncor.com.android.ui.main.wallet.WalletTabInterface;
 import suncor.com.android.ui.main.wallet.cards.CardsLoadType;
+import suncor.com.android.ui.main.wallet.cards.details.CardsDetailsFragmentDirections;
 import suncor.com.android.uicomponents.swiperefreshlayout.SwipeRefreshLayout;
 import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.CardsUtil;
+import suncor.com.android.utilities.StationsUtil;
 
 public class CardsFragment extends MainActivityFragment implements SwipeRefreshLayout.OnRefreshListener, WalletTabInterface {
 
@@ -72,8 +75,8 @@ public class CardsFragment extends MainActivityFragment implements SwipeRefreshL
 
         mainViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(MainViewModel.class);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CardsViewModel.class);
-        petroCanadaCardsAdapter = new CardsListAdapter(this::cardClick);
-        partnerCardsAdapter = new CardsListAdapter(this::cardClick);
+        petroCanadaCardsAdapter = new CardsListAdapter(this::cardClick,this::reloadButtonClick);
+        partnerCardsAdapter = new CardsListAdapter(this::cardClick,this::reloadButtonClick);
         headerCardAdapter = new CardsHeaderAdapter(() -> {
             cardClick(viewModel.getPetroPointsCard().getValue());
             return null;
@@ -159,18 +162,24 @@ public class CardsFragment extends MainActivityFragment implements SwipeRefreshL
         } else {
             if(cardDetail == null)
                 return;
-            if (viewModel.getIsBalanceZero().getValue() != null &&
-                    viewModel.getIsBalanceZero().getValue() && (cardDetail.getCardType() == CardType.SP || cardDetail.getCardType() == CardType.WAG)) {
-                CardsUtil.showZeroBalanceAlert(getContext(),
-                        (dialog, v) -> Navigation.findNavController(getView()).navigate(R.id.action_cards_tab_to_carWashPurchaseFragment),
-                        (dialog, v) -> navigateToCardDetail(cardDetail));
-            } else if (cardDetail.getBalance() <= 0 && (cardDetail.getCardType() == CardType.SP || cardDetail.getCardType() == CardType.WAG)) {
-                CardsUtil.showOtherCardAvailableAlert(getContext());
-            } else {
+           else {
                 navigateToCardDetail(cardDetail);
 
             }
         }
+    }
+
+    private void reloadButtonClick(CardDetail cardDetail) {
+        if (cardDetail.isSuspendedCard()) {
+            CardsUtil.showSuspendedCardAlert(getContext());
+        }
+        else if (viewModel.getIsBalanceZero().getValue() != null &&
+                viewModel.getIsBalanceZero().getValue()) {
+            navigateToReloadTransaction(cardDetail);
+        } else if (cardDetail.getBalance() <= 0 || cardDetail.isExpiredCard()) {
+            navigateToReloadTransaction(cardDetail);
+        }
+
     }
 
     private void navigateToCardDetail(CardDetail cardDetail) {
@@ -185,6 +194,18 @@ public class CardsFragment extends MainActivityFragment implements SwipeRefreshL
                 && controller.getCurrentDestination().getAction(action.getActionId()) != null ) {
             controller.navigate(action);
         }
+    }
+
+    private void navigateToReloadTransaction(CardDetail cardDetail) {
+        if (getView() == null) return;
+
+        //open Reload Transaction form
+        WalletFragmentDirections.ActionWalletTabToCarWashTransactionFragment
+                action = WalletFragmentDirections.actionWalletTabToCarWashTransactionFragment();
+        action.setCardNumber(cardDetail.getCardNumber());
+        action.setCardName(cardDetail.getLongName());
+        action.setCardType(cardDetail.getCardType().name());
+        Navigation.findNavController(getView()).navigate(action);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)

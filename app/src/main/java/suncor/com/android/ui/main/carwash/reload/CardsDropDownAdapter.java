@@ -74,7 +74,8 @@ public class CardsDropDownAdapter extends DropDownAdapter {
     public void  setDefautValue(){
         int position = 0;
         for(ExpandedCardItem card: childList){
-            if( card.getCardNumber().equals(cardNumber)){
+            String cardNum=card.getCardNumber().replaceAll("\\s", "");
+            if(cardNum.equals(cardNumber)){
                 selectedPos = position;
                 listener.onSelectValue(card.getCardName(), card.getCardNumber());
                 notifyDataSetChanged();
