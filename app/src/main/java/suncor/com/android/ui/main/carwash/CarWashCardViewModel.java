@@ -22,6 +22,7 @@ import suncor.com.android.data.DistanceApi;
 import suncor.com.android.data.cards.CardsRepository;
 import suncor.com.android.data.favourite.FavouriteRepository;
 import suncor.com.android.data.stations.StationsApi;
+import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.DirectionsResult;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.cards.CardDetail;
@@ -62,11 +63,14 @@ public class CarWashCardViewModel extends ViewModel {
     private LatLng userLocation;
     private MutableLiveData<CardTypeStatus> cardTypeStatus = new MutableLiveData<>();
 
+    private boolean carWashreloadStatus;
 
     @Inject
-    public CarWashCardViewModel(CardsRepository repository, StationsApi stationsApi, FavouriteRepository favouriteRepository, DistanceApi distanceApi) {
+    public CarWashCardViewModel(CardsRepository repository, StationsApi stationsApi, FavouriteRepository favouriteRepository, DistanceApi distanceApi,
+                                SessionManager sessionManager) {
         this.repository = repository;
         this.favouriteRepository = favouriteRepository;
+        carWashreloadStatus = sessionManager.getCarWashToggle() == null ? false : sessionManager.getCarWashToggle();
 
         MediatorLiveData<Resource<ArrayList<CardDetail>>> apiCall = new MediatorLiveData<>();
         //load wash cards
@@ -161,6 +165,10 @@ public class CarWashCardViewModel extends ViewModel {
             isNearestStationIndependent.setValue(validateIndependentStation(item.getStation()));
         });
 
+    }
+
+    public boolean getCarWashToggleStatus() {
+        return carWashreloadStatus;
     }
 
     public void onAttached() {

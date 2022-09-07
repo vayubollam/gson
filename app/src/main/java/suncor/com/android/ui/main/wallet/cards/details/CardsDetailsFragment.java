@@ -86,6 +86,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
     private boolean profileToggleFeature, vacuumToggle = false;
     private LocationLiveData locationLiveData;
     private LatLng currentLocation;
+    private SessionManager sessionManager;
 
 
     @Override
@@ -200,7 +201,8 @@ public class CardsDetailsFragment extends MainActivityFragment {
         binding.cardDetailRecycler.setItemAnimator(new Animator());
         PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
         pagerSnapHelper.attachToRecyclerView(binding.cardDetailRecycler);
-        cardsDetailsAdapter = new CardsDetailsAdapter(this::cardViewMoreHandler, activeCarWashListener, cardReloadListener, gpaySaveToWalletListener, vacuumListener, vacuumToggle);
+        boolean isCarWashReloaded = viewModel.getCardWashReloadStatus();
+        cardsDetailsAdapter = new CardsDetailsAdapter(this::cardViewMoreHandler, activeCarWashListener, cardReloadListener, gpaySaveToWalletListener, vacuumListener, vacuumToggle, isCarWashReloaded);
         binding.cardDetailRecycler.setAdapter(cardsDetailsAdapter);
         binding.cardDetailRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
 

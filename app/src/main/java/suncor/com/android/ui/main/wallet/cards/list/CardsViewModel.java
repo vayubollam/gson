@@ -41,6 +41,7 @@ public class CardsViewModel extends ViewModel {
     private ArrayList<CardDetail> cards;
 
     private MutableLiveData<Boolean> isBalanceZero = new MutableLiveData<>();
+    private boolean carWashreloadStatus;
 
     @Inject
     public CardsViewModel(CardsRepository repository, SessionManager sessionManager) {
@@ -48,6 +49,7 @@ public class CardsViewModel extends ViewModel {
 
         profile = sessionManager.getProfile();
         cards = new ArrayList<>();
+        carWashreloadStatus = sessionManager.getCarWashToggle() == null ? false : sessionManager.getCarWashToggle();
 
         MediatorLiveData<Resource<ArrayList<CardDetail>>> apiCall = new MediatorLiveData<>();
         LiveData<Resource<ArrayList<CardDetail>>> retrieveCall = Transformations.switchMap(retrieveCardsEvent, event -> {
@@ -111,6 +113,10 @@ public class CardsViewModel extends ViewModel {
                 saveCards(Collections.singletonList(petroPointsCard));
             }
         }
+    }
+
+    public boolean getCarWashToggleStatus() {
+        return carWashreloadStatus;
     }
 
     public void onAttached() {

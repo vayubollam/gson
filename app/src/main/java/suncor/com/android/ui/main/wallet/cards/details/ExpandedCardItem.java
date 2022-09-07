@@ -44,6 +44,7 @@ public class ExpandedCardItem {
     private String  lastWashDt;
     private String  lastVacuumDt;
     private boolean timer;
+    private boolean carWashReloadToggle;
 
     public ExpandedCardItem(Context context, CardDetail cardDetail) {
         this.cardDetail = cardDetail;
@@ -337,5 +338,13 @@ public class ExpandedCardItem {
 
     public void setTimer(boolean timer) {
         this.timer = timer;
+    }
+
+    public boolean isCarWashReloadToggle() {
+        return carWashReloadToggle;
+    }
+
+    public void setCarWashReloadToggle(boolean carWashReloadToggle) {
+        this.carWashReloadToggle = carWashReloadToggle;
     }
 }

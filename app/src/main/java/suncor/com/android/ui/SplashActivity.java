@@ -215,12 +215,17 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
         String currentVersion = BuildConfig.VERSION_NAME;
         if (sessionManager.getSharedPrefsHelper() != null) {
             Boolean settingsVacuum = (settingsResponse.getSettings() != null && settingsResponse.getSettings().toggleFeature != null) ? settingsResponse.getSettings().toggleFeature.isVacuumScanBarcode() : null;
+            Boolean settingCarWashReload = (settingsResponse.getSettings() != null && settingsResponse.getSettings().toggleFeature != null) ? settingsResponse.getSettings().toggleFeature.isCarWashReload() : null;
             int enrollmentBonus = (settingsResponse.getSettings() != null) ? settingsResponse.getSettings().getEnrollmentBonus() : 0;
             if (settingsVacuum != null) {
                 sessionManager.getSharedPrefsHelper().put(SharedPrefsHelper.SETTING_VACUUM_TOGGLE, settingsVacuum);
                 sessionManager.getUserLocalSettings().setInt(UserLocalSettings.ENROLLMENT_BONUS, enrollmentBonus);
             }
+            if(settingCarWashReload != null) {
+                sessionManager.getSharedPrefsHelper().put(SharedPrefsHelper.SETTING_CARWASH_RELOAD_TOGGLE, settingCarWashReload);
+            }
         }
+
         if (currentVersion.compareTo(minVersion) < 0) {
             binding.profilePd.setVisibility(View.GONE);
             AnalyticsUtils.logEvent(application.getApplicationContext(), "error_log", new Pair<>("errorMessage",getString(R.string.update_required_dialog_title)));

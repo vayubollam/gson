@@ -235,6 +235,10 @@ public class CardDetailsViewModel extends ViewModel {
         _vacuumVisibility.postValue(vacuumResponse);
     }
 
+    public Boolean getCardWashReloadStatus() {
+        return sessionManager.getCarWashToggle() != null && sessionManager.getCarWashToggle();
+    }
+
     public LiveData<Resource<SettingsResponse>> getSettingsFromRemote() {
        return settingsApi.retrieveSettings();
     }

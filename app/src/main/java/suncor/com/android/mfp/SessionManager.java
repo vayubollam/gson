@@ -100,6 +100,8 @@ public class SessionManager implements SessionChangeListener {
                 userLocalSettings.setString(UserLocalSettings.RECENTLY_SEARCHED, null);
                 mSharedPrefsHelper.deleteSavedData(SharedPrefsHelper.USER_VACUUM_TOGGLE);
                 mSharedPrefsHelper.deleteSavedData(SharedPrefsHelper.SETTING_VACUUM_TOGGLE);
+                mSharedPrefsHelper.deleteSavedData(SharedPrefsHelper.SETTING_CARWASH_RELOAD_TOGGLE);
+                mSharedPrefsHelper.deleteSavedData(SharedPrefsHelper.USER_CARWASH_RELOAD_TOGGLE);
                 setProfile(null);
                 accountState = null;
                 loginState.postValue(LoginState.LOGGED_OUT);
@@ -208,6 +210,10 @@ public class SessionManager implements SessionChangeListener {
                     Boolean userVacuumToggle = (profile != null && profile.toggleFeature != null) ? profile.toggleFeature.isVacuumScanBarcode() : null;
                     if (userVacuumToggle != null) {
                         mSharedPrefsHelper.put(SharedPrefsHelper.USER_VACUUM_TOGGLE, userVacuumToggle);
+                    }
+                    Boolean userCarWashReload = (profile != null && profile.toggleFeature != null) ? profile.toggleFeature.isCarWashReload() : null;
+                    if (userCarWashReload != null) {
+                        mSharedPrefsHelper.put(SharedPrefsHelper.USER_CARWASH_RELOAD_TOGGLE,userCarWashReload);
                     }
                     onSuccess.accept(profile);
                 }
@@ -373,6 +379,23 @@ public class SessionManager implements SessionChangeListener {
                 return true;
             } else {
                 return userVacuumToggle;
+            }
+        } else {
+            return null;
+        }
+    }
+
+    public Boolean getCarWashToggle() {
+        Boolean settingCarWashReload = null;
+        if (mSharedPrefsHelper.checkHasKey(SharedPrefsHelper.SETTING_CARWASH_RELOAD_TOGGLE)) {
+            settingCarWashReload = mSharedPrefsHelper.get(SharedPrefsHelper.SETTING_CARWASH_RELOAD_TOGGLE, false);
+        }
+        Boolean userCarwashReloadToggle = mSharedPrefsHelper.get(SharedPrefsHelper.USER_CARWASH_RELOAD_TOGGLE, false);
+        if (settingCarWashReload != null) {
+            if (settingCarWashReload) {
+                return true;
+            } else {
+                return userCarwashReloadToggle;
             }
         } else {
             return null;

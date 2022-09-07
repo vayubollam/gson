@@ -11,6 +11,8 @@ public class SharedPrefsHelper {
 
     public static final String USER_VACUUM_TOGGLE = "userVacuumToggle";
     public static final String SETTING_VACUUM_TOGGLE = "settingVacuumToggle";
+    public static final String USER_CARWASH_RELOAD_TOGGLE = "userCarWashReload";
+    public static final String SETTING_CARWASH_RELOAD_TOGGLE = "settingCarWashReloadToggle";
 
     private SharedPreferences mSharedPreferences;
 

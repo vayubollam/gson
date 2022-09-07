@@ -13,6 +13,9 @@
         <variable
             name="isVacuumEnable"
             type="androidx.databinding.ObservableBoolean" />
+        <variable
+            name="isCarWashReloaded"
+            type="Boolean" />
     </data>
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
@@ -451,7 +454,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/vacuum_button"
-                app:visibleGone="@{card.cardType == CardType.SP || card.cardType == CardType.WAG || card.cardType == CardType.ST}">
+                app:visibleGone="@{isCarWashReloaded &amp;&amp; (card.cardType == CardType.SP || card.cardType == CardType.WAG || card.cardType == CardType.ST)}">
 
                 <ImageView
                     android:id="@+id/imvReload"
@@ -460,16 +463,15 @@
                     android:layout_gravity="center"
                     android:background="@drawable/round_icon_grey"
                     android:padding="10dp"
-                    android:src="@drawable/ic_reload"
-                    />
+                    android:src="@drawable/ic_reload" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:text="@string/reload"
                     android:paddingTop="8dp"
+                    android:text="@string/reload"
                     android:textColor="@color/black_80"
                     android:textSize="12sp"
                     app:fontFamily="@font/gibson_semibold" />

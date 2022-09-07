@@ -76,6 +76,7 @@ public class CardsFragment extends MainActivityFragment implements SwipeRefreshL
         mainViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(MainViewModel.class);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CardsViewModel.class);
         petroCanadaCardsAdapter = new CardsListAdapter(this::cardClick,this::reloadButtonClick);
+        petroCanadaCardsAdapter.setIsCarWashReload(viewModel.getCarWashToggleStatus());
         partnerCardsAdapter = new CardsListAdapter(this::cardClick,this::reloadButtonClick);
         headerCardAdapter = new CardsHeaderAdapter(() -> {
             cardClick(viewModel.getPetroPointsCard().getValue());

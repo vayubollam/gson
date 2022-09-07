@@ -24,17 +24,21 @@ public class CardsDetailsAdapter extends RecyclerView.Adapter<CardsDetailsAdapte
     private View.OnClickListener gpaySaveToWalletListener;
     private View.OnClickListener vacuumListener;
     private ObservableBoolean isVacuumEnabled = new ObservableBoolean(false);
+    private boolean isCarWashReloaded;
 
 
     public CardsDetailsAdapter(Consumer<ExpandedCardItem> callBack, View.OnClickListener activeWashListener,
                                View.OnClickListener cardReloadListener, View.OnClickListener gpaySaveToWalletListener,
-                               View.OnClickListener vacuumListener, boolean isVacuumEnabled) {
+                               View.OnClickListener vacuumListener, boolean isVacuumEnabled,
+                               boolean isCarWashReloaded) {
         this.callBack = callBack;
         this.activeWashListener = activeWashListener;
         this.cardReloadListener = cardReloadListener;
         this.gpaySaveToWalletListener = gpaySaveToWalletListener;
         this.vacuumListener = vacuumListener;
+        this.isCarWashReloaded = isCarWashReloaded;
         this.isVacuumEnabled.set(isVacuumEnabled);
+        this.isCarWashReloaded = isCarWashReloaded;
     }
 
 
@@ -49,6 +53,7 @@ public class CardsDetailsAdapter extends RecyclerView.Adapter<CardsDetailsAdapte
     public void onBindViewHolder(@NonNull CardsDetailHolder holder, int position) {
         holder.binding.setCard(cardItems.get(position));
         holder.binding.setIsVacuumEnable(isVacuumEnabled);
+        holder.binding.setIsCarWashReloaded(isCarWashReloaded);
 
         holder.binding.moreButton.setOnClickListener(v -> callBack.accept(cardItems.get(position)));
         //if(holder.binding.cardReloadButton.isShown()) {

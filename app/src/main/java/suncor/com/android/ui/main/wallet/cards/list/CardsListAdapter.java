@@ -24,11 +24,16 @@ public class CardsListAdapter extends RecyclerView.Adapter<CardsListAdapter.Petr
     private ArrayList<CardListItem> cards = new ArrayList<>();
     Consumer<CardDetail> callback;
     Consumer<CardDetail> reloadCallBack;
+    private boolean isCarWashReload;
 
 
     public CardsListAdapter(Consumer<CardDetail> callback,Consumer<CardDetail> reloadCallBack) {
         this.callback = callback;
         this.reloadCallBack=reloadCallBack;
+    }
+
+    public void setIsCarWashReload(boolean isCarWashReload) {
+        this.isCarWashReload = isCarWashReload;
     }
 
     @NonNull
@@ -59,7 +64,7 @@ public class CardsListAdapter extends RecyclerView.Adapter<CardsListAdapter.Petr
             view.setPadding(0, 0, 0, view.getResources().getDimensionPixelSize(R.dimen.petro_canada_cards_padding));
         }
 
-        if (cards.get(position).getCardDetail().isExpiredCard()||cards.get(position).getCardDetail().getBalance()==0){
+        if (isCarWashReload && (cards.get(position).getCardDetail().isExpiredCard() || cards.get(position).getCardDetail().getBalance() == 0)){
              holder.binding.cardBalance.setVisibility(View.GONE);
              holder.binding.cardReloadBalance.setVisibility(View.VISIBLE);
         } else {

@@ -61,7 +61,7 @@ public class CarWashCardFragment extends CarwashLocation implements OnBackPresse
         super.onCreate(savedInstanceState);
         appBarElevation = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics());
         petroCanadaCardsAdapter = new CardsListAdapter(this::cardClick, this::reloadButtonClick);
-
+        petroCanadaCardsAdapter.setIsCarWashReload(carWashCardViewModel.getCarWashToggleStatus());
         carWashCardViewModel.getViewState().observe(this, (result) -> {
             if (result != CarWashCardViewModel.ViewState.REFRESHING) {
                 binding.refreshLayout.setRefreshing(false);
