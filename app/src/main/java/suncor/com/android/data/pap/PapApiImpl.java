@@ -264,7 +264,7 @@ public class PapApiImpl implements PapApi {
         MutableLiveData<Resource<GetRedeemableFlag>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
-            URI adapterPath = new URI("/adapters/suncor/v1/rfmp-secure/redemptionflag?currentCity=" + currentCity +"&currentProvCode="+ stateCode );
+            URI adapterPath = new URI("/adapters/suncor/v1/rfmp-secure/redemptionflag?currentCity=" + currentCity +"&currentProvCode="+ stateCode.trim() );
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.PROTECTED_SCOPE);
 
             request.send( new WLResponseListener() {
