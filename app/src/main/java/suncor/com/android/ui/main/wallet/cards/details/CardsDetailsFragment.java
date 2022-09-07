@@ -492,7 +492,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
             CardsDetailsFragmentDirections.ActionCardsDetailsFragmentToCarWashTransactionFragment
                     action = CardsDetailsFragmentDirections.actionCardsDetailsFragmentToCarWashTransactionFragment();
             action.setCardNumber(cardItem.getCardNumber());
-            action.setCardName(cardItem.getCardName());
+            action.setCardName(cardItem.getCardDetail().getLongName());
             action.setCardType(cardItem.getCardType().name());
             action.setCardIndex(clickedCardIndex.getValue());
             action.setIsCardFromCarWash(loadType == CardsLoadType.CAR_WASH_PRODUCTS);

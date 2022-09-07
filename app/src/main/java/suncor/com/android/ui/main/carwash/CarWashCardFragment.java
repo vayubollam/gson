@@ -263,7 +263,7 @@ public class CarWashCardFragment extends CarwashLocation implements OnBackPresse
             CarWashCardFragmentDirections.ActionCarWashCardFragmentToCarWashTransactionFragment
                     action = CarWashCardFragmentDirections.actionCarWashCardFragmentToCarWashTransactionFragment();
             action.setCardNumber(cardDetail.getCardNumber());
-            action.setCardName(cardDetail.getCardName());
+            action.setCardName(cardDetail.getLongName());
             action.setCardType(cardDetail.getCardType().name());
             Navigation.findNavController(getView()).navigate(action);
         }
