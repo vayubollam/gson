@@ -38,7 +38,6 @@ public class CardsDetailsAdapter extends RecyclerView.Adapter<CardsDetailsAdapte
         this.vacuumListener = vacuumListener;
         this.isCarWashReloaded = isCarWashReloaded;
         this.isVacuumEnabled.set(isVacuumEnabled);
-        this.isCarWashReloaded = isCarWashReloaded;
     }
 
 
