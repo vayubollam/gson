@@ -390,9 +390,8 @@ public class SessionManager implements SessionChangeListener {
         }
 
         Boolean userDonateToggle = mSharedPrefsHelper.get(SharedPrefsHelper.USER_DONATE_TOGGLE, false);
-        if (settingsDonateToggle != null) return settingsDonateToggle || userDonateToggle;
 
-            return null;
+        return (settingsDonateToggle != null) ? (settingsDonateToggle || userDonateToggle) : null;
     }
 
     public void setRewardedPoints(int rewardedPoints) {
