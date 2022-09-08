@@ -384,16 +384,14 @@ public class SessionManager implements SessionChangeListener {
 
     public Boolean getDonateToggle() {
         Boolean settingsDonateToggle = null;
+
         if (mSharedPrefsHelper.checkHasKey(SharedPrefsHelper.SETTING_DONATE_TOGGLE)) {
             settingsDonateToggle = mSharedPrefsHelper.get(SharedPrefsHelper.SETTING_DONATE_TOGGLE, false);
         }
+
         Boolean userDonateToggle = mSharedPrefsHelper.get(SharedPrefsHelper.USER_DONATE_TOGGLE, false);
-        if (settingsDonateToggle != null) {
-            if (settingsDonateToggle) {
-                return true;
-            }
-                return userDonateToggle;
-        }
+        if (settingsDonateToggle != null) return settingsDonateToggle || userDonateToggle;
+
             return null;
     }
 
