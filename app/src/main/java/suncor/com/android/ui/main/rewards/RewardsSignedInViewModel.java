@@ -1,7 +1,9 @@
 package suncor.com.android.ui.main.rewards;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
 import java.util.ArrayList;
@@ -30,6 +32,9 @@ public class RewardsSignedInViewModel extends ViewModel {
     private List<Merchant> merchantList = new ArrayList<>();
     private SessionManager sessionManager;
     private boolean isFirstTym = true;
+    private final MutableLiveData<Boolean> _donateVisibility = new MutableLiveData<Boolean>(false);
+    private final MediatorLiveData<Boolean> _donateVisibilityViewState = new MediatorLiveData<Boolean>();
+    public LiveData<Boolean> donateVisibilityViewState = _donateVisibilityViewState;
 
     public LiveData<Resource<MemberEligibilityResponse>> memberEligibilityResponse;
     private MutableLiveData<MemberEligibilityResponse> _eligibilityLiveData = new MutableLiveData<>();
@@ -41,6 +46,18 @@ public class RewardsSignedInViewModel extends ViewModel {
         this.sessionManager = sessionManager;
         this.repository = merchantsRepository;
         merchantsMutableLiveData = merchantsRepository.getMerchants();
+
+        _donateVisibilityViewState.addSource(_donateVisibility, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean == null) {
+                    _donateVisibilityViewState.setValue(false);
+                } else {
+                    _donateVisibilityViewState.setValue(aBoolean);
+                }
+            }
+        });
+
         merchantsMutableLiveData.observeForever(merchantsResource -> {
             if (merchantsResource.status == Resource.Status.SUCCESS) {
                 merchantList = merchantsResource.data;
@@ -69,6 +86,11 @@ public class RewardsSignedInViewModel extends ViewModel {
             }
         }
         return merchants;
+    }
+
+    public void getDonateStatus() {
+        Boolean vacuumResponse = sessionManager.getDonateToggle();
+        _donateVisibility.postValue(vacuumResponse);
     }
 
     public List<Merchant> getMerchantList() {
@@ -108,11 +130,5 @@ public class RewardsSignedInViewModel extends ViewModel {
             e.printStackTrace();
         }
         return 0;
-    }
-
-    public boolean isDonateEnabled() {
-        Boolean donateToggle = sessionManager.getDonateToggle();
-        if (donateToggle != null) return donateToggle;
-        else return false;
     }
 }

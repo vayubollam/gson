@@ -99,6 +99,7 @@ public class SessionManager implements SessionChangeListener {
             public void onSuccess() {
                 userLocalSettings.setString(UserLocalSettings.RECENTLY_SEARCHED, null);
                 mSharedPrefsHelper.deleteSavedData(SharedPrefsHelper.USER_VACUUM_TOGGLE);
+                mSharedPrefsHelper.deleteSavedData(SharedPrefsHelper.USER_DONATE_TOGGLE);
                 mSharedPrefsHelper.deleteSavedData(SharedPrefsHelper.SETTING_VACUUM_TOGGLE);
                 mSharedPrefsHelper.deleteSavedData(SharedPrefsHelper.SETTING_DONATE_TOGGLE);
                 setProfile(null);
@@ -207,9 +208,13 @@ public class SessionManager implements SessionChangeListener {
                     Timber.d("Profile received, response: " + wlResponse.getResponseText());
                     Profile profile = gson.fromJson(wlResponse.getResponseText(), Profile.class);
                     Boolean userVacuumToggle = (profile != null && profile.toggleFeature != null) ? profile.toggleFeature.isVacuumScanBarcode() : null;
-                    if (userVacuumToggle != null) {
+                    Boolean userDonateToggle = (profile != null && profile.toggleFeature != null) ? profile.toggleFeature.isDonatePetroPoints() : null;
+                    if (userVacuumToggle != null)
                         mSharedPrefsHelper.put(SharedPrefsHelper.USER_VACUUM_TOGGLE, userVacuumToggle);
-                    }
+
+                    if(userDonateToggle != null)
+                        mSharedPrefsHelper.put(SharedPrefsHelper.USER_DONATE_TOGGLE, userDonateToggle);
+
                     onSuccess.accept(profile);
                 }
 
@@ -382,7 +387,14 @@ public class SessionManager implements SessionChangeListener {
         if (mSharedPrefsHelper.checkHasKey(SharedPrefsHelper.SETTING_DONATE_TOGGLE)) {
             settingsDonateToggle = mSharedPrefsHelper.get(SharedPrefsHelper.SETTING_DONATE_TOGGLE, false);
         }
-        return settingsDonateToggle;
+        Boolean userDonateToggle = mSharedPrefsHelper.get(SharedPrefsHelper.USER_DONATE_TOGGLE, false);
+        if (settingsDonateToggle != null) {
+            if (settingsDonateToggle) {
+                return true;
+            }
+                return userDonateToggle;
+        }
+            return null;
     }
 
     public void setRewardedPoints(int rewardedPoints) {
