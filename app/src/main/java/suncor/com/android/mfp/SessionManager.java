@@ -390,16 +390,8 @@ public class SessionManager implements SessionChangeListener {
         if (mSharedPrefsHelper.checkHasKey(SharedPrefsHelper.SETTING_CARWASH_RELOAD_TOGGLE)) {
             settingCarWashReload = mSharedPrefsHelper.get(SharedPrefsHelper.SETTING_CARWASH_RELOAD_TOGGLE, false);
         }
-        Boolean userCarwashReloadToggle = mSharedPrefsHelper.get(SharedPrefsHelper.USER_CARWASH_RELOAD_TOGGLE, false);
-        if (settingCarWashReload != null) {
-            if (settingCarWashReload) {
-                return true;
-            } else {
-                return userCarwashReloadToggle;
-            }
-        } else {
-            return null;
-        }
+        Boolean userCarWashReloadToggle = mSharedPrefsHelper.get(SharedPrefsHelper.USER_CARWASH_RELOAD_TOGGLE, false);
+        return (settingCarWashReload != null) ? (settingCarWashReload || userCarWashReloadToggle) : null;
     }
 
     public void setRewardedPoints(int rewardedPoints) {
