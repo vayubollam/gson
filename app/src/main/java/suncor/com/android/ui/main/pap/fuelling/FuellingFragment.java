@@ -164,6 +164,7 @@ public class FuellingFragment extends MainActivityFragment {
                                         dialogInterface.dismiss();
                                         goBack();
                                     }, PAY_AT_PUMP).show();
+                            stopFuellingActiveSessionObserver();
                         } else  if(!result.data.activeSession) {
                             observeTransactionData(result.data.lastTransId, result.data.lastPaymentProviderName);
                             AnalyticsUtils.setCurrentScreenName(getActivity(), PAY_AT_PAUMP_FUELING_ALMOST_COMPLETE );
