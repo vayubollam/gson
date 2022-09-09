@@ -15,7 +15,7 @@ public class OrderResponse implements Parcelable {
     private boolean linkProductsToAccount;
     private String[] productsDelivered;
     private String errorID;
-    private String errorDescription;
+    private String errorDescription = "";
 
     public void setErrorID(String errorID) {
         this.errorID = errorID;

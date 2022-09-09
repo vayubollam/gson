@@ -10,6 +10,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,11 +103,14 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
                 case ERROR:
                     assert orderResponseResource.message != null;
                     assert orderResponseResource.data != null;
+
+                    if(TextUtils.isEmpty(orderResponseResource.data.getErrorDescription()))
+                        orderResponseResource.data.setErrorDescription(" ");
+
                     GiftCardValueConfirmationAnalytics.logFormErrorEvent(
                             requireContext(),
                             orderResponseResource.data.getErrorDescription(),
                             REDEEM_FOR +  viewModel.getGiftCardItem().getShortName() + E_GIFT_CARD
-
                     );
 
                     if (ErrorCodes.ERR_CARD_LOCK.equals(orderResponseResource.message) || ErrorCodes.ERR_SECONDARY_CARD_HOLDER_REDEMPTIONS_DISABLED.equals(orderResponseResource.message)) {

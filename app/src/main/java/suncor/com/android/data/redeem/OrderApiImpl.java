@@ -52,15 +52,14 @@ public class OrderApiImpl implements OrderApi {
                     Timber.d("Order API failed, " + wlFailResponse.toString());
                     OrderResponse orderResponse = new OrderResponse();
                     orderResponse.setErrorID(wlFailResponse.getErrorMsg());
-                    orderResponse.setErrorDescription(wlFailResponse.getResponseJSON().optString("errorMessage"));
+                    if(wlFailResponse.getResponseJSON() != null)
+                        orderResponse.setErrorDescription(wlFailResponse.getResponseJSON().optString("errorMessage"));
+
                     Timber.e(wlFailResponse.toString());
                     result.postValue(Resource.error(wlFailResponse.getErrorMsg(), orderResponse));
                 }
             });
-        } catch (URISyntaxException e) {
-            Timber.e(e.toString());
-            result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
-        } catch (JSONException e) {
+        } catch (URISyntaxException | JSONException e) {
             Timber.e(e.toString());
             result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
         }
