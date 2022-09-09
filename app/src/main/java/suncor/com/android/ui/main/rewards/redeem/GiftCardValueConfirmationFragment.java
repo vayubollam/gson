@@ -104,9 +104,6 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
                     assert orderResponseResource.message != null;
                     assert orderResponseResource.data != null;
 
-                    if(TextUtils.isEmpty(orderResponseResource.data.getErrorDescription()))
-                        orderResponseResource.data.setErrorDescription(" ");
-
                     GiftCardValueConfirmationAnalytics.logFormErrorEvent(
                             requireContext(),
                             orderResponseResource.data.getErrorDescription(),
