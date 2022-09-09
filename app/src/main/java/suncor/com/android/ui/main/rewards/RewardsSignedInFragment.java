@@ -1,5 +1,6 @@
 package suncor.com.android.ui.main.rewards;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -11,7 +12,6 @@ import androidx.core.view.ViewCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.databinding.ObservableInt;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -49,6 +49,7 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
     private MemberEligibilityResponse data;
     public ObservableInt petroPointsBalance = new ObservableInt();
     private GenericGiftCardsAdapter adapter;
+    private boolean isDonateEnabled = false;
 
 
     @Override
@@ -65,10 +66,15 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
         });
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        viewModel.getDonateStatus();
+        viewModel.donateVisibilityViewState.observe(getViewLifecycleOwner(), result -> {
+           isDonateEnabled = result;
+        });
 
         viewModel.merchantsLiveData.observe(getViewLifecycleOwner(), merchants -> {
             if (merchants != null) {
@@ -111,10 +117,10 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
                         isRedeemable = data.getEligible();
                         viewModel.updatePetroPoints(data.getPointsBalance());
                         petroPointsBalance.set(data.getPointsBalance());
-                        adapter.isEligible = isRedeemable;
+                        GenericGiftCardsAdapter.isEligible = isRedeemable;
 
                         // Handling the visibility of donate card as per the available element of categories.
-                        if (viewModel.isDonateEnabled() && data.getCategories().size() > 0)
+                        if (isDonateEnabled && data.getCategories().size() > 0)
                             eGiftCardsList.add(0, getGIftCardAt(0));
 
                         adapter.notifyDataSetChanged();
@@ -122,7 +128,7 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
                     return;
 
                 case ERROR:
-                    adapter.isEligible = false;
+                    GenericGiftCardsAdapter.isEligible = false;
                     petroPointsBalance.set(viewModel.getPetroPointsBalance());
                     adapter.notifyDataSetChanged();
             }
